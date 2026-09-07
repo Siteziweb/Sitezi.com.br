@@ -1,25 +1,198 @@
-document.addEventListener("DOMContentLoaded",()=>{const s={step:1,businessType:"",businessName:"",description:"",services:[],whatsapp:"",instagram:"",location:"",style:"dark",color:"#1788ff",imageVariant:0,imageGenerated:false};const $=id=>document.getElementById(id),landing=$("landing"),builder=$("builder"),result=$("result"),steps=[...document.querySelectorAll(".step")];const titles={1:["Qual é o tipo do seu negócio?","Escolha uma opção para personalizarmos seu site."],2:["Conte um pouco sobre seu negócio","Essas informações vão aparecer no seu site."],3:["Quais serviços você oferece?","Adicione os principais serviços do seu negócio."],4:["Como seus clientes falam com você?","Vamos deixar seus contatos prontos no site."],5:["Qual visual combina com você?","Escolha um estilo e uma cor principal."],6:["Pronto para ver seu site?","A SITEZI vai montar sua primeira prévia agora."]};function update(){steps.forEach(e=>e.classList.toggle("active",+e.dataset.step===s.step));$("stepCounter").textContent=`${s.step}/6`;$("stepTitle").textContent=titles[s.step][0];$("stepSubtitle").textContent=titles[s.step][1];$("progressBar").style.width=`${s.step/6*100}%`;$("backBtn").style.visibility=s.step===1?"hidden":"visible";$("nextBtn").classList.toggle("hidden",s.step===6)}function esc(t){return String(t||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}function renderServices(){$("servicesList").innerHTML="";s.services.forEach((x,i)=>{const c=document.createElement("span");c.className="service-chip";c.innerHTML=`<span>${esc(x)}</span><button type="button">×</button>`;c.querySelector("button").onclick=()=>{s.services.splice(i,1);renderServices()};$("servicesList").appendChild(c)})}function addService(){const v=$("serviceInput").value.trim();if(v&&s.services.length<6&&!s.services.includes(v)){s.services.push(v);$("serviceInput").value="";renderServices()}}document.querySelectorAll("[data-business]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-business]").forEach(x=>x.classList.remove("active"));b.classList.add("active");s.businessType=b.dataset.business});$("startBtn").onclick=()=>{landing.classList.add("hidden");builder.classList.remove("hidden");update()};$("restartTop").onclick=()=>{if(confirm("Recomeçar a criação do site?"))location.reload()};let suggestionIndex=0;$("autoDescription").onclick=()=>{const n=$("businessName").value.trim()||"Seu negócio";const packs={"Oficina Mecânica":[`${n}: manutenção automotiva com confiança, agilidade e cuidado em cada serviço.`,`${n}: soluções para seu carro com atendimento profissional, transparência e qualidade.`,`${n}: mecânica de confiança para manter seu veículo seguro e sempre bem cuidado.`],"Restaurante":[`${n}: sabor, qualidade e uma experiência especial em cada pedido.`,`${n}: comida feita com carinho, ingredientes selecionados e atendimento que aproxima.`,`${n}: uma experiência saborosa para quem valoriza qualidade e bom atendimento.`],"Barbearia":[`${n}: cortes, barba e estilo com atendimento de qualidade.`,`${n}: cuidado masculino, estilo e personalidade em cada detalhe.`,`${n}: seu visual em boas mãos, com atendimento profissional e ambiente acolhedor.`],"Salão de Beleza":[`${n}: beleza, cuidado e autoestima em um ambiente preparado para você.`,`${n}: serviços de beleza pensados para realçar o seu estilo e bem-estar.`,`${n}: cuidado personalizado para você se sentir ainda melhor.`],"Loja":[`${n}: produtos selecionados, atendimento próximo e novidades para você.`,`${n}: qualidade, variedade e praticidade para encontrar o que você precisa.`,`${n}: uma seleção especial de produtos com atendimento de confiança.`],"Clínica / Saúde":[`${n}: cuidado, confiança e atendimento profissional para você e sua família.`,`${n}: atendimento humanizado, qualidade e compromisso com o seu bem-estar.`,`${n}: saúde e cuidado com atenção profissional em cada etapa.`],"Prestador de Serviços":[`${n}: serviço profissional, atendimento rápido e soluções para sua necessidade.`,`${n}: soluções práticas com qualidade, compromisso e atendimento de confiança.`,`${n}: serviço bem feito, atenção aos detalhes e foco no que você precisa.`],"Outro":[`${n}: qualidade, confiança e atendimento profissional para você.`,`${n}: soluções pensadas para atender você com praticidade e excelência.`,`${n}: atendimento próximo, qualidade e compromisso em cada detalhe.`]};const list=packs[s.businessType]||packs.Outro;$("businessDescription").value=list[suggestionIndex%list.length];suggestionIndex++;$("autoDescription").classList.add("suggested");setTimeout(()=>$("autoDescription").classList.remove("suggested"),350)};$("addService").onclick=addService;$("serviceInput").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();addService()}};const styleNames={dark:"Escuro",light:"Claro",warm:"Elegante"};function updateThemePreview(){const mini=$("themeMiniPreview");if(!mini)return;mini.classList.remove("dark","light","warm");mini.classList.add(s.style);mini.style.setProperty("--accent",s.color);$("selectedStyle").textContent=styleNames[s.style]||"Escuro";const activeColor=document.querySelector(".color-choice.active");$("selectedColor").textContent=activeColor?.dataset.name||"Azul";if(s.imageGenerated)renderGeneratedImage()}document.querySelectorAll(".style-choice").forEach(b=>b.onclick=()=>{document.querySelectorAll(".style-choice").forEach(x=>x.classList.remove("active"));b.classList.add("active");s.style=b.dataset.style;updateThemePreview()});document.querySelectorAll(".color-choice").forEach(b=>b.onclick=()=>{document.querySelectorAll(".color-choice").forEach(x=>x.classList.remove("active"));b.classList.add("active");s.color=b.dataset.color;updateThemePreview()});function normalizeWhatsapp(v){let d=String(v||"").replace(/\D/g,"");if(d.length===10||d.length===11)d="55"+d;return d}function svgData(type,accent,variant=0){const key=String(type||"Outro");const v=variant%3;const common=`<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="${accent}" stop-opacity=".95"/><stop offset="1" stop-color="${accent}" stop-opacity=".25"/></linearGradient><filter id="blur"><feGaussianBlur stdDeviation="22"/></filter></defs><rect width="960" height="560" rx="34" fill="#08111d"/><circle cx="760" cy="110" r="180" fill="${accent}" opacity=".17" filter="url(#blur)"/><circle cx="150" cy="480" r="150" fill="${accent}" opacity=".12" filter="url(#blur)"/>`;let art="";if(key==="Oficina Mecânica"){art=v===0?`<g transform="translate(120 118)" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"><circle cx="320" cy="170" r="110"/><circle cx="320" cy="170" r="42"/><path d="M320 18v42M320 280v42M168 170h42M430 170h42M213 63l30 30M397 247l30 30M427 63l-30 30M243 247l-30 30"/></g>`:v===1?`<g transform="translate(110 130)" fill="none" stroke="url(#g)" stroke-width="24" stroke-linecap="round"><path d="M90 250h600l-58-126H208L90 250Z"/><path d="M185 124 250 55h335l62 69"/><circle cx="220" cy="260" r="52"/><circle cx="570" cy="260" r="52"/></g>`:`<g transform="translate(180 88)" fill="none" stroke="url(#g)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"><path d="M420 90a120 120 0 0 0-165 165L95 415l65 65 160-160A120 120 0 0 0 485 155l-75 75-70-70 80-70Z"/></g>`}else if(key==="Restaurante"){art=v===0?`<g transform="translate(245 92)" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round"><path d="M70 55v210M20 55v95a50 50 0 0 0 100 0V55M70 265v180M320 55v390M320 55c90 55 110 190 110 260H320"/></g>`:v===1?`<g transform="translate(215 95)" fill="none" stroke="url(#g)" stroke-width="22"><ellipse cx="265" cy="265" rx="240" ry="150"/><ellipse cx="265" cy="265" rx="150" ry="82"/><path d="M105 265h320"/></g>`:`<g transform="translate(260 120)" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round"><path d="M55 260h360M90 260a150 150 0 0 1 290 0"/><path d="M235 70v40"/></g>`}else if(key==="Barbearia"){art=`<g transform="translate(170 110)" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round"><circle cx="150" cy="125" r="62"/><circle cx="150" cy="315" r="62"/><path d="m205 165 360 205M205 275 565 70"/></g>`}else if(key==="Clínica / Saúde"){art=`<g transform="translate(250 110)" fill="none" stroke="url(#g)" stroke-width="22" stroke-linejoin="round"><path d="M230 400 70 245a105 105 0 0 1 148-148l12 12 12-12a105 105 0 0 1 148 148L230 400Z"/><path d="M118 240h78l28-64 48 130 28-66h62"/></g>`}else if(key==="Loja"){art=`<g transform="translate(235 105)" fill="none" stroke="url(#g)" stroke-width="22" stroke-linejoin="round"><path d="M65 130h420l-28 315H95L65 130Z"/><path d="M180 130V95a95 95 0 0 1 190 0v35"/></g>`}else if(key==="Salão de Beleza"){art=`<g transform="translate(230 105)" fill="none" stroke="url(#g)" stroke-width="20" stroke-linecap="round"><path d="M250 25 282 136 393 168 282 200 250 311 218 200 107 168 218 136 250 25Z"/><path d="M430 280 448 340 508 358 448 376 430 436 412 376 352 358 412 340 430 280Z"/></g>`}else{art=`<g transform="translate(270 100)" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"><rect x="30" y="100" width="360" height="280" rx="42"/><path d="M115 100V65a65 65 0 0 1 65-65h60a65 65 0 0 1 65 65v35M30 205h360"/><path d="m145 285 50 50 105-115"/></g>`}return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-label="Ilustração gerada pela SITEZI">${common}${art}</svg>`}function renderGeneratedImage(){const box=$("generatedImagePreview");if(!box)return;box.innerHTML=`<div class="generated-art">${svgData(s.businessType,s.color,s.imageVariant)}</div>`;s.imageGenerated=true}const imageBtn=$("generateImageBtn");if(imageBtn)imageBtn.onclick=()=>{s.imageVariant=(s.imageVariant+1)%3;const box=$("generatedImagePreview");box?.classList.add("generating");setTimeout(()=>{renderGeneratedImage();box?.classList.remove("generating")},180)};
-function valid(){if(s.step===1&&!s.businessType){alert("Escolha o tipo do seu negócio.");return false}if(s.step===2){if(!$("businessName").value.trim()){alert("Digite o nome do seu negócio.");return false}s.businessName=$("businessName").value.trim();s.description=$("businessDescription").value.trim()||`${s.businessName}: qualidade, confiança e atendimento profissional.`}if(s.step===3&&!s.services.length){alert("Adicione pelo menos um serviço.");return false}if(s.step===4){s.whatsapp=$("whatsapp").value.trim();s.instagram=$("instagram").value.trim();s.location=$("location").value.trim();if(!s.whatsapp){alert("Digite um WhatsApp para contato.");return false}}return true}$("nextBtn").onclick=()=>{if(valid()&&s.step<6){s.step++;update()}};$("backBtn").onclick=()=>{if(s.step>1){s.step--;update()}};function slug(t){return(t||"meusite").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"meusite"}function siteHTML(){
-const b=esc(s.businessName),d=esc(s.description),loc=esc(s.location||"Atendimento na sua região"),accent=s.color,wa=normalizeWhatsapp(s.whatsapp);
-const light=s.style==="light",warm=s.style==="warm";
-const theme=light?{bg:"#f7f8fb",surface:"#ffffff",surface2:"#eef2f7",text:"#111827",muted:"#667085",border:"#dfe5ec"}:warm?{bg:"#130e0c",surface:"#211714",surface2:"#2c1c17",text:"#fffaf5",muted:"#c7b5aa",border:"#49342c"}:{bg:"#050b13",surface:"#0c1724",surface2:"#111f30",text:"#f7fbff",muted:"#9eafc0",border:"#203247"};
-const profiles={
-"Oficina Mecânica":{eyebrow:"MECÂNICA • MANUTENÇÃO • CONFIANÇA",headline:"Seu carro em boas mãos.",about:"Cuidado automotivo com transparência, agilidade e atenção em cada detalhe.",icon:"gear",visual:"AUTO",serviceText:"Serviço automotivo realizado com atenção, qualidade e compromisso."},
-"Restaurante":{eyebrow:"SABOR • QUALIDADE • EXPERIÊNCIA",headline:"Sabor que dá vontade de voltar.",about:"Uma experiência feita para transformar cada pedido em um momento especial.",icon:"spark",visual:"SABOR",serviceText:"Preparado com cuidado, qualidade e uma experiência pensada para você."},
-"Barbearia":{eyebrow:"ESTILO • CUIDADO • PERSONALIDADE",headline:"Seu estilo começa aqui.",about:"Atendimento, técnica e personalidade para você sair com o visual em dia.",icon:"scissors",visual:"STYLE",serviceText:"Atendimento com técnica, cuidado e atenção ao seu estilo."},
-"Salão de Beleza":{eyebrow:"BELEZA • CUIDADO • AUTOESTIMA",headline:"Realce o melhor de você.",about:"Um espaço pensado para beleza, bem-estar e atendimento personalizado.",icon:"spark",visual:"BEAUTY",serviceText:"Cuidado personalizado para valorizar sua beleza e seu bem-estar."},
-"Loja":{eyebrow:"PRODUTOS • NOVIDADES • ATENDIMENTO",headline:"Encontre o que combina com você.",about:"Produtos selecionados, praticidade e atendimento próximo em um só lugar.",icon:"bag",visual:"SHOP",serviceText:"Qualidade, variedade e atendimento para uma ótima experiência de compra."},
-"Clínica / Saúde":{eyebrow:"SAÚDE • CUIDADO • CONFIANÇA",headline:"Cuidado profissional perto de você.",about:"Atendimento humanizado e compromisso com o seu bem-estar em cada etapa.",icon:"health",visual:"CARE",serviceText:"Atendimento cuidadoso, profissional e focado no seu bem-estar."},
-"Prestador de Serviços":{eyebrow:"SOLUÇÕES • AGILIDADE • CONFIANÇA",headline:"A solução certa para o que você precisa.",about:"Serviço profissional, atendimento direto e compromisso com um trabalho bem feito.",icon:"check",visual:"PRO",serviceText:"Solução profissional com qualidade, agilidade e atenção aos detalhes."},
-"Outro":{eyebrow:"QUALIDADE • CONFIANÇA • ATENDIMENTO",headline:"Uma presença profissional para o seu negócio.",about:"Soluções pensadas para aproximar sua marca dos seus clientes.",icon:"star",visual:"PRO",serviceText:"Atendimento profissional, qualidade e atenção em cada detalhe."}
-};
-const p=profiles[s.businessType]||profiles.Outro;
-const siteIcon=(name)=>{const paths={gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21H10v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H3v-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V3h4v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9A1.7 1.7 0 0 0 21 10h.1v4H21a1.7 1.7 0 0 0-1.6 1Z"/>',spark:'<path d="m12 2 1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6L12 2Z"/>',scissors:'<circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="m8.6 8.5 10.4 6M8.6 15.5 19 9"/>',bag:'<path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/>',health:'<path d="M12 3v18M3 12h18"/>',check:'<path d="m5 12 4 4L19 6"/>',star:'<path d="m12 2 3 6 7 .9-5 4.8 1.3 6.8L12 17l-6.3 3.5L7 13.7 2 8.9 9 8l3-6Z"/>'};return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name]||paths.star}</svg>`};
-const href=wa?`https://wa.me/${wa}?text=${encodeURIComponent("Olá! Vim pelo site e gostaria de mais informações.")}`:"#";
-const ig=s.instagram?String(s.instagram).replace(/^@/,""):"";
-const cards=s.services.map((x,i)=>`<article class="service"><div class="service-top"><span class="num">0${i+1}</span><span class="svc-icon">${siteIcon(p.icon)}</span></div><h3>${esc(x)}</h3><p>${p.serviceText}</p></article>`).join("");
-return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${b}</title><style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;background:${theme.bg};color:${theme.text}}a{text-decoration:none;color:inherit}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid ${theme.border}}.logo{font-weight:950;font-size:20px;letter-spacing:-.5px}.navlinks{display:flex;gap:24px;color:${theme.muted};font-size:13px;font-weight:800}.nav-cta{border:1px solid ${theme.border};padding:10px 14px;border-radius:10px;color:${accent}}.hero{min-height:620px;display:grid;grid-template-columns:1.08fr .92fr;gap:54px;align-items:center;padding:55px 0}.eyebrow{color:${accent};font-size:12px;font-weight:950;letter-spacing:1.5px}.hero h1{font-size:clamp(52px,7vw,82px);line-height:.94;letter-spacing:-4px;margin:18px 0}.hero .desc{font-size:18px;line-height:1.65;color:${theme.muted};max-width:620px}.actions{display:flex;gap:12px;align-items:center;margin-top:28px;flex-wrap:wrap}.cta{display:inline-flex;align-items:center;justify-content:center;background:${accent};color:white;font-weight:950;padding:15px 20px;border-radius:12px}.secondary{border:1px solid ${theme.border};padding:14px 18px;border-radius:12px;font-weight:850}.trust-item{display:inline-flex;align-items:center;gap:6px}.trust-item svg{width:15px;height:15px;fill:none;stroke:${accent};stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.trust{display:flex;gap:18px;margin-top:28px;color:${theme.muted};font-size:12px;font-weight:750;flex-wrap:wrap}.visual{min-height:440px;border:1px solid ${theme.border};border-radius:30px;background:radial-gradient(circle at 70% 20%,${accent}55,transparent 27%),linear-gradient(145deg,${theme.surface2},${theme.surface});padding:28px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}.visual:after{content:"";position:absolute;width:240px;height:240px;border:55px solid ${accent};opacity:.12;border-radius:50%;right:-70px;bottom:-80px}.visual-label{font-size:11px;color:${theme.muted};font-weight:900;letter-spacing:2px}.site-generated-art{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}.site-generated-art svg{width:115%;height:115%;object-fit:cover;opacity:.92}.visual-label,.visual-card{z-index:3}.visual-image{isolation:isolate}.visual-card{position:relative;z-index:2;background:${theme.bg}dd;border:1px solid ${theme.border};border-radius:18px;padding:18px;max-width:270px}.visual-card strong{display:block;font-size:17px}.visual-card span{display:block;color:${theme.muted};font-size:12px;margin-top:5px}.section{padding:84px 0}.section.alt{background:${theme.surface}}.section-kicker{color:${accent};font-size:11px;font-weight:950;letter-spacing:1.5px}.section h2{font-size:clamp(34px,5vw,50px);letter-spacing:-2px;margin:10px 0 14px}.lead{color:${theme.muted};line-height:1.65;max-width:650px}.services{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:32px}.service{border:1px solid ${theme.border};background:${theme.surface};border-radius:20px;padding:23px;min-height:205px}.service-top{display:flex;justify-content:space-between;color:${accent};font-weight:950}.num{color:${theme.muted};font-size:11px}.svc-icon{display:grid;place-items:center;width:28px;height:28px}.svc-icon svg,.icon-big svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.icon-big{width:52px;height:52px;color:${accent}}.service h3{font-size:20px;margin:34px 0 9px}.service p{color:${theme.muted};font-size:13px;line-height:1.55}.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;align-items:center}.about-box{border:1px solid ${theme.border};border-radius:24px;padding:28px;background:${theme.surface2}}.about-box .big{font-size:44px;font-weight:950;color:${accent}}.about-box p{color:${theme.muted};line-height:1.6}.contact{border:1px solid ${theme.border};background:linear-gradient(135deg,${theme.surface},${accent}18);border-radius:28px;padding:36px;display:flex;justify-content:space-between;gap:30px;align-items:center}.contact h2{margin:0 0 8px}.contact p{color:${theme.muted};margin:4px 0}.meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}.pill{border:1px solid ${theme.border};border-radius:999px;padding:9px 12px;font-size:12px;color:${theme.muted}}footer{border-top:1px solid ${theme.border};padding:34px 0;color:${theme.muted};font-size:12px}.footer-row{display:flex;justify-content:space-between;gap:20px}.accent{color:${accent}}
-@media(max-width:760px){.wrap{width:min(100% - 28px,1160px)}.nav{height:66px}.navlinks{display:none}.hero{grid-template-columns:1fr;min-height:auto;padding:54px 0 42px;gap:30px}.hero h1{font-size:50px;letter-spacing:-2.8px}.hero .desc{font-size:16px}.visual{min-height:300px}.services{grid-template-columns:1fr}.section{padding:58px 0}.about-grid{grid-template-columns:1fr;gap:22px}.contact{padding:25px;align-items:flex-start;flex-direction:column}.footer-row{flex-direction:column}.actions .cta,.actions .secondary{width:100%}}
-</style></head><body><header class="wrap nav"><div class="logo">${b}<span class="accent">.</span></div><nav class="navlinks"><a href="#servicos">Serviços</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav><a class="nav-cta" href="${href}" target="_blank">WhatsApp</a></header><main><section class="wrap hero"><div><div class="eyebrow">${p.eyebrow}</div><h1>${p.headline}</h1><p class="desc">${d}</p><div class="actions"><a class="cta" href="${href}" target="_blank">Falar no WhatsApp</a><a class="secondary" href="#servicos">Ver serviços</a></div><div class="trust"><span class="trust-item">${siteIcon("check")} Atendimento direto</span><span class="trust-item">${siteIcon("check")} Qualidade e confiança</span><span class="trust-item">${siteIcon("check")} ${loc}</span></div></div><div class="visual visual-image"><span class="visual-label">${esc(s.businessType).toUpperCase()}</span><div class="site-generated-art">${svgData(s.businessType,accent,s.imageVariant)}</div><div class="visual-card"><strong>${b}</strong><span>${p.about}</span></div></div></section><section id="servicos" class="section alt"><div class="wrap"><div class="section-kicker">O QUE FAZEMOS</div><h2>Serviços para você.</h2><p class="lead">Conheça as principais soluções oferecidas pela ${b}.</p><div class="services">${cards}</div></div></section><section id="sobre" class="section"><div class="wrap about-grid"><div><div class="section-kicker">SOBRE NÓS</div><h2>Confiança do primeiro contato ao resultado.</h2><p class="lead">${p.about} Nosso objetivo é oferecer uma experiência simples, profissional e próxima de cada cliente.</p></div><div class="about-box"><div class="big icon-big">${siteIcon(p.icon)}</div><h3>${b}</h3><p>${d}</p><div class="meta"><span class="pill">${loc}</span><span class="pill">Atendimento profissional</span></div></div></div></section><section id="contato" class="section alt"><div class="wrap"><div class="contact"><div><div class="section-kicker">FALE CONOSCO</div><h2>Vamos conversar?</h2><p>${loc}</p>${ig?`<p class="accent">Instagram: @${esc(ig)}</p>`:""}</div><a class="cta" href="${href}" target="_blank">Chamar no WhatsApp →</a></div></div></section></main><footer><div class="wrap footer-row"><strong>${b}</strong><span>© ${new Date().getFullYear()} • Site criado com SITEZI</span></div></footer></body></html>`}
-$("generateBtn").onclick=()=>{s.businessName=$("businessName").value.trim();s.description=$("businessDescription").value.trim();s.whatsapp=$("whatsapp").value.trim();s.instagram=$("instagram").value.trim();s.location=$("location").value.trim();if(!s.imageGenerated){s.imageVariant=0;s.imageGenerated=true}$("sitePreview").srcdoc=siteHTML();$("sitePreview").onload=()=>{try{$("sitePreview").contentWindow.scrollTo(0,0)}catch(e){}};$("previewUrl").textContent=`${slug(s.businessName)}.sitezi.com.br`;builder.classList.add("hidden");result.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"})};$("editBtn").onclick=()=>{result.classList.add("hidden");builder.classList.remove("hidden");s.step=2;update()};$("publishBtn").onclick=()=>{$("publishNotice").classList.remove("hidden")};document.querySelectorAll(".device").forEach(b=>b.onclick=()=>{document.querySelectorAll(".device").forEach(x=>x.classList.remove("active"));b.classList.add("active");$("previewStage").classList.toggle("mobile",b.dataset.device==="mobile")});updateThemePreview();update()});
+document.addEventListener("DOMContentLoaded",()=>{
+  const $=id=>document.getElementById(id);
+  const state={
+    step:1,businessType:"",businessName:"",slogan:"",template:"modern",color:"#1578ff",
+    logoMode:"text",logoData:"",imageMode:"none",photos:[],services:[],whatsapp:"",instagram:"",location:""
+  };
+  const steps=[...document.querySelectorAll(".step")];
+  const home=$("home"),wizard=$("wizard"),result=$("result");
+
+  function showScreen(el){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    el.classList.add("active");
+  }
+  function resetScroll(){
+    const active=document.querySelector(".step.active");
+    if(active) active.scrollTop=0;
+  }
+  function updateStep(){
+    steps.forEach(s=>s.classList.toggle("active",Number(s.dataset.step)===state.step));
+    $("progressText").textContent=`${state.step} de 8`;
+    $("progressBar").style.width=`${state.step/8*100}%`;
+    $("backBtn").style.visibility=state.step===1?"hidden":"visible";
+    $("nextBtn").classList.toggle("hidden",state.step===8);
+    if(state.step===8) renderReview();
+    resetScroll();
+  }
+  function start(){showScreen(wizard);updateStep()}
+  $("startBtn").onclick=start;$("topCreate").onclick=start;
+  $("brandHome").onclick=e=>{e.preventDefault();showScreen(home)};
+  $("cancelWizard").onclick=()=>showScreen(home);
+  $("newSite").onclick=()=>location.reload();
+
+  document.querySelectorAll(".business").forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll(".business").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");state.businessType=btn.dataset.business;
+  });
+
+  const fallbackSuggestions={
+    "Oficina Mecânica":["Confiança para cuidar do seu carro.","Manutenção automotiva com qualidade."],
+    "Restaurante":["Sabor que dá vontade de voltar.","Uma experiência deliciosa em cada pedido."],
+    "Barbearia":["Seu estilo em boas mãos.","Corte, barba e personalidade."],
+    "Salão de Beleza":["Realce o melhor de você.","Beleza e cuidado em cada detalhe."],
+    "Moda e Vestuário":["Vista sua melhor versão.","Moda para acompanhar o seu estilo."],
+    "Loja / Comércio":["Tudo o que você procura, mais perto de você.","Produtos, novidades e bom atendimento."],
+    "Clínica / Saúde":["Cuidado profissional perto de você.","Saúde e bem-estar com atenção de verdade."],
+    "Prestador de Serviços":["A solução certa para o que você precisa.","Serviço profissional, direto e confiável."],
+    "Outro":["Uma presença profissional para o seu negócio.","Qualidade, confiança e atendimento."]
+  };
+
+  $("suggestBrand").onclick=async()=>{
+    const name=$("businessName").value.trim();
+    if(!name){alert("Digite primeiro o nome do seu negócio.");return}
+    // Backend-ready. Until configured, use local smart fallback.
+    const options=fallbackSuggestions[state.businessType]||fallbackSuggestions.Outro;
+    const pick=options[Math.floor(Math.random()*options.length)];
+    $("suggestionBox").innerHTML=`<b>Sugestão:</b> ${pick}<br><button type="button" id="useSuggestion">Usar esta sugestão</button>`;
+    $("suggestionBox").classList.remove("hidden");
+    setTimeout(()=>{$("useSuggestion")?.addEventListener("click",()=>{$("businessSlogan").value=pick;$("suggestionBox").classList.add("hidden")})},0);
+  };
+
+  document.querySelectorAll(".template-card").forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll(".template-card").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");state.template=btn.dataset.template;
+  });
+
+  document.querySelectorAll(".color").forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll(".color").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");state.color=btn.dataset.color;
+    $("colorPreview").style.setProperty("--accent",state.color);
+  });
+  $("colorPreview").style.setProperty("--accent",state.color);
+
+  document.querySelectorAll("[data-logo-mode]").forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll("[data-logo-mode]").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");state.logoMode=btn.dataset.logoMode;
+    if(state.logoMode==="ai"){
+      alert("A geração de logo com IA será ativada assim que conectarmos o backend.");
+    }
+  });
+  $("logoUpload").addEventListener("change",e=>{
+    const file=e.target.files?.[0];if(!file)return;
+    const r=new FileReader();r.onload=()=>{state.logoData=r.result;state.logoMode="upload";$("logoPreview").innerHTML=`<img src="${r.result}" alt="Prévia da logo">`;$("logoPreview").classList.remove("hidden")};r.readAsDataURL(file);
+  });
+
+  document.querySelectorAll("[data-image-mode]").forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll("[data-image-mode]").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");state.imageMode=btn.dataset.imageMode;
+    if(state.imageMode==="ai"){
+      alert("A geração de imagens com IA será ativada quando conectarmos o backend.");
+    }
+  });
+  $("photoUpload").addEventListener("change",e=>{
+    const files=[...(e.target.files||[])].slice(0,6);if(!files.length)return;
+    state.photos=[];$("photoPreview").innerHTML="";
+    files.forEach(file=>{const r=new FileReader();r.onload=()=>{state.photos.push(r.result);const img=document.createElement("img");img.src=r.result;$("photoPreview").appendChild(img);$("photoPreview").classList.remove("hidden");state.imageMode="upload"};r.readAsDataURL(file)});
+  });
+
+  function normalizeWhatsApp(value){
+    let d=String(value||"").replace(/\D/g,"");
+    if(!d)return"";
+    if(d.startsWith("55"))return d;
+    if(d.length===10||d.length===11)return"55"+d;
+    return d;
+  }
+  function collect(){
+    state.businessName=$("businessName").value.trim();
+    state.slogan=$("businessSlogan").value.trim();
+    state.services=$("servicesInput").value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,8);
+    state.whatsapp=normalizeWhatsApp($("whatsapp").value);
+    state.instagram=$("instagram").value.trim();
+    state.location=$("location").value.trim();
+  }
+  function validateStep(){
+    collect();
+    if(state.step===1&&!state.businessType){alert("Escolha o tipo do seu negócio.");return false}
+    if(state.step===2&&!state.businessName){alert("Digite o nome do seu negócio.");return false}
+    if(state.step===7){
+      if(!state.services.length){alert("Adicione pelo menos um serviço.");return false}
+      if(!state.whatsapp){alert("Digite seu WhatsApp.");return false}
+    }
+    return true;
+  }
+  $("nextBtn").onclick=()=>{if(validateStep()&&state.step<8){state.step++;updateStep()}};
+  $("backBtn").onclick=()=>{if(state.step>1){state.step--;updateStep()}};
+
+  function renderReview(){
+    collect();
+    const tpl={modern:"Moderno",premium:"Premium",dynamic:"Dinâmico"}[state.template];
+    const logo=state.logoMode==="upload"?"Logo enviada":state.logoMode==="ai"?"Logo com IA":"Nome como marca";
+    const img=state.imageMode==="upload"?`${state.photos.length} foto(s) enviada(s)`:state.imageMode==="ai"?"Gerar com IA":"Sem imagens";
+    $("reviewCard").innerHTML=`
+      <div class="review-row"><span>Negócio</span><b>${esc(state.businessType)}</b></div>
+      <div class="review-row"><span>Nome</span><b>${esc(state.businessName)}</b></div>
+      <div class="review-row"><span>Modelo</span><b>${tpl}</b></div>
+      <div class="review-row"><span>Identidade</span><b>${logo}</b></div>
+      <div class="review-row"><span>Imagens</span><b>${img}</b></div>
+      <div class="review-row"><span>Serviços</span><b>${state.services.length}</b></div>`;
+  }
+  function esc(t){return String(t||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+  function slug(t){return String(t||"site").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"site"}
+
+  function siteHTML(){
+    collect();
+    const profiles={
+      "Oficina Mecânica":{k:"OFICINA MECÂNICA",h:"Seu carro em boas mãos.",about:"Cuidado automotivo com transparência, agilidade e atenção em cada detalhe.",symbol:"⚙"},
+      "Restaurante":{k:"RESTAURANTE",h:"Sabor que dá vontade de voltar.",about:"Uma experiência feita para transformar cada pedido em um momento especial.",symbol:"◉"},
+      "Barbearia":{k:"BARBEARIA",h:"Seu estilo começa aqui.",about:"Técnica, cuidado e personalidade para você sair com o visual em dia.",symbol:"✂"},
+      "Salão de Beleza":{k:"SALÃO DE BELEZA",h:"Realce o melhor de você.",about:"Beleza, bem-estar e atendimento personalizado em um só lugar.",symbol:"✦"},
+      "Moda e Vestuário":{k:"MODA E VESTUÁRIO",h:"Vista sua melhor versão.",about:"Coleções, novidades e peças escolhidas para acompanhar o seu estilo.",symbol:"◇"},
+      "Loja / Comércio":{k:"LOJA & COMÉRCIO",h:"Tudo o que você procura, mais perto.",about:"Produtos, novidades e atendimento próximo em uma experiência simples e profissional.",symbol:"▦"},
+      "Clínica / Saúde":{k:"SAÚDE & BEM-ESTAR",h:"Cuidado profissional perto de você.",about:"Atendimento humanizado e compromisso com o seu bem-estar.",symbol:"✚"},
+      "Prestador de Serviços":{k:"SERVIÇOS",h:"A solução certa para o que você precisa.",about:"Serviço profissional, direto e confiável para facilitar o seu dia.",symbol:"✓"},
+      "Outro":{k:"SEU NEGÓCIO",h:"Uma presença profissional para sua marca.",about:"Um site moderno para aproximar seu negócio de novos clientes.",symbol:"★"}
+    };
+    const p=profiles[state.businessType]||profiles.Outro;
+    const name=esc(state.businessName), slogan=esc(state.slogan||p.h), loc=esc(state.location||"Atendimento na sua região");
+    const ig=esc(state.instagram.replace(/^@/,""));
+    const wa=state.whatsapp;
+    const waHref=wa?`https://wa.me/${wa}?text=${encodeURIComponent("Olá! Vim pelo site e gostaria de mais informações.")}`:"#";
+    const logo=state.logoData?`<img class="brand-img" src="${state.logoData}" alt="${name}">`:`<strong class="site-brand">${name}</strong>`;
+    const photos=state.photos.length?state.photos:``;
+    const heroMedia=state.photos[0]?`<img src="${state.photos[0]}" alt="">`:`<div class="generated-visual"><span>${p.symbol}</span><b>${p.k}</b></div>`;
+    const cards=state.services.map((s,i)=>`<article><span>0${i+1}</span><i>${p.symbol}</i><h3>${esc(s)}</h3><p>Atendimento profissional, qualidade e atenção em cada detalhe.</p></article>`).join("");
+    const gallery=state.photos.length>1?`<section class="wrap gallery">${state.photos.slice(1,4).map(x=>`<img src="${x}" alt="">`).join("")}</section>`:"";
+    const templateClass=`tpl-${state.template}`;
+    return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+      *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#090d12;color:#f8fbff;font-family:Inter,Arial,sans-serif}a{text-decoration:none;color:inherit}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}.nav{height:70px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #26303b}.brand-img{max-height:38px;max-width:160px}.site-brand{font-size:18px}.links{display:flex;gap:18px;color:#aab5c0;font-size:12px}.hero{min-height:560px;display:grid;grid-template-columns:1.05fr .95fr;gap:38px;align-items:center;padding:48px 0}.k{color:${state.color};font-size:11px;font-weight:900;letter-spacing:1.5px}.hero h1{font-size:clamp(44px,7vw,76px);line-height:.96;letter-spacing:-3px;margin:14px 0}.hero p{color:#a7b4c1;line-height:1.6;max-width:600px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.cta,.secondary{display:inline-flex;padding:13px 16px;border-radius:10px;font-weight:900}.cta{background:${state.color};color:white}.secondary{border:1px solid #2c3948}.media{height:390px;border-radius:26px;overflow:hidden;border:1px solid #2b3541;background:#10161e}.media img{width:100%;height:100%;object-fit:cover}.generated-visual{height:100%;display:grid;place-items:center;align-content:center;background:radial-gradient(circle at 65% 30%,${state.color}55,transparent 27%),linear-gradient(145deg,#101722,#171c22)}.generated-visual span{font-size:70px;color:${state.color}}.generated-visual b{font-size:13px;letter-spacing:3px;margin-top:12px}.section{padding:72px 0}.section.alt{background:#11161d}.section h2{font-size:38px;margin:8px 0}.lead{color:#9eabb8}.services{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:27px}.services article{border:1px solid #2a3440;border-radius:18px;padding:20px;background:#0d1218;min-height:190px}.services span{color:#6f7c8b;font-size:11px}.services i{float:right;color:${state.color};font-style:normal}.services h3{margin-top:28px}.services p{color:#8d9aaa;font-size:13px;line-height:1.5}.about{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center}.about-box{border:1px solid #2b3541;border-radius:22px;padding:25px;background:#0d1218}.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-bottom:72px}.gallery img{width:100%;height:240px;object-fit:cover;border-radius:18px}.contact{border:1px solid #2b3541;border-radius:24px;background:linear-gradient(135deg,#10161e,#0e1319);padding:26px;display:flex;justify-content:space-between;gap:20px;align-items:center}.contact p{color:#95a2b0}.meta{display:flex;gap:14px;flex-wrap:wrap;color:#a7b3bf;font-size:12px;margin-top:12px}.tpl-premium .hero{grid-template-columns:.9fr 1.1fr}.tpl-premium .hero h1{font-family:Georgia,serif;letter-spacing:-2px}.tpl-premium .media{border-radius:120px 20px 120px 20px}.tpl-dynamic .hero{background:linear-gradient(125deg,${state.color}22,transparent 45%);padding-left:20px;padding-right:20px;border-radius:28px;margin-top:18px}.tpl-dynamic .services article{box-shadow:inset 0 3px 0 ${state.color}}footer{padding:30px 0;color:#758394;border-top:1px solid #242d37}
+      @media(max-width:720px){.links{display:none}.hero,.about{grid-template-columns:1fr}.hero{min-height:auto;padding:45px 0}.hero h1{font-size:48px}.media{height:310px}.services{grid-template-columns:1fr}.gallery{grid-template-columns:1fr}.gallery img{height:220px}.contact{align-items:flex-start;flex-direction:column}.tpl-premium .hero{grid-template-columns:1fr}.tpl-premium .media{border-radius:24px}}
+    </style></head><body class="${templateClass}">
+      <header><div class="wrap nav">${logo}<nav class="links"><a href="#servicos">Serviços</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav></div></header>
+      <main><section class="wrap hero"><div><span class="k">${p.k}</span><h1>${slogan}</h1><p>${esc(p.about)}</p><div class="actions"><a class="cta" href="${waHref}" target="_blank">Falar no WhatsApp</a><a class="secondary" href="#servicos">Ver serviços</a></div></div><div class="media">${heroMedia}</div></section>
+      <section id="servicos" class="section alt"><div class="wrap"><span class="k">O QUE FAZEMOS</span><h2>Serviços para você.</h2><p class="lead">Conheça algumas das soluções oferecidas pela ${name}.</p><div class="services">${cards}</div></div></section>
+      <section id="sobre" class="section"><div class="wrap about"><div><span class="k">SOBRE NÓS</span><h2>Confiança do primeiro contato ao resultado.</h2><p class="lead">${esc(state.slogan||p.about)}</p></div><div class="about-box"><b>${name}</b><p>${loc}</p><div class="meta">${ig?`<span>Instagram: @${ig}</span>`:""}<span>Atendimento direto</span><span>Qualidade e confiança</span></div></div></div></section>
+      ${gallery}
+      <section id="contato" class="section alt"><div class="wrap contact"><div><span class="k">FALE CONOSCO</span><h2>Vamos conversar?</h2><p>${loc}</p></div><a class="cta" href="${waHref}" target="_blank">Chamar no WhatsApp →</a></div></section></main>
+      <footer><div class="wrap">${name} • Site criado com SITEZI.</div></footer>
+    </body></html>`;
+  }
+
+  $("generateSite").onclick=()=>{
+    if(!validateStep())return;
+    $("sitePreview").srcdoc=siteHTML();
+    $("previewDomain").textContent=`${slug(state.businessName)}.sitezi.com.br`;
+    showScreen(result);
+  };
+  $("editSite").onclick=()=>{showScreen(wizard);state.step=7;updateStep()};
+  document.querySelectorAll(".device").forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll(".device").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    $("previewStage").classList.toggle("mobile",btn.dataset.device==="mobile");
+  });
+  $("publishSite").onclick=()=>{
+    $("publishMessage").innerHTML="<b>Backend ainda não conectado.</b><br>O próximo passo é ligar esta V5 ao Supabase para salvar projetos, gerar IA e publicar sites.";
+    $("publishMessage").classList.remove("hidden");
+  };
+  $("seeExample").onclick=()=>{alert("Na próxima etapa podemos adicionar uma galeria de exemplos reais da SITEZI.")};
+  updateStep();
+});
