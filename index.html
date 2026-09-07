@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#050b14">
   <meta name="description" content="SITEZI — crie seu site profissional em minutos.">
   <title>SITEZI — Seu negócio online em minutos</title>
-  <link rel="stylesheet" href="style.css?v=5.6">
+  <link rel="stylesheet" href="style.css?v=6.0">
 </head>
 <body>
   <div id="app" class="app">
@@ -82,59 +82,150 @@
         <div class="examples-shell">
           <header class="examples-top">
             <div class="wizard-brand">
-              <svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="siteziExG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#35c2ff"/><stop offset=".55" stop-color="#1479ff"/><stop offset="1" stop-color="#0b46d9"/></linearGradient></defs><path fill="url(#siteziExG)" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg>
+              <svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="siteziExG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#35c2ff"/><stop offset=".55" stop-color="#1479ff"/><stop offset="1" stop-color="#0b46d9"/></linearGradient></defs>
+                <path fill="url(#siteziExG)" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/>
+              </svg>
               <strong>SITEZI</strong>
             </div>
             <button id="closeExamples" class="text-btn" type="button">Voltar</button>
           </header>
 
           <div class="examples-copy">
-            <span class="eyebrow">MODELOS E INSPIRAÇÕES</span>
-            <h2>Veja o que você pode criar.</h2>
-            <p>Escolha um modelo disponível na SITEZI ou use nossos projetos personalizados como inspiração para pedir algo exclusivo.</p>
+            <span class="eyebrow">BIBLIOTECA DE MODELOS</span>
+            <h2>Escolha um modelo para começar.</h2>
+            <p>Arraste para o lado, visualize o modelo e escolha o estilo que mais combina com o seu negócio.</p>
           </div>
 
-          <div class="example-grid">
-            <article class="example-card available">
-              <div class="example-preview mechanic">
-                <span>MODELO SITEZI</span><b>Serviços & Oficina</b><small>Site profissional com serviços, contato e WhatsApp.</small>
-              </div>
-              <span class="example-badge">DISPONÍVEL NA SITEZI</span>
-              <h3>Serviços / Oficina</h3>
-              <p>Um modelo que a SITEZI consegue personalizar com sua marca, textos, fotos, serviços e contato.</p>
-              <button class="btn primary use-template" data-business="Oficina Mecânica" type="button">Usar este modelo</button>
-            </article>
+          <div class="template-carousel-wrap">
+            <button class="carousel-arrow prev" id="templatePrev" type="button" aria-label="Modelo anterior">‹</button>
+            <div class="template-carousel" id="templateCarousel">
 
-            <article class="example-card custom">
-              <div class="example-preview achou">
-                <span>PROJETO PERSONALIZADO</span><b>ACHOU!</b><small>Comparador e experiência de comércio digital.</small>
-              </div>
-              <span class="example-badge custom-badge">INSPIRAÇÃO</span>
-              <h3>ACHOU!</h3>
-              <p>Projeto personalizado com estrutura e funcionalidades além do construtor automático atual.</p>
-              <a class="btn outline" href="https://joaoeduardocaio-netizen.github.io/achou-/" target="_blank" rel="noopener">Visualizar projeto ↗</a>
-            </article>
+              <article class="template-card selected" data-business="Oficina Mecânica">
+                <div class="mini-browser mechanic-ref">
+                  <div class="mini-browser-bar"><i></i><i></i><i></i><span>autoprime.sitezi.com.br</span></div>
+                  <div class="mini-nav"><b>AUTO<span>PRIME</span></b><em>Serviços · Sobre · Contato</em></div>
+                  <div class="mini-hero">
+                    <div><small>OFICINA MECÂNICA</small><strong>Seu carro em boas mãos.</strong><p>Revisão, manutenção e atendimento com confiança.</p><button>Chamar no WhatsApp</button></div>
+                    <div class="mini-photo car-photo"><span>🚘</span></div>
+                  </div>
+                  <div class="mini-services"><i>Revisão</i><i>Freios</i><i>Suspensão</i></div>
+                </div>
+                <div class="template-meta"><b>Oficina Mecânica</b><span>Disponível na SITEZI</span></div>
+                <div class="template-actions">
+                  <button class="btn outline preview-template" type="button">Visualizar</button>
+                  <button class="btn primary use-template" data-business="Oficina Mecânica" type="button">Usar modelo</button>
+                </div>
+              </article>
 
-            <article class="example-card custom">
-              <div class="example-preview robertt">
-                <span>PROJETO PERSONALIZADO</span><b>ROBERTT</b><small>Serviços mecânicos com identidade própria.</small>
-              </div>
-              <span class="example-badge custom-badge">INSPIRAÇÃO</span>
-              <h3>ROBERTT Serviços Mecânicos</h3>
-              <p>Exemplo de projeto feito sob medida. Você pode pedir algo inspirado nele ao desenvolvedor.</p>
-              <a class="btn outline" href="https://joaoeduardocaio-netizen.github.io/robertt-servicos-mecanicos/" target="_blank" rel="noopener">Visualizar projeto ↗</a>
-            </article>
+              <article class="template-card" data-business="Restaurante">
+                <div class="mini-browser restaurant-ref">
+                  <div class="mini-browser-bar"><i></i><i></i><i></i><span>saborcasa.sitezi.com.br</span></div>
+                  <div class="mini-nav"><b>SABOR<span>CASA</span></b><em>Cardápio · Reservas · Local</em></div>
+                  <div class="mini-hero">
+                    <div><small>RESTAURANTE</small><strong>Sabores que viram momentos.</strong><p>Um cardápio especial para compartilhar.</p><button>Ver cardápio</button></div>
+                    <div class="mini-photo food-photo"><span>🍽️</span></div>
+                  </div>
+                  <div class="mini-services"><i>Massas</i><i>Pratos</i><i>Sobremesas</i></div>
+                </div>
+                <div class="template-meta"><b>Restaurante</b><span>Disponível na SITEZI</span></div>
+                <div class="template-actions">
+                  <button class="btn outline preview-template" type="button">Visualizar</button>
+                  <button class="btn primary use-template" data-business="Restaurante" type="button">Usar modelo</button>
+                </div>
+              </article>
 
-            <article class="example-card custom">
-              <div class="example-preview je">
-                <span>PROJETO PERSONALIZADO</span><b>J.E.</b><small>Portfólio profissional e presença digital.</small>
-              </div>
-              <span class="example-badge custom-badge">INSPIRAÇÃO</span>
-              <h3>J.E. Desenvolvimento Web</h3>
-              <p>Exemplo de portfólio personalizado para profissionais e empresas que querem uma solução exclusiva.</p>
-              <a class="btn outline" href="https://joaoeduardocaio-netizen.github.io/joao-eduardo-desenvolvimento/" target="_blank" rel="noopener">Visualizar projeto ↗</a>
-            </article>
+              <article class="template-card" data-business="Barbearia">
+                <div class="mini-browser barber-ref">
+                  <div class="mini-browser-bar"><i></i><i></i><i></i><span>barbeariaurban.sitezi.com.br</span></div>
+                  <div class="mini-nav"><b>URBAN<span>BARBER</span></b><em>Cortes · Barba · Agenda</em></div>
+                  <div class="mini-hero">
+                    <div><small>BARBEARIA</small><strong>Seu estilo começa aqui.</strong><p>Corte, barba e atendimento com personalidade.</p><button>Agendar horário</button></div>
+                    <div class="mini-photo barber-photo"><span>✂️</span></div>
+                  </div>
+                  <div class="mini-services"><i>Corte</i><i>Barba</i><i>Combo</i></div>
+                </div>
+                <div class="template-meta"><b>Barbearia</b><span>Disponível na SITEZI</span></div>
+                <div class="template-actions">
+                  <button class="btn outline preview-template" type="button">Visualizar</button>
+                  <button class="btn primary use-template" data-business="Barbearia" type="button">Usar modelo</button>
+                </div>
+              </article>
+
+              <article class="template-card" data-business="Moda e Vestuário">
+                <div class="mini-browser fashion-ref">
+                  <div class="mini-browser-bar"><i></i><i></i><i></i><span>usebella.sitezi.com.br</span></div>
+                  <div class="mini-nav"><b>USE<span>BELLA</span></b><em>Novidades · Coleções · Contato</em></div>
+                  <div class="mini-hero">
+                    <div><small>MODA & VESTUÁRIO</small><strong>Vista sua melhor versão.</strong><p>Peças escolhidas para destacar seu estilo.</p><button>Ver coleção</button></div>
+                    <div class="mini-photo fashion-photo"><span>👕</span></div>
+                  </div>
+                  <div class="mini-products"><i>CAMISETA</i><i>JAQUETA</i><i>CALÇADO</i></div>
+                </div>
+                <div class="template-meta"><b>Moda & Vestuário</b><span>Disponível na SITEZI</span></div>
+                <div class="template-actions">
+                  <button class="btn outline preview-template" type="button">Visualizar</button>
+                  <button class="btn primary use-template" data-business="Moda e Vestuário" type="button">Usar modelo</button>
+                </div>
+              </article>
+
+              <article class="template-card" data-business="Salão de Beleza">
+                <div class="mini-browser beauty-ref">
+                  <div class="mini-browser-bar"><i></i><i></i><i></i><span>studioelle.sitezi.com.br</span></div>
+                  <div class="mini-nav"><b>STUDIO<span>ELLE</span></b><em>Serviços · Espaço · Agenda</em></div>
+                  <div class="mini-hero">
+                    <div><small>SALÃO DE BELEZA</small><strong>Cuidado que transforma.</strong><p>Beleza, bem-estar e atendimento especial.</p><button>Agendar agora</button></div>
+                    <div class="mini-photo beauty-photo"><span>✨</span></div>
+                  </div>
+                  <div class="mini-services"><i>Cabelo</i><i>Unhas</i><i>Estética</i></div>
+                </div>
+                <div class="template-meta"><b>Salão de Beleza</b><span>Disponível na SITEZI</span></div>
+                <div class="template-actions">
+                  <button class="btn outline preview-template" type="button">Visualizar</button>
+                  <button class="btn primary use-template" data-business="Salão de Beleza" type="button">Usar modelo</button>
+                </div>
+              </article>
+
+              <article class="template-card" data-business="Prestador de Serviços">
+                <div class="mini-browser services-ref">
+                  <div class="mini-browser-bar"><i></i><i></i><i></i><span>proservice.sitezi.com.br</span></div>
+                  <div class="mini-nav"><b>PRO<span>SERVICE</span></b><em>Serviços · Diferenciais · Contato</em></div>
+                  <div class="mini-hero">
+                    <div><small>SERVIÇOS</small><strong>Soluções que facilitam seu dia.</strong><p>Profissionalismo, agilidade e confiança.</p><button>Solicitar orçamento</button></div>
+                    <div class="mini-photo services-photo"><span>🛠️</span></div>
+                  </div>
+                  <div class="mini-services"><i>Atendimento</i><i>Qualidade</i><i>Garantia</i></div>
+                </div>
+                <div class="template-meta"><b>Prestador de Serviços</b><span>Disponível na SITEZI</span></div>
+                <div class="template-actions">
+                  <button class="btn outline preview-template" type="button">Visualizar</button>
+                  <button class="btn primary use-template" data-business="Prestador de Serviços" type="button">Usar modelo</button>
+                </div>
+              </article>
+            </div>
+            <button class="carousel-arrow next" id="templateNext" type="button" aria-label="Próximo modelo">›</button>
           </div>
+
+          <div class="carousel-dots" id="templateDots" aria-label="Navegação dos modelos"></div>
+
+          <section class="premium-inspirations">
+            <div class="section-heading">
+              <span class="eyebrow">PROJETOS PERSONALIZADOS</span>
+              <h2>Quer algo ainda mais exclusivo?</h2>
+              <p>Esses projetos foram desenvolvidos sob medida e servem como inspiração para quem precisa de algo além dos modelos automáticos.</p>
+            </div>
+            <div class="premium-grid">
+              <a class="premium-card p-achou" href="https://joaoeduardocaio-netizen.github.io/achou-/" target="_blank" rel="noopener">
+                <span>PROJETO PERSONALIZADO</span><b>ACHOU!</b><small>Comparador / comércio digital</small>
+              </a>
+              <a class="premium-card p-robertt" href="https://joaoeduardocaio-netizen.github.io/robertt-servicos-mecanicos/" target="_blank" rel="noopener">
+                <span>PROJETO PERSONALIZADO</span><b>ROBERTT</b><small>Serviços mecânicos</small>
+              </a>
+              <a class="premium-card p-je" href="https://joaoeduardocaio-netizen.github.io/joao-eduardo-desenvolvimento/" target="_blank" rel="noopener">
+                <span>PROJETO PERSONALIZADO</span><b>J.E. Desenvolvimento</b><small>Portfólio profissional</small>
+              </a>
+            </div>
+          </section>
 
           <section class="developer-cta">
             <div>
@@ -144,12 +235,29 @@
             </div>
             <a class="btn primary developer-whatsapp" href="https://wa.me/5548996942186?text=Ol%C3%A1%2C%20Jo%C3%A3o%21%20Vim%20pela%20SITEZI%20e%20gostaria%20de%20conversar%20sobre%20a%20cria%C3%A7%C3%A3o%20de%20um%20site%20personalizado%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener">Conversar com o desenvolvedor</a>
           </section>
-
-          <div class="examples-bottom">
-            <button id="createFromExamples" class="btn primary" type="button">Criar meu site agora</button>
-          </div>
         </div>
       </section>
+
+      <section id="templatePreview" class="template-preview-screen hidden" aria-label="Visualização do modelo">
+        <div class="template-preview-toolbar">
+          <button id="closeTemplatePreview" type="button">← Voltar aos modelos</button>
+          <span id="templatePreviewName">Modelo SITEZI</span>
+          <button id="usePreviewedTemplate" type="button">Usar este modelo</button>
+        </div>
+        <div id="templatePreviewCanvas" class="template-preview-canvas"></div>
+      </section>
+
+      <div id="siteziModal" class="sitezi-modal hidden" role="dialog" aria-modal="true" aria-labelledby="siteziModalTitle">
+        <div class="sitezi-modal-card">
+          <div class="sitezi-modal-icon">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg>
+          </div>
+          <span class="eyebrow">SITEZI</span>
+          <h3 id="siteziModalTitle">Tudo certo!</h3>
+          <p id="siteziModalText"></p>
+          <button id="siteziModalOk" class="btn primary" type="button">Continuar</button>
+        </div>
+      </div>
 
       <section id="wizard" class="wizard-screen screen">
         <div class="wizard-shell">
@@ -393,6 +501,6 @@
     </main>
   </div>
 
-  <script src="script.js?v=5.6"></script>
+  <script src="script.js?v=6.0"></script>
 </body>
 </html>

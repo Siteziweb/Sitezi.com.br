@@ -272,3 +272,97 @@ body.examples-open .topbar{display:none!important}
  .example-grid{grid-template-columns:1fr}.example-preview{min-height:180px}.example-preview b{font-size:26px}
  .developer-cta{padding:24px;display:block}.developer-cta h2{font-size:28px}.developer-whatsapp{display:block;width:100%;margin-top:20px}
 }
+
+/* =========================================================
+   SITEZI V6 — Biblioteca de modelos + mensagens premium
+   ========================================================= */
+body.examples-open{overflow-y:auto!important;overflow-x:hidden!important;height:auto!important}
+body.examples-open .topbar{display:none!important}
+.examples-screen{background:#030b15;color:#f7fbff;min-height:100dvh;height:auto!important;overflow:visible!important}
+.examples-shell{width:min(1180px,100%);margin:auto;padding:0 24px 56px}
+.examples-top{height:96px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #26384d}
+.examples-copy{padding:42px 0 22px;max-width:830px}
+.examples-copy h2,.section-heading h2{font-size:clamp(32px,5vw,50px);line-height:1.04;margin:10px 0}
+.examples-copy p,.section-heading p{color:#91a0b4;font-size:17px;line-height:1.55}
+.template-carousel-wrap{position:relative}
+.template-carousel{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:4px 3px 18px;scrollbar-width:none}
+.template-carousel::-webkit-scrollbar{display:none}
+.template-card{flex:0 0 min(520px,86vw);scroll-snap-align:center;border:1px solid #2d435a;background:#081321;border-radius:24px;padding:15px;transition:.2s}
+.template-card.selected{border-color:#168cff;box-shadow:0 0 0 1px #168cff,0 22px 55px rgba(0,87,255,.13)}
+.template-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 4px 10px}
+.template-meta b{font-size:20px}.template-meta span{font-size:11px;font-weight:900;color:#4bbcff;letter-spacing:.05em}
+.template-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.carousel-arrow{position:absolute;z-index:3;top:42%;width:48px;height:48px;border-radius:50%;border:1px solid #35506d;background:#071422;color:#fff;font-size:32px;display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 30px #02070c}
+.carousel-arrow.prev{left:-18px}.carousel-arrow.next{right:-18px}
+.carousel-dots{display:flex;justify-content:center;gap:7px;margin:4px 0 35px}
+.carousel-dots button{width:8px;height:8px;border:0;border-radius:99px;background:#34485e;padding:0;transition:.2s}
+.carousel-dots button.active{width:26px;background:#168cff}
+
+/* mini referências de sites */
+.mini-browser{height:315px;border:1px solid #263b52;border-radius:17px;overflow:hidden;background:#050a10;color:#fff}
+.mini-browser-bar{height:28px;background:#101824;display:flex;align-items:center;gap:5px;padding:0 9px;border-bottom:1px solid #25354a}
+.mini-browser-bar i{width:6px;height:6px;border-radius:50%;background:#526276}
+.mini-browser-bar span{font-style:normal;font-size:8px;color:#75869a;margin-left:6px}
+.mini-nav{height:42px;padding:0 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.08)}
+.mini-nav b{font-size:13px;letter-spacing:.02em}.mini-nav b span{color:var(--mini-accent,#35b6ff)}.mini-nav em{font-size:8px;color:#8998aa;font-style:normal}
+.mini-hero{height:188px;padding:21px 16px;display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:center;background:linear-gradient(115deg,var(--mini-bg,#07101b),#03070c)}
+.mini-hero small{display:block;color:var(--mini-accent,#35b6ff);font-weight:900;font-size:8px;letter-spacing:.12em}
+.mini-hero strong{display:block;font-size:24px;line-height:1.02;margin:7px 0;max-width:250px}
+.mini-hero p{font-size:9px;color:#a3b0bf;line-height:1.45;margin:0 0 11px}
+.mini-hero button{border:0;border-radius:6px;padding:7px 9px;font-size:8px;font-weight:900;background:var(--mini-accent,#168cff);color:#fff}
+.mini-photo{height:132px;border-radius:13px;display:grid;place-items:center;font-size:52px;background:
+ radial-gradient(circle at 45% 38%,rgba(255,255,255,.18),transparent 28%),
+ linear-gradient(145deg,var(--mini-photo1,#16314b),var(--mini-photo2,#05090d))}
+.mini-services,.mini-products{height:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 12px;background:#080e15}
+.mini-services i,.mini-products i{font-style:normal;border:1px solid #22354a;border-radius:7px;display:grid;place-items:center;font-size:8px;color:#a8b5c4;background:#0b141e}
+.mechanic-ref{--mini-accent:#ffcc00;--mini-bg:#0a0a08;--mini-photo1:#40340a;--mini-photo2:#090806}
+.restaurant-ref{--mini-accent:#e29d54;--mini-bg:#160d09;--mini-photo1:#5a2d17;--mini-photo2:#100906}
+.barber-ref{--mini-accent:#52a8ff;--mini-bg:#07111a;--mini-photo1:#1d4161;--mini-photo2:#050b11}
+.fashion-ref{--mini-accent:#ec92b6;--mini-bg:#170b12;--mini-photo1:#552238;--mini-photo2:#11070c}
+.beauty-ref{--mini-accent:#d6a4ff;--mini-bg:#120a19;--mini-photo1:#48265d;--mini-photo2:#0c0611}
+.services-ref{--mini-accent:#41c8ff;--mini-bg:#06131b;--mini-photo1:#174b5d;--mini-photo2:#040c10}
+
+.premium-inspirations{margin-top:28px;padding-top:36px;border-top:1px solid #26384d}
+.section-heading{max-width:800px;margin-bottom:20px}.section-heading h2{font-size:34px}
+.premium-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.premium-card{min-height:190px;border-radius:20px;padding:22px;display:flex;flex-direction:column;justify-content:end;border:1px solid #30445d;position:relative;overflow:hidden}
+.premium-card:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,.08))}
+.premium-card span,.premium-card b,.premium-card small{position:relative;z-index:1}.premium-card span{font-size:9px;font-weight:900;letter-spacing:.12em}.premium-card b{font-size:25px;margin:5px 0}.premium-card small{color:#c0cad5}
+.p-achou{background:linear-gradient(145deg,#ffd400,#171300)}.p-achou span{color:#fff4a0}
+.p-robertt{background:linear-gradient(145deg,#b71919,#180404)}.p-robertt span{color:#ffb7b7}
+.p-je{background:linear-gradient(145deg,#1268c8,#07101c)}.p-je span{color:#9fd1ff}
+
+.developer-cta{margin-top:28px;border:1px solid #168cff;border-radius:26px;padding:34px;background:linear-gradient(120deg,#071426,#0a1d34);display:flex;align-items:center;justify-content:space-between;gap:30px}
+.developer-cta>div{max-width:720px}.developer-cta h2{font-size:34px;margin:8px 0}.developer-cta p{font-size:16px;color:#9aabbe;line-height:1.55;margin-bottom:0}.developer-whatsapp{flex:0 0 auto;text-align:center}
+
+/* preview de template */
+.template-preview-screen{position:fixed;inset:0;z-index:9998;background:#03070c;display:flex;flex-direction:column}
+.template-preview-screen.hidden{display:none!important}
+.template-preview-toolbar{min-height:58px;padding:8px 14px;background:#06111f;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #20364e}
+.template-preview-toolbar button{min-height:40px;border-radius:11px;padding:0 14px;font-weight:850;cursor:pointer}
+#closeTemplatePreview{border:1px solid #34506c;background:#0b1b2c;color:#fff}
+#usePreviewedTemplate{border:0;background:#168cff;color:#fff}
+.template-preview-canvas{flex:1;overflow:auto;padding:28px;background:#e9edf2}
+.template-preview-canvas .mini-browser{width:min(1050px,100%);height:auto;min-height:650px;margin:auto;border-radius:20px;box-shadow:0 25px 80px rgba(0,0,0,.25)}
+.template-preview-canvas .mini-browser-bar{height:40px}.template-preview-canvas .mini-nav{height:68px;padding:0 34px}
+.template-preview-canvas .mini-nav b{font-size:24px}.template-preview-canvas .mini-nav em{font-size:13px}
+.template-preview-canvas .mini-hero{height:390px;padding:50px 42px}.template-preview-canvas .mini-hero strong{font-size:54px;max-width:560px}.template-preview-canvas .mini-hero p{font-size:17px;max-width:520px}.template-preview-canvas .mini-hero small{font-size:12px}.template-preview-canvas .mini-hero button{font-size:13px;padding:12px 16px}.template-preview-canvas .mini-photo{height:280px;font-size:100px}
+.template-preview-canvas .mini-services,.template-preview-canvas .mini-products{height:110px;padding:18px 26px}.template-preview-canvas .mini-services i,.template-preview-canvas .mini-products i{font-size:14px}
+
+/* modal profissional substitui alert simples */
+.sitezi-modal{position:fixed;inset:0;z-index:10050;background:rgba(1,7,14,.78);backdrop-filter:blur(10px);display:grid;place-items:center;padding:20px}
+.sitezi-modal.hidden{display:none!important}
+.sitezi-modal-card{width:min(430px,100%);border:1px solid #274565;background:linear-gradient(145deg,#081522,#06101a);border-radius:26px;padding:32px;text-align:center;color:#fff;box-shadow:0 30px 90px rgba(0,0,0,.45)}
+.sitezi-modal-icon{width:58px;height:58px;border-radius:18px;margin:0 auto 16px;background:#0b2340;display:grid;place-items:center}
+.sitezi-modal-icon svg{width:34px;height:34px;fill:#168cff}
+.sitezi-modal-card h3{font-size:28px;margin:9px 0}.sitezi-modal-card p{color:#9fb0c5;line-height:1.55;margin:0 0 22px}.sitezi-modal-card .btn{width:100%}
+
+@media(max-width:800px){
+ .examples-shell{padding:0 16px 40px}.examples-top{height:82px}.examples-copy{padding:28px 0 18px}.examples-copy h2{font-size:34px}.examples-copy p{font-size:15px}
+ .template-card{flex-basis:88vw}.carousel-arrow{display:none}.mini-browser{height:285px}.mini-hero{height:164px}.mini-hero strong{font-size:20px}.mini-photo{height:112px;font-size:42px}
+ .template-meta{display:block}.template-meta span{display:block;margin-top:4px}.template-actions{grid-template-columns:1fr}
+ .premium-grid{grid-template-columns:1fr}.developer-cta{display:block;padding:24px}.developer-cta h2{font-size:28px}.developer-whatsapp{display:block;width:100%;margin-top:20px}
+ .template-preview-toolbar{flex-wrap:wrap}.template-preview-toolbar span{order:-1;width:100%;text-align:center}.template-preview-toolbar button{flex:1}
+ .template-preview-canvas{padding:12px}.template-preview-canvas .mini-browser{min-height:560px}.template-preview-canvas .mini-nav{height:54px;padding:0 15px}.template-preview-canvas .mini-nav b{font-size:15px}.template-preview-canvas .mini-nav em{font-size:8px}
+ .template-preview-canvas .mini-hero{height:330px;padding:28px 18px;grid-template-columns:1fr}.template-preview-canvas .mini-photo{height:120px;font-size:52px}.template-preview-canvas .mini-hero strong{font-size:32px}.template-preview-canvas .mini-hero p{font-size:13px}.template-preview-canvas .mini-services,.template-preview-canvas .mini-products{height:90px;padding:12px}
+}

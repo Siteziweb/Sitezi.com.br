@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     if(el===result) document.body.classList.add("result-open");
     if(el===plans) document.body.classList.add("plans-open");
     if(el===examples) document.body.classList.add("examples-open");
+    if(el===examples) document.body.classList.add("examples-open");
   }
   function resetScroll(){
     const active=document.querySelector(".step.active");
@@ -218,7 +219,10 @@ document.addEventListener("DOMContentLoaded",()=>{
   $("closePlans").onclick=()=>showScreen(result);
   document.querySelectorAll(".choose-plan").forEach(btn=>btn.onclick=()=>{
     const plan=btn.dataset.plan, price=btn.dataset.price;
-    alert(`Plano ${plan} — R$ ${price}/mês\n\nA escolha do plano já está pronta. Na próxima integração, este botão abrirá o checkout e, após o pagamento, publicará o site.`);
+    showSiteziModal(
+      `Plano ${plan} selecionado`,
+      `R$ ${price}/mês. Seu plano foi escolhido com sucesso. O checkout e a publicação automática serão ativados quando conectarmos o backend da SITEZI.`
+    );
   });
   $("seeExample").onclick=()=>showScreen(examples);
   updateStep();
@@ -282,23 +286,104 @@ document.addEventListener("DOMContentLoaded",()=>{
     renderDemoProducts();
   };
 
-  /* V5.6 — modelos, inspirações e desenvolvimento personalizado */
+
+  /* ========================================================
+     SITEZI V6 — biblioteca de modelos
+     ======================================================== */
+  const templateCarousel=$("templateCarousel");
+  const templateCards=[...document.querySelectorAll(".template-card")];
+  let currentTemplateIndex=0;
+  let previewBusiness="Oficina Mecânica";
+
+  function selectTemplate(index, scroll=true){
+    currentTemplateIndex=(index+templateCards.length)%templateCards.length;
+    templateCards.forEach((card,i)=>card.classList.toggle("selected",i===currentTemplateIndex));
+    [...$("templateDots").children].forEach((dot,i)=>dot.classList.toggle("active",i===currentTemplateIndex));
+    if(scroll) templateCards[currentTemplateIndex].scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
+  }
+
+  templateCards.forEach((card,i)=>{
+    const dot=document.createElement("button");
+    dot.type="button";
+    dot.setAttribute("aria-label",`Ir para modelo ${i+1}`);
+    dot.onclick=()=>selectTemplate(i);
+    $("templateDots").appendChild(dot);
+    card.onclick=e=>{
+      if(e.target.closest("button,a")) return;
+      selectTemplate(i);
+    };
+  });
+  selectTemplate(0,false);
+
+  $("templatePrev").onclick=()=>selectTemplate(currentTemplateIndex-1);
+  $("templateNext").onclick=()=>selectTemplate(currentTemplateIndex+1);
+
+  templateCarousel.addEventListener("scroll",()=>{
+    let best=0, dist=Infinity;
+    const center=templateCarousel.scrollLeft+templateCarousel.clientWidth/2;
+    templateCards.forEach((card,i)=>{
+      const c=card.offsetLeft+card.offsetWidth/2;
+      const d=Math.abs(c-center);
+      if(d<dist){dist=d;best=i;}
+    });
+    if(best!==currentTemplateIndex){
+      currentTemplateIndex=best;
+      templateCards.forEach((card,i)=>card.classList.toggle("selected",i===best));
+      [...$("templateDots").children].forEach((dot,i)=>dot.classList.toggle("active",i===best));
+    }
+  },{passive:true});
+
+  function openTemplatePreview(card){
+    previewBusiness=card.dataset.business;
+    $("templatePreviewName").textContent=`Modelo ${previewBusiness}`;
+    const browser=card.querySelector(".mini-browser").cloneNode(true);
+    $("templatePreviewCanvas").innerHTML="";
+    $("templatePreviewCanvas").appendChild(browser);
+    $("templatePreview").classList.remove("hidden");
+    document.body.style.overflow="hidden";
+  }
+  document.querySelectorAll(".preview-template").forEach(btn=>{
+    btn.onclick=()=>openTemplatePreview(btn.closest(".template-card"));
+  });
+  $("closeTemplatePreview").onclick=()=>{
+    $("templatePreview").classList.add("hidden");
+    document.body.style.overflow="";
+  };
+
+  function useBusinessTemplate(business){
+    state.business=business;
+    document.querySelectorAll("[data-business]").forEach(x=>{
+      if(x.classList.contains("business-card")) x.classList.toggle("selected",x.dataset.business===business);
+    });
+    $("templatePreview").classList.add("hidden");
+    document.body.style.overflow="";
+    showScreen(wizard);
+    goStep(2);
+  }
+  document.querySelectorAll(".use-template").forEach(btn=>{
+    btn.onclick=()=>useBusinessTemplate(btn.dataset.business);
+  });
+  $("usePreviewedTemplate").onclick=()=>useBusinessTemplate(previewBusiness);
+
   const exampleTriggers=[...document.querySelectorAll("button,a")].filter(el=>{
     const t=(el.textContent||"").trim().toLowerCase();
     return t==="ver exemplo" || t==="ver exemplos";
   });
   exampleTriggers.forEach(el=>{
     if(el.tagName==="A") el.removeAttribute("href");
-    el.onclick=(e)=>{e.preventDefault();showScreen(examples);};
+    el.onclick=e=>{e.preventDefault();showScreen(examples);};
   });
   $("closeExamples").onclick=()=>showScreen(home);
-  $("createFromExamples").onclick=()=>{ showScreen(wizard); goStep(1); };
-  document.querySelectorAll(".use-template").forEach(btn=>btn.onclick=()=>{
-    const business=btn.dataset.business;
-    state.business=business;
-    document.querySelectorAll("[data-business]").forEach(x=>x.classList.toggle("selected",x.dataset.business===business));
-    showScreen(wizard);
-    goStep(2);
-  });
+
+  /* Mensagem SITEZI profissional */
+  function showSiteziModal(title,text){
+    $("siteziModalTitle").textContent=title;
+    $("siteziModalText").textContent=text;
+    $("siteziModal").classList.remove("hidden");
+  }
+  $("siteziModalOk").onclick=()=>$("siteziModal").classList.add("hidden");
+  $("siteziModal").onclick=e=>{
+    if(e.target===$("siteziModal")) $("siteziModal").classList.add("hidden");
+  };
 
 });
