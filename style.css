@@ -366,3 +366,38 @@ body.examples-open .topbar{display:none!important}
  .template-preview-canvas{padding:12px}.template-preview-canvas .mini-browser{min-height:560px}.template-preview-canvas .mini-nav{height:54px;padding:0 15px}.template-preview-canvas .mini-nav b{font-size:15px}.template-preview-canvas .mini-nav em{font-size:8px}
  .template-preview-canvas .mini-hero{height:330px;padding:28px 18px;grid-template-columns:1fr}.template-preview-canvas .mini-photo{height:120px;font-size:52px}.template-preview-canvas .mini-hero strong{font-size:32px}.template-preview-canvas .mini-hero p{font-size:13px}.template-preview-canvas .mini-services,.template-preview-canvas .mini-products{height:90px;padding:12px}
 }
+
+/* =========================================================
+   SITEZI V6.1 — Edu, mascote oficial
+   ========================================================= */
+.edu-welcome{
+  margin-top:18px;display:flex;align-items:center;gap:12px;
+  max-width:430px;padding:10px 13px;border:1px solid #243a53;
+  border-radius:18px;background:linear-gradient(120deg,rgba(9,25,43,.88),rgba(5,14,25,.9))
+}
+.edu-welcome img{width:58px;height:58px;object-fit:cover;object-position:center top;border-radius:16px;border:1px solid #225993}
+.edu-welcome span{display:block;color:#41b6ff;font-size:9px;font-weight:900;letter-spacing:.12em}
+.edu-welcome b{display:block;color:#fff;font-size:15px;margin:2px 0}
+.edu-welcome p{margin:0!important;font-size:12px!important;color:#96a8bb!important;line-height:1.35!important}
+
+.edu-guide{
+  width:min(760px,calc(100% - 32px));margin:12px auto 2px;
+  display:flex;align-items:center;gap:11px;padding:9px 13px;
+  border:1px solid #203c5b;border-radius:16px;
+  background:linear-gradient(110deg,#071827,#07111c);
+  box-shadow:0 10px 30px rgba(0,0,0,.13)
+}
+.edu-guide img{width:46px;height:46px;object-fit:cover;object-position:center top;border-radius:14px;border:1px solid #1e609d;flex:none}
+.edu-guide span{display:block;color:#39b3ff;font-size:9px;font-weight:950;letter-spacing:.14em}
+.edu-guide p{margin:2px 0 0;color:#b1c0cf;font-size:12px;line-height:1.35}
+
+.edu-modal-avatar{overflow:hidden;padding:0!important;background:#071726!important}
+.edu-modal-avatar img{width:100%;height:100%;object-fit:cover;object-position:center top}
+
+@media(max-width:800px){
+  .edu-welcome{max-width:100%;margin-top:15px}
+  .edu-welcome img{width:52px;height:52px}
+  .edu-guide{width:calc(100% - 32px);margin-top:8px;padding:8px 10px}
+  .edu-guide img{width:42px;height:42px}
+  .edu-guide p{font-size:11px}
+}

@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#050b14">
   <meta name="description" content="SITEZI — crie seu site profissional em minutos.">
   <title>SITEZI — Seu negócio online em minutos</title>
-  <link rel="stylesheet" href="style.css?v=6.0">
+  <link rel="stylesheet" href="style.css?v=6.1">
 </head>
 <body>
   <div id="app" class="app">
@@ -40,6 +40,15 @@
             <button id="seeExample" class="btn outline big">Ver exemplo</button>
           </div>
           <small class="ai-note">* Recursos de IA ficam ativos após conectar o backend.</small>
+
+          <div class="edu-welcome">
+            <img src="assets/edu-mascote.jpg" alt="Edu, mascote da SITEZI">
+            <div>
+              <span>EDU · MASCOTE DA SITEZI</span>
+              <b>Oi! Eu sou o Edu 👋</b>
+              <p>Vou te acompanhar enquanto você cria o seu site.</p>
+            </div>
+          </div>
         </div>
 
         <div class="hero-device" aria-label="Exemplo de site criado na SITEZI">
@@ -249,8 +258,8 @@
 
       <div id="siteziModal" class="sitezi-modal hidden" role="dialog" aria-modal="true" aria-labelledby="siteziModalTitle">
         <div class="sitezi-modal-card">
-          <div class="sitezi-modal-icon">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg>
+          <div class="sitezi-modal-icon edu-modal-avatar">
+            <img src="assets/edu-mascote.jpg" alt="Edu">
           </div>
           <span class="eyebrow">SITEZI</span>
           <h3 id="siteziModalTitle">Tudo certo!</h3>
@@ -273,6 +282,14 @@
             <span id="progressText">1 de 8</span>
             <div class="progress"><i id="progressBar"></i></div>
           </div>
+
+          <aside class="edu-guide" id="eduGuide">
+            <img src="assets/edu-mascote.jpg" alt="Edu, mascote da SITEZI">
+            <div>
+              <span>EDU</span>
+              <p id="eduGuideText">Me conta sobre o seu negócio e eu te ajudo a montar o site.</p>
+            </div>
+          </aside>
 
           <div class="wizard-body">
             <section class="step active" data-step="1">
@@ -501,6 +518,6 @@
     </main>
   </div>
 
-  <script src="script.js?v=6.0"></script>
+  <script src="script.js?v=6.1"></script>
 </body>
 </html>
