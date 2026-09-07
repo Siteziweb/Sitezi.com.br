@@ -177,3 +177,61 @@ body.plans-open .topbar{display:none!important}
  .pro-tools{grid-template-columns:1fr}.product-builder{grid-template-columns:1fr}.product-builder textarea{grid-column:auto}
  .product-demo-list{grid-template-columns:1fr 1fr}
 }
+
+
+/* =========================================================
+   SITEZI V5.5.1 — correção da rolagem da tela de planos
+   ========================================================= */
+body.plans-open{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  height:auto!important;
+  min-height:100%!important;
+}
+body.plans-open .app{
+  min-height:100%;
+  overflow:visible!important;
+}
+body.plans-open .plans-screen.active{
+  display:block!important;
+  width:100%;
+  min-height:100dvh;
+  height:auto!important;
+  overflow:visible!important;
+}
+body.plans-open .plans-shell{
+  min-height:100dvh;
+  height:auto!important;
+  overflow:visible!important;
+}
+
+@media(max-width:850px){
+  html:has(body.plans-open){
+    height:auto!important;
+    min-height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+  body.plans-open{
+    height:auto!important;
+    min-height:100%!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  body.plans-open .plans-screen,
+  body.plans-open .plans-screen.active{
+    min-height:100dvh!important;
+    height:auto!important;
+    overflow:visible!important;
+    place-items:initial!important;
+  }
+  body.plans-open .plans-shell{
+    min-height:100dvh!important;
+    height:auto!important;
+    padding-bottom:calc(42px + env(safe-area-inset-bottom))!important;
+  }
+  body.plans-open .pricing-grid,
+  body.plans-open .pro-tools{
+    overflow:visible!important;
+  }
+}
