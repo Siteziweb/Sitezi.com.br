@@ -89,8 +89,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     setTimeout(()=>{$("useSuggestion")?.addEventListener("click",()=>{$("businessSlogan").value=pick;$("suggestionBox").classList.add("hidden")})},0);
   };
 
-  document.querySelectorAll(".template-card").forEach(btn=>btn.onclick=()=>{
-    document.querySelectorAll(".template-card").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll('[data-step="3"] .template-card').forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll('[data-step="3"] .template-card').forEach(x=>x.classList.remove("active"));
     btn.classList.add("active");state.template=btn.dataset.template;
   });
 
@@ -299,83 +299,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 
   /* ========================================================
-     SITEZI V6 — biblioteca de modelos
+     SITEZI V6.2 — exemplos visuais sem conflito com os modelos do wizard
      ======================================================== */
-  const templateCarousel=$("templateCarousel");
-  const templateCards=[...document.querySelectorAll(".template-card")];
-  let currentTemplateIndex=0;
-  let previewBusiness="Oficina Mecânica";
-
-  function selectTemplate(index, scroll=true){
-    currentTemplateIndex=(index+templateCards.length)%templateCards.length;
-    templateCards.forEach((card,i)=>card.classList.toggle("selected",i===currentTemplateIndex));
-    [...$("templateDots").children].forEach((dot,i)=>dot.classList.toggle("active",i===currentTemplateIndex));
-    if(scroll) templateCards[currentTemplateIndex].scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
-  }
-
-  templateCards.forEach((card,i)=>{
-    const dot=document.createElement("button");
-    dot.type="button";
-    dot.setAttribute("aria-label",`Ir para modelo ${i+1}`);
-    dot.onclick=()=>selectTemplate(i);
-    $("templateDots").appendChild(dot);
-    card.onclick=e=>{
-      if(e.target.closest("button,a")) return;
-      selectTemplate(i);
-    };
-  });
-  selectTemplate(0,false);
-
-  $("templatePrev").onclick=()=>selectTemplate(currentTemplateIndex-1);
-  $("templateNext").onclick=()=>selectTemplate(currentTemplateIndex+1);
-
-  templateCarousel.addEventListener("scroll",()=>{
-    let best=0, dist=Infinity;
-    const center=templateCarousel.scrollLeft+templateCarousel.clientWidth/2;
-    templateCards.forEach((card,i)=>{
-      const c=card.offsetLeft+card.offsetWidth/2;
-      const d=Math.abs(c-center);
-      if(d<dist){dist=d;best=i;}
-    });
-    if(best!==currentTemplateIndex){
-      currentTemplateIndex=best;
-      templateCards.forEach((card,i)=>card.classList.toggle("selected",i===best));
-      [...$("templateDots").children].forEach((dot,i)=>dot.classList.toggle("active",i===best));
-    }
-  },{passive:true});
-
-  function openTemplatePreview(card){
-    previewBusiness=card.dataset.business;
-    $("templatePreviewName").textContent=`Modelo ${previewBusiness}`;
-    const browser=card.querySelector(".mini-browser").cloneNode(true);
-    $("templatePreviewCanvas").innerHTML="";
-    $("templatePreviewCanvas").appendChild(browser);
-    $("templatePreview").classList.remove("hidden");
-    document.body.style.overflow="hidden";
-  }
-  document.querySelectorAll(".preview-template").forEach(btn=>{
-    btn.onclick=()=>openTemplatePreview(btn.closest(".template-card"));
-  });
-  $("closeTemplatePreview").onclick=()=>{
-    $("templatePreview").classList.add("hidden");
-    document.body.style.overflow="";
-  };
-
-  function useBusinessTemplate(business){
-    state.businessType=business;
-    document.querySelectorAll(".business").forEach(x=>x.classList.toggle("active",x.dataset.business===business));
-    $("templatePreview").classList.add("hidden");
-    document.body.style.overflow="";
-    showScreen(wizard);
-    state.step=2;
-    updateStep();
-    requestAnimationFrame(()=>$("businessName")?.focus({preventScroll:true}));
-  }
-  document.querySelectorAll(".use-template").forEach(btn=>{
-    btn.onclick=()=>useBusinessTemplate(btn.dataset.business);
-  });
-  $("usePreviewedTemplate").onclick=()=>useBusinessTemplate(previewBusiness);
-
   const exampleTriggers=[...document.querySelectorAll("button,a")].filter(el=>{
     const t=(el.textContent||"").trim().toLowerCase();
     return t==="ver exemplo" || t==="ver exemplos";
