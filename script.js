@@ -258,6 +258,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (active) active.scrollTop = 0;
   }
 
+  const servicePlaceholders = {
+    "Oficina Mecânica": "Troca de óleo, Freios, Suspensão",
+    "Restaurante": "Almoço, Delivery, Reservas",
+    "Barbearia": "Corte masculino, Barba, Sobrancelha",
+    "Salão de Beleza": "Corte, Escova, Coloração",
+    "Moda e Vestuário": "Camisetas, Calças, Acessórios",
+    "Loja / Comércio": "Produtos, Entregas, Atendimento",
+    "Clínica / Saúde": "Consultas, Avaliações, Procedimentos",
+    "Prestador de Serviços": "Serviço 1, Serviço 2, Serviço 3",
+    "Outro": "Produto ou serviço 1, Produto ou serviço 2, Produto ou serviço 3"
+  };
+
+  function updateServicesPlaceholder() {
+    const field = $("servicesInput");
+    if (!field) return;
+
+    field.placeholder =
+      servicePlaceholders[state.businessType] ||
+      servicePlaceholders.Outro;
+  }
+
   function updateStep() {
     steps.forEach(s => s.classList.toggle("active", Number(s.dataset.step) === state.step));
     $("progressText").textContent = `${state.step} de 8`;
@@ -268,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.classList.toggle("step-2-active", state.step === 2);
 
+    if (state.step === 7) updateServicesPlaceholder();
     if (state.step === 8) renderReview();
     resetScroll();
   }
