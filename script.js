@@ -5,15 +5,16 @@ document.addEventListener("DOMContentLoaded",()=>{
     logoMode:"text",logoData:"",imageMode:"none",photos:[],services:[],whatsapp:"",instagram:"",location:""
   };
   const steps=[...document.querySelectorAll(".step")];
-  const home=$("home"),wizard=$("wizard"),result=$("result");
+  const home=$("home"),wizard=$("wizard"),result=$("result"),plans=$("plans");
 
   function showScreen(el){
     document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
     el.classList.add("active");
 
-    document.body.classList.remove("wizard-open","result-open");
+    document.body.classList.remove("wizard-open","result-open","plans-open");
     if(el===wizard) document.body.classList.add("wizard-open");
     if(el===result) document.body.classList.add("result-open");
+    if(el===plans) document.body.classList.add("plans-open");
   }
   function resetScroll(){
     const active=document.querySelector(".step.active");
@@ -212,10 +213,72 @@ document.addEventListener("DOMContentLoaded",()=>{
     btn.classList.add("active");
     $("previewStage").classList.toggle("mobile",btn.dataset.device==="mobile");
   });
-  $("publishSite").onclick=()=>{
-    $("publishMessage").innerHTML="<b>Backend ainda não conectado.</b><br>O próximo passo é ligar esta V5 ao Supabase para salvar projetos, gerar IA e publicar sites.";
-    $("publishMessage").classList.remove("hidden");
-  };
+  $("publishSite").onclick=()=>showScreen(plans);
+  $("closePlans").onclick=()=>showScreen(result);
+  document.querySelectorAll(".choose-plan").forEach(btn=>btn.onclick=()=>{
+    const plan=btn.dataset.plan, price=btn.dataset.price;
+    alert(`Plano ${plan} — R$ ${price}/mês\n\nA escolha do plano já está pronta. Na próxima integração, este botão abrirá o checkout e, após o pagamento, publicará o site.`);
+  });
   $("seeExample").onclick=()=>{alert("Na próxima etapa podemos adicionar uma galeria de exemplos reais da SITEZI.")};
   updateStep();
+  /* V5.5 — prévia em tela cheia antes da assinatura */
+  const fullPreviewScreen=$("fullPreviewScreen");
+  const fullPreviewFrame=$("fullPreviewFrame");
+  function openFullPreview(){
+    const sourceFrame=document.querySelector("#result iframe");
+    if(sourceFrame){
+      fullPreviewFrame.srcdoc=sourceFrame.srcdoc || sourceFrame.getAttribute("srcdoc") || "";
+    }
+    fullPreviewScreen.classList.remove("hidden");
+    document.body.style.overflow="hidden";
+  }
+  function closeFullPreview(){
+    fullPreviewScreen.classList.add("hidden");
+    document.body.style.overflow="";
+  }
+  $("fullPreview").onclick=openFullPreview;
+  $("exitFullPreview").onclick=closeFullPreview;
+  $("publishFromPreview").onclick=()=>{ closeFullPreview(); showScreen(plans); };
+
+  /* Explicação simples de domínio */
+  function toggleDomainInfo(){
+    $("domainInfoBox").classList.toggle("hidden");
+  }
+  $("domainInfo").onclick=toggleDomainInfo;
+  document.querySelectorAll(".domain-help").forEach(b=>b.onclick=()=>{
+    $("domainInfoBox").classList.remove("hidden");
+    $("domainInfoBox").scrollIntoView({behavior:"smooth",block:"center"});
+  });
+
+  /* Demonstração local do cadastro de produtos — persistência virá com backend */
+  let demoProducts=[];
+  let demoProductImage="";
+  $("productImage").onchange=e=>{
+    const file=e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader=new FileReader();
+    reader.onload=()=>{ demoProductImage=reader.result; };
+    reader.readAsDataURL(file);
+  };
+  function renderDemoProducts(){
+    $("productDemoList").innerHTML=demoProducts.map(p=>`
+      <div class="product-demo">
+        ${p.image?`<img src="${p.image}" alt="">`:""}
+        <b>${escapeHtml(p.name)}</b>
+        <span>${escapeHtml(p.price)}</span>
+        <small>${escapeHtml(p.description)}</small>
+      </div>`).join("");
+  }
+  $("addProduct").onclick=()=>{
+    const name=$("productName").value.trim();
+    const price=$("productPrice").value.trim();
+    const description=$("productDescription").value.trim();
+    if(!name){ alert("Digite o nome do produto."); return; }
+    if(demoProducts.length>=5){ alert("Nesta demonstração você pode adicionar até 5 produtos."); return; }
+    demoProducts.push({name,price,description,image:demoProductImage});
+    $("productName").value=""; $("productPrice").value=""; $("productDescription").value="";
+    $("productImage").value=""; demoProductImage="";
+    renderDemoProducts();
+  };
+
 });

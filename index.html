@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#050b14">
   <meta name="description" content="SITEZI — crie seu site profissional em minutos.">
   <title>SITEZI — Seu negócio online em minutos</title>
-  <link rel="stylesheet" href="style.css?v=5.3">
+  <link rel="stylesheet" href="style.css?v=5.5">
 </head>
 <body>
   <div id="app" class="app">
@@ -100,7 +100,7 @@
                 <button class="select-card business" data-business="Restaurante"><span class="svg-icon">◉</span><b>Restaurante</b></button>
                 <button class="select-card business" data-business="Barbearia"><span class="svg-icon">✂</span><b>Barbearia</b></button>
                 <button class="select-card business" data-business="Salão de Beleza"><span class="svg-icon">✦</span><b>Salão de Beleza</b></button>
-                <button class="select-card business" data-business="Moda e Vestuário"><span class="svg-icon">◇</span><b>Moda e Vestuário</b></button>
+                <button class="select-card business" data-business="Moda e Vestuário"><svg class="business-svg" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M23 12c2.2 4.2 5.1 6 9 6s6.8-1.8 9-6l13 7-7 12-7-4v25H24V27l-7 4-7-12 13-7Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><path d="M23 12c1.5 5.3 4.5 8 9 8s7.5-2.7 9-8" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg><b>Moda e Vestuário</b></button>
                 <button class="select-card business" data-business="Loja / Comércio"><span class="svg-icon">▦</span><b>Loja / Comércio</b></button>
                 <button class="select-card business" data-business="Clínica / Saúde"><span class="svg-icon">✚</span><b>Clínica / Saúde</b></button>
                 <button class="select-card business" data-business="Prestador de Serviços"><span class="svg-icon">✓</span><b>Serviços</b></button>
@@ -223,14 +223,102 @@
           </div>
           <div class="result-actions">
             <button id="editSite" class="btn outline">Editar informações</button>
-            <button id="publishSite" class="btn primary">Publicar meu site</button>
+            <button id="fullPreview" class="btn outline">↗ Ver site em tela cheia</button>
+          <button id="publishSite" class="btn primary">Publicar meu site</button>
           </div>
           <div id="publishMessage" class="publish-message hidden"></div>
+        </div>
+      </section>
+
+
+
+      <section id="fullPreviewScreen" class="full-preview-screen hidden" aria-label="Prévia do site em tela cheia">
+        <div class="preview-toolbar">
+          <button id="exitFullPreview" type="button" class="preview-back">← Voltar para edição</button>
+          <span><b>Prévia SITEZI</b> · Ainda não publicado</span>
+          <button id="publishFromPreview" type="button" class="preview-publish">Publicar meu site</button>
+        </div>
+        <iframe id="fullPreviewFrame" title="Prévia completa do seu site"></iframe>
+      </section>
+
+      <section id="plans" class="plans-screen screen">
+        <div class="plans-shell">
+          <header class="plans-top">
+            <div class="wizard-brand"><svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="siteziPlansG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#35c2ff"/><stop offset=".55" stop-color="#1479ff"/><stop offset="1" stop-color="#0b46d9"/></linearGradient></defs><path fill="url(#siteziPlansG)" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg><strong>SITEZI</strong></div>
+            <button id="closePlans" class="text-btn">Voltar</button>
+          </header>
+          <div class="plans-copy">
+            <span class="eyebrow">PUBLIQUE SEU SITE</span>
+            <h2>Escolha como colocar seu negócio no ar.</h2>
+            <p>Sua prévia continua grátis. Você só escolhe um plano quando quiser publicar.</p>
+          </div>
+          <div class="pricing-grid">
+            <article class="price-card">
+              <span class="plan-name">Básico</span>
+              <div class="price"><b>R$ 29,90</b><small>/mês</small></div>
+              <p>Para começar com um site profissional.</p>
+              <ul><li>Site responsivo</li><li>Botão de WhatsApp</li><li>Subdomínio SITEZI</li><li>Edição das informações</li><li>Até 5 produtos no catálogo</li></ul>
+              <button class="btn outline choose-plan" data-plan="Básico" data-price="29,90">Escolher Básico</button>
+            </article>
+            <article class="price-card featured">
+              <span class="popular">MAIS ESCOLHIDO</span>
+              <span class="plan-name">Profissional</span>
+              <div class="price"><b>R$ 59,90</b><small>/mês</small></div>
+              <p>Mais recursos para apresentar sua marca.</p>
+              <ul><li>Tudo do Básico</li><li>Até 30 produtos no catálogo</li><li>Logo e imagens com IA*</li><li>Domínio próprio <button type="button" class="domain-help" aria-label="O que é domínio próprio?">ⓘ</button></li></ul>
+              <button class="btn primary choose-plan" data-plan="Profissional" data-price="59,90">Escolher Profissional</button>
+            </article>
+            <article class="price-card">
+              <span class="plan-name">Premium</span>
+              <div class="price"><b>R$ 99,90</b><small>/mês</small></div>
+              <p>Para quem quer uma presença mais completa.</p>
+              <ul><li>Tudo do Profissional</li><li>Catálogo ampliado de produtos</li><li>Mais gerações com IA*</li><li>Domínio próprio + conexão guiada</li></ul>
+              <button class="btn outline choose-plan" data-plan="Premium" data-price="99,90">Escolher Premium</button>
+            </article>
+          </div>
+          
+          <div class="pro-tools">
+            <article class="tool-panel">
+              <span class="eyebrow">CATÁLOGO</span>
+              <h3>Venda mostrando seus produtos.</h3>
+              <p>Adicione foto, nome, preço e descrição. O botão do produto leva o visitante direto para o WhatsApp.</p>
+              <div id="productBuilder" class="product-builder">
+                <input id="productName" type="text" placeholder="Nome do produto" maxlength="60">
+                <input id="productPrice" type="text" placeholder="Preço (ex.: R$ 89,90)" maxlength="30">
+                <textarea id="productDescription" placeholder="Descrição curta" maxlength="140"></textarea>
+                <label class="upload-product">Adicionar foto<input id="productImage" type="file" accept="image/*"></label>
+                <button id="addProduct" type="button" class="btn outline">+ Adicionar produto</button>
+              </div>
+              <div id="productDemoList" class="product-demo-list"></div>
+              <small>Na versão publicada, os limites serão aplicados conforme o plano contratado.</small>
+            </article>
+            <article class="tool-panel">
+              <span class="eyebrow">DOMÍNIO PRÓPRIO</span>
+              <h3>Seu endereço, sua marca.</h3>
+              <div class="domain-compare">
+                <div><small>Endereço SITEZI</small><b>minhaloja.sitezi.com.br</b><span>Incluído para publicação</span></div>
+                <div><small>Domínio próprio</small><b>minhaloja.com.br</b><span>Mais exclusivo para sua marca</span></div>
+              </div>
+              <button id="domainInfo" type="button" class="btn outline">O que é domínio próprio?</button>
+              <div id="domainInfoBox" class="domain-info hidden">
+                <b>Domínio próprio é o endereço exclusivo do seu negócio na internet.</b>
+                <p>Exemplo: em vez de <strong>minhaloja.sitezi.com.br</strong>, você pode usar <strong>minhaloja.com.br</strong>. O registro do domínio pode ter custo separado.</p>
+              </div>
+              <div class="domain-flow">
+                <p><b>Depois da assinatura:</b></p>
+                <span>1. Você informa se já possui um domínio.</span>
+                <span>2. A SITEZI orienta o registro ou a conexão.</span>
+                <span>3. Verificamos a configuração e ativamos o HTTPS.</span>
+                <span>4. Seu site passa a abrir no endereço próprio.</span>
+              </div>
+            </article>
+          </div>
+<p class="plans-note">* Recursos de IA, domínio próprio e pagamento serão ativados com o backend. Os valores podem ser ajustados antes do lançamento comercial.</p>
         </div>
       </section>
     </main>
   </div>
 
-  <script src="script.js?v=5.3"></script>
+  <script src="script.js?v=5.5"></script>
 </body>
 </html>

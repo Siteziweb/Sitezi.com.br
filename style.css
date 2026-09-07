@@ -113,3 +113,67 @@ body.step-2-active .wizard-actions{
     margin-top:8px;
   }
 }
+
+/* SITEZI V5.4 — camiseta SVG + planos */
+.business-svg{width:42px;height:42px;color:#39adff;display:block;margin:0 auto 12px}
+body.plans-open .topbar{display:none!important}
+.plans-screen{background:#030b15;color:#f7fbff;min-height:100dvh}
+.plans-shell{width:min(1080px,100%);margin:auto;min-height:100dvh;padding:0 24px 42px}
+.plans-top{height:96px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #26384d}
+.plans-copy{padding:42px 0 26px;max-width:760px}
+.plans-copy .eyebrow{font-weight:900;font-size:12px;letter-spacing:.18em;color:#35b6ff}
+.plans-copy h2{font-size:clamp(32px,5vw,52px);line-height:1.03;margin:12px 0}
+.plans-copy p{color:#91a0b4;font-size:18px;line-height:1.55}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.price-card{position:relative;border:1px solid #30445d;background:#081321;border-radius:24px;padding:26px;display:flex;flex-direction:column;min-height:430px}
+.price-card.featured{border-color:#168cff;box-shadow:0 0 0 1px #168cff,0 20px 60px rgba(0,93,255,.16)}
+.popular{position:absolute;right:18px;top:18px;font-size:10px;font-weight:900;letter-spacing:.1em;color:#52c3ff}
+.plan-name{font-size:19px;font-weight:900}
+.price{display:flex;align-items:end;gap:7px;margin:22px 0 12px}.price b{font-size:34px}.price small{color:#91a0b4;padding-bottom:5px}
+.price-card p,.price-card li{color:#a7b4c6;line-height:1.5}.price-card ul{padding:0;list-style:none;margin:18px 0 26px}
+.price-card li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.price-card li:before{content:"✓";color:#35b6ff;font-weight:900;margin-right:9px}
+.price-card .btn{margin-top:auto;width:100%}
+.plans-note{font-size:12px;color:#718198;text-align:center;margin:24px auto 0;max-width:760px}
+@media(max-width:850px){
+ .plans-shell{padding:0 18px 30px}
+ .plans-top{height:84px}
+ .plans-copy{padding:28px 0 20px}
+ .plans-copy h2{font-size:34px}
+ .plans-copy p{font-size:15px}
+ .pricing-grid{grid-template-columns:1fr}
+ .price-card{min-height:0}
+}
+
+/* SITEZI V5.5 — experiência de venda, catálogo, domínio e prévia completa */
+.full-preview-screen{position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column}
+.full-preview-screen.hidden{display:none!important}
+.preview-toolbar{min-height:58px;padding:8px 14px;background:#06111f;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #20364e}
+.preview-toolbar span{font-size:13px;color:#9fb0c5;text-align:center}
+.preview-back,.preview-publish{min-height:42px;border-radius:12px;padding:0 15px;font-weight:800;cursor:pointer}
+.preview-back{border:1px solid #34506c;background:#0b1b2c;color:#fff}
+.preview-publish{border:0;background:#168cff;color:#fff}
+#fullPreviewFrame{border:0;width:100%;flex:1;background:#fff}
+.domain-help{border:0;background:transparent;color:#45b8ff;font-size:16px;cursor:pointer;padding:2px 5px}
+.pro-tools{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.tool-panel{border:1px solid #30445d;background:#081321;border-radius:24px;padding:26px}
+.tool-panel h3{font-size:25px;margin:9px 0}.tool-panel>p,.tool-panel>small{color:#91a0b4;line-height:1.5}
+.product-builder{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.product-builder textarea{grid-column:1/-1;min-height:80px;resize:vertical}
+.product-builder input,.product-builder textarea{width:100%;border:1px solid #30445d;background:#06101c;color:#fff;border-radius:12px;padding:13px;font:inherit}
+.upload-product{min-height:46px;border:1px dashed #3e5c7b;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#b9c7d8;font-weight:700;cursor:pointer}
+.upload-product input{display:none}
+.product-demo-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.product-demo{border:1px solid #263d55;border-radius:14px;padding:10px;background:#06101c;min-width:0}
+.product-demo img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:9px;margin-bottom:8px}
+.product-demo b,.product-demo span{display:block}.product-demo span{color:#4bbcff;font-weight:900;margin-top:4px}.product-demo small{color:#91a0b4}
+.domain-compare{display:grid;gap:10px;margin:20px 0}
+.domain-compare>div{border:1px solid #2c425b;border-radius:14px;padding:14px}
+.domain-compare small,.domain-compare span{display:block;color:#8395aa}.domain-compare b{display:block;margin:4px 0;color:#fff;overflow-wrap:anywhere}
+.domain-info{margin-top:12px;border:1px solid #168cff;background:#071b31;border-radius:14px;padding:15px}.domain-info p{color:#a7b4c6;margin-bottom:0;line-height:1.5}
+.domain-flow{display:grid;gap:8px;margin-top:18px;color:#a7b4c6}.domain-flow p{margin:0 0 3px;color:#fff}
+@media(max-width:850px){
+ .preview-toolbar{flex-wrap:wrap}.preview-toolbar span{order:-1;width:100%;padding-top:2px}.preview-back,.preview-publish{flex:1}
+ .pro-tools{grid-template-columns:1fr}.product-builder{grid-template-columns:1fr}.product-builder textarea{grid-column:auto}
+ .product-demo-list{grid-template-columns:1fr 1fr}
+}
