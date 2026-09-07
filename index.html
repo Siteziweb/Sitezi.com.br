@@ -7,6 +7,302 @@
   <meta name="description" content="SITEZI — crie seu site profissional em minutos.">
   <title>SITEZI — Seu negócio online em minutos</title>
   <link rel="stylesheet" href="style.css?v=5.5.3">
+  <style id="sitezi-template-previews-v1">
+    /* =========================================================
+       SITEZI — MINIATURAS DOS MODELOS
+       Alteração isolada apenas na etapa 3.
+       ========================================================= */
+
+    .template-thumb{
+      position:relative;
+      height:88px;
+      border-radius:12px;
+      padding:0;
+      display:block;
+      overflow:hidden;
+      isolation:isolate;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+
+    .template-thumb i,
+    .template-thumb strong,
+    .template-thumb span{
+      position:absolute;
+      margin:0;
+      z-index:3;
+    }
+
+    /* ---------- MODERNO ---------- */
+    .template-thumb.modern{
+      background:
+        radial-gradient(circle at 76% 34%,rgba(21,120,255,.30),transparent 24%),
+        linear-gradient(145deg,#07101b,#0c1725 58%,#0d2a49);
+    }
+
+    .template-thumb.modern:before{
+      content:"";
+      position:absolute;
+      right:8px;
+      top:21px;
+      width:38px;
+      height:37px;
+      border-radius:7px;
+      background:
+        linear-gradient(145deg,rgba(30,136,255,.42),rgba(10,39,67,.35));
+      border:1px solid rgba(76,171,255,.22);
+      box-shadow:0 8px 20px rgba(0,0,0,.22);
+    }
+
+    .template-thumb.modern:after{
+      content:"";
+      position:absolute;
+      left:9px;
+      right:9px;
+      bottom:8px;
+      height:15px;
+      border-radius:5px;
+      background:
+        linear-gradient(90deg,#12243a 0 31%,transparent 31% 34%,#12243a 34% 65%,transparent 65% 68%,#12243a 68%);
+      border:1px solid rgba(72,126,179,.16);
+    }
+
+    .template-thumb.modern i{
+      left:9px;
+      top:9px;
+      width:24px;
+      height:5px;
+      border-radius:99px;
+      background:#3daaff;
+      box-shadow:76px 0 0 -1px rgba(255,255,255,.34);
+    }
+
+    .template-thumb.modern strong{
+      left:9px;
+      top:27px;
+      width:58px;
+      color:#fff;
+      font-size:0;
+      line-height:1;
+      letter-spacing:-.2px;
+    }
+
+    .template-thumb.modern strong:after{
+      content:"NEGÓCIO\A MODERNO";
+      white-space:pre;
+      font-size:9px;
+      line-height:1.02;
+      font-weight:950;
+    }
+
+    .template-thumb.modern span:nth-of-type(1){
+      left:9px;
+      top:50px;
+      width:42px;
+      height:4px;
+      border-radius:99px;
+      background:#71869b;
+    }
+
+    .template-thumb.modern span:nth-of-type(2){
+      left:9px;
+      top:59px;
+      width:28px;
+      height:8px;
+      border-radius:3px;
+      background:#1578ff;
+      box-shadow:none;
+    }
+
+    /* ---------- PREMIUM ---------- */
+    .template-thumb.premium{
+      background:
+        radial-gradient(circle at 77% 37%,rgba(255,255,255,.72),transparent 22%),
+        linear-gradient(145deg,#f3eadf,#d6c0a3);
+      border-color:#cbb89f;
+    }
+
+    .template-thumb.premium:before{
+      content:"";
+      position:absolute;
+      right:8px;
+      top:17px;
+      width:39px;
+      height:51px;
+      border-radius:20px 20px 6px 6px;
+      background:
+        radial-gradient(circle at 50% 31%,#f7eadb 0 14%,transparent 15%),
+        linear-gradient(160deg,#b89473,#e8d7c3);
+      border:1px solid rgba(99,75,51,.18);
+      box-shadow:0 8px 18px rgba(77,56,36,.16);
+    }
+
+    .template-thumb.premium:after{
+      content:"";
+      position:absolute;
+      left:9px;
+      bottom:8px;
+      width:40px;
+      height:1px;
+      background:#7c674f;
+      box-shadow:0 -4px 0 rgba(124,103,79,.16);
+    }
+
+    .template-thumb.premium i{
+      left:9px;
+      top:9px;
+      width:21px;
+      height:4px;
+      border-radius:0;
+      background:#2d251f;
+      box-shadow:78px 0 0 -1px rgba(45,37,31,.42);
+    }
+
+    .template-thumb.premium strong{
+      left:9px;
+      top:27px;
+      width:60px;
+      color:#211b16;
+      font-size:0;
+      line-height:1;
+      font-family:Georgia,"Times New Roman",serif;
+    }
+
+    .template-thumb.premium strong:after{
+      content:"Elegância\A em cada detalhe";
+      white-space:pre;
+      font-size:8.5px;
+      line-height:1.05;
+      font-weight:700;
+    }
+
+    .template-thumb.premium span:nth-of-type(1){
+      left:9px;
+      top:51px;
+      width:47px;
+      height:3px;
+      border-radius:0;
+      background:#8d7a68;
+    }
+
+    .template-thumb.premium span:nth-of-type(2){
+      left:9px;
+      top:59px;
+      width:30px;
+      height:7px;
+      border-radius:0;
+      background:#211b16;
+    }
+
+    /* ---------- DINÂMICO ---------- */
+    .template-thumb.dynamic{
+      background:
+        radial-gradient(circle at 76% 37%,rgba(255,189,72,.35),transparent 22%),
+        linear-gradient(135deg,#ec5a18 0 52%,#17171d 52.5%);
+      border-color:rgba(255,133,58,.35);
+    }
+
+    .template-thumb.dynamic:before{
+      content:"OFERTA";
+      position:absolute;
+      right:7px;
+      top:12px;
+      width:43px;
+      height:43px;
+      border-radius:9px;
+      background:linear-gradient(145deg,#2a2a31,#101014);
+      display:grid;
+      place-items:center;
+      color:#ffb24c;
+      font-size:7px;
+      font-weight:950;
+      letter-spacing:.5px;
+      transform:rotate(2deg);
+      border:2px solid rgba(255,255,255,.78);
+      box-shadow:0 8px 18px rgba(0,0,0,.25);
+      z-index:2;
+    }
+
+    .template-thumb.dynamic:after{
+      content:"";
+      position:absolute;
+      left:8px;
+      right:8px;
+      bottom:8px;
+      height:14px;
+      border-radius:6px;
+      background:
+        linear-gradient(90deg,rgba(255,255,255,.22) 0 31%,transparent 31% 34%,rgba(255,255,255,.15) 34% 65%,transparent 65% 68%,rgba(255,255,255,.10) 68%);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .template-thumb.dynamic i{
+      left:9px;
+      top:9px;
+      width:22px;
+      height:5px;
+      border-radius:99px;
+      background:#fff;
+      box-shadow:77px 0 0 -1px rgba(255,255,255,.52);
+    }
+
+    .template-thumb.dynamic strong{
+      left:9px;
+      top:27px;
+      width:58px;
+      color:#fff;
+      font-size:0;
+      line-height:1;
+    }
+
+    .template-thumb.dynamic strong:after{
+      content:"MAIS\A DESTAQUE";
+      white-space:pre;
+      font-size:9px;
+      line-height:1.02;
+      font-weight:950;
+    }
+
+    .template-thumb.dynamic span:nth-of-type(1){
+      left:9px;
+      top:50px;
+      width:43px;
+      height:4px;
+      border-radius:99px;
+      background:rgba(255,255,255,.72);
+    }
+
+    .template-thumb.dynamic span:nth-of-type(2){
+      left:9px;
+      top:59px;
+      width:31px;
+      height:8px;
+      border-radius:4px;
+      background:#fff;
+    }
+
+    @media(max-width:560px){
+      .template-card{
+        grid-template-columns:132px 1fr 24px;
+        gap:12px;
+      }
+
+      .template-thumb{
+        height:92px;
+      }
+    }
+
+    @media(max-width:390px){
+      .template-card{
+        grid-template-columns:116px 1fr 22px;
+        gap:10px;
+      }
+
+      .template-thumb{
+        height:86px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="app" class="app">
