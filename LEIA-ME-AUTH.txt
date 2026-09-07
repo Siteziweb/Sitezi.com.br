@@ -1,0 +1,25 @@
+SITEZI — CADASTRO / LOGIN v1.0
+
+1. Envie o arquivo sitezi-auth.js para a raiz do repositório no GitHub.
+
+2. No final do index.html, deixe exatamente assim:
+
+<script src="script.js?v=5.6.3"></script>
+<script src="sitezi-ai-client.js?v=2.0"></script>
+<script src="sitezi-auth.js?v=1.0"></script>
+</body>
+</html>
+
+3. Commit changes e aguarde o GitHub Pages atualizar.
+
+TESTE:
+- Gere um site normalmente.
+- Clique em “Publicar meu site”.
+- Sem conta, deve abrir “Sua conta SITEZI”.
+- Crie uma conta com nome, e-mail e senha.
+- Depois do login, o site é salvo na tabela public.sites e segue para os planos.
+
+SEGURANÇA:
+- A chave usada neste arquivo é a publishable key pública do Supabase.
+- A chave da OpenAI continua somente no backend.
+- Créditos de imagem/logo começam em zero.
