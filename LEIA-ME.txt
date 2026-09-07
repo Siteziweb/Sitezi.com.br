@@ -1,9 +1,0 @@
-JOÃO EDUARDO — DESENVOLVIMENTO WEB — V3
-
-Correções:
-- removido o texto pequeno que aparecia sobre a prévia do projeto ROBERTT;
-- ACHOU! mantido como segundo projeto do portfólio;
-- links dos dois projetos mantidos;
-- cache atualizado para V3.
-
-Substitua TODOS os arquivos do repositório pelo conteúdo desta pasta e aguarde o GitHub Pages atualizar.
