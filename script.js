@@ -1207,7 +1207,52 @@ footer{padding:30px 0}
     };
   }
 
-  updateStep();
+  /* =========================================================
+     ENTRADA PELOS EXEMPLOS
+     Se veio de modelos.html, abre o criador já com o tipo
+     de negócio correspondente selecionado.
+     ========================================================= */
+  const chosenExample = new URLSearchParams(window.location.search).get("modelo");
+
+  if (chosenExample) {
+    const exampleBusinessMap = {
+      "Barbearia": "Barbearia",
+      "Restaurante": "Restaurante",
+      "Loja de roupas": "Moda e Vestuário",
+      "Estética e salão": "Salão de Beleza",
+      "Oficina e Auto Center": "Oficina Mecânica",
+      "Profissional e Empresa": "Prestador de Serviços"
+    };
+
+    state.businessType = exampleBusinessMap[chosenExample] || "Outro";
+
+    document.querySelectorAll(".business").forEach(btn => {
+      btn.classList.toggle(
+        "active",
+        btn.dataset.business === state.businessType
+      );
+    });
+
+    showScreen(wizard);
+    state.step = 2;
+    updateStep();
+
+    localStorage.removeItem("sitezi_modelo_escolhido");
+
+    if (window.history?.replaceState) {
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+      );
+    }
+
+    requestAnimationFrame(() => {
+      $("businessName")?.focus({ preventScroll: true });
+    });
+  } else {
+    updateStep();
+  }
 
   /* =========================================================
      PRÉVIA EM TELA CHEIA
