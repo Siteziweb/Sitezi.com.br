@@ -21,6 +21,11 @@ document.addEventListener("DOMContentLoaded",()=>{
     $("progressBar").style.width=`${state.step/8*100}%`;
     $("backBtn").style.visibility=state.step===1?"hidden":"visible";
     $("nextBtn").classList.toggle("hidden",state.step===8);
+    if(state.step===2){
+      $("nextBtn").textContent="Salvar e continuar →";
+    }else if(state.step<8){
+      $("nextBtn").textContent="Continuar →";
+    }
     if(state.step===8) renderReview();
     resetScroll();
   }
