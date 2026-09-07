@@ -5,17 +5,16 @@ document.addEventListener("DOMContentLoaded",()=>{
     logoMode:"text",logoData:"",imageMode:"none",photos:[],services:[],whatsapp:"",instagram:"",location:""
   };
   const steps=[...document.querySelectorAll(".step")];
-  const home=$("home"),wizard=$("wizard"),result=$("result"),plans=$("plans"),examples=$("examples");
+  const home=$("home"),wizard=$("wizard"),result=$("result"),plans=$("plans");
 
   function showScreen(el){
     document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
     el.classList.add("active");
 
-    document.body.classList.remove("wizard-open","result-open","plans-open","examples-open");
+    document.body.classList.remove("wizard-open","result-open","plans-open");
     if(el===wizard) document.body.classList.add("wizard-open");
     if(el===result) document.body.classList.add("result-open");
     if(el===plans) document.body.classList.add("plans-open");
-    if(el===examples) document.body.classList.add("examples-open");
   }
   function resetScroll(){
     const active=document.querySelector(".step.active");
@@ -28,18 +27,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     $("backBtn").style.visibility=state.step===1?"hidden":"visible";
     $("nextBtn").classList.toggle("hidden",state.step===8);
     $("nextBtn").textContent="Continuar →";
-
-    const eduMessages={
-      1:"Me conta que tipo de negócio você tem. A partir daqui eu preparo tudo com você.",
-      2:"Agora me diz o nome do seu negócio. Se quiser, eu também posso sugerir um slogan.",
-      3:"Escolha o estilo que mais combina com a sua marca. Depois você ainda poderá personalizar.",
-      4:"Hora de escolher a cor principal. Ela vai dar personalidade ao seu site.",
-      5:"Vamos cuidar da identidade visual. Você pode usar texto, enviar sua logo ou usar IA quando estiver ativa.",
-      6:"Escolha como quer trabalhar as imagens do site. Fotos boas ajudam muito na apresentação.",
-      7:"Agora coloque seus serviços e seu WhatsApp para seus clientes conseguirem falar com você.",
-      8:"Prontinho! Confere tudo comigo antes de gerar a prévia do seu site."
-    };
-    if($("eduGuideText")) $("eduGuideText").textContent=eduMessages[state.step]||eduMessages[1];
 
     document.body.classList.toggle("step-2-active", state.step===2);
 
@@ -80,7 +67,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   $("suggestBrand").onclick=async()=>{
     const name=$("businessName").value.trim();
-    if(!name){showSiteziModal("Falta só uma informação","Digite primeiro o nome do seu negócio para eu conseguir criar uma sugestão para você.");return}
+    if(!name){alert("Digite primeiro o nome do seu negócio.");return}
     // Backend-ready. Until configured, use local smart fallback.
     const options=fallbackSuggestions[state.businessType]||fallbackSuggestions.Outro;
     const pick=options[Math.floor(Math.random()*options.length)];
@@ -89,8 +76,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     setTimeout(()=>{$("useSuggestion")?.addEventListener("click",()=>{$("businessSlogan").value=pick;$("suggestionBox").classList.add("hidden")})},0);
   };
 
-  document.querySelectorAll('[data-step="3"] .template-card').forEach(btn=>btn.onclick=()=>{
-    document.querySelectorAll('[data-step="3"] .template-card').forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".template-card").forEach(btn=>btn.onclick=()=>{
+    document.querySelectorAll(".template-card").forEach(x=>x.classList.remove("active"));
     btn.classList.add("active");state.template=btn.dataset.template;
   });
 
@@ -105,7 +92,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.querySelectorAll("[data-logo-mode]").forEach(x=>x.classList.remove("active"));
     btn.classList.add("active");state.logoMode=btn.dataset.logoMode;
     if(state.logoMode==="ai"){
-      showSiteziModal("Recurso de IA em breve","A geração de logo com IA já está preparada na interface e será ativada quando conectarmos o backend da SITEZI.");
+      alert("A geração de logo com IA será ativada assim que conectarmos o backend.");
     }
   });
   $("logoUpload").addEventListener("change",e=>{
@@ -117,7 +104,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.querySelectorAll("[data-image-mode]").forEach(x=>x.classList.remove("active"));
     btn.classList.add("active");state.imageMode=btn.dataset.imageMode;
     if(state.imageMode==="ai"){
-      showSiteziModal("Recurso de IA em breve","A geração de imagens com IA será ativada quando conectarmos o backend da SITEZI.");
+      alert("A geração de imagens com IA será ativada quando conectarmos o backend.");
     }
   });
   $("photoUpload").addEventListener("change",e=>{
@@ -143,11 +130,11 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
   function validateStep(){
     collect();
-    if(state.step===1&&!state.businessType){showSiteziModal("Escolha seu tipo de negócio","Selecione uma das opções para eu preparar a próxima etapa do seu site.");return false}
-    if(state.step===2&&!state.businessName){showSiteziModal("Qual é o nome do seu negócio?","Digite o nome que você quer destacar no site para continuarmos.");return false}
+    if(state.step===1&&!state.businessType){alert("Escolha o tipo do seu negócio.");return false}
+    if(state.step===2&&!state.businessName){alert("Digite o nome do seu negócio.");return false}
     if(state.step===7){
-      if(!state.services.length){showSiteziModal("Adicione pelo menos um serviço","Coloque um serviço ou produto principal para eu montar essa parte do seu site.");return false}
-      if(!state.whatsapp){showSiteziModal("Informe seu WhatsApp","Esse número será usado para seus clientes entrarem em contato direto pelo site.");return false}
+      if(!state.services.length){alert("Adicione pelo menos um serviço.");return false}
+      if(!state.whatsapp){alert("Digite seu WhatsApp.");return false}
     }
     return true;
   }
@@ -230,12 +217,9 @@ document.addEventListener("DOMContentLoaded",()=>{
   $("closePlans").onclick=()=>showScreen(result);
   document.querySelectorAll(".choose-plan").forEach(btn=>btn.onclick=()=>{
     const plan=btn.dataset.plan, price=btn.dataset.price;
-    showSiteziModal(
-      `Plano ${plan} selecionado`,
-      `R$ ${price}/mês. Seu plano foi escolhido com sucesso. O checkout e a publicação automática serão ativados quando conectarmos o backend da SITEZI.`
-    );
+    alert(`Plano ${plan} — R$ ${price}/mês\n\nA escolha do plano já está pronta. Na próxima integração, este botão abrirá o checkout e, após o pagamento, publicará o site.`);
   });
-  $("seeExample").onclick=()=>showScreen(examples);
+  $("seeExample").onclick=()=>{alert("Na próxima etapa podemos adicionar uma galeria de exemplos reais da SITEZI.")};
   updateStep();
   /* V5.5 — prévia em tela cheia antes da assinatura */
   const fullPreviewScreen=$("fullPreviewScreen");
@@ -289,37 +273,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     const name=$("productName").value.trim();
     const price=$("productPrice").value.trim();
     const description=$("productDescription").value.trim();
-    if(!name){ showSiteziModal("Nome do produto","Digite o nome do produto antes de adicionar ao catálogo."); return; }
-    if(demoProducts.length>=5){ showSiteziModal("Limite da demonstração","Nesta demonstração você pode adicionar até 5 produtos. Os limites completos dependem do plano escolhido."); return; }
+    if(!name){ alert("Digite o nome do produto."); return; }
+    if(demoProducts.length>=5){ alert("Nesta demonstração você pode adicionar até 5 produtos."); return; }
     demoProducts.push({name,price,description,image:demoProductImage});
     $("productName").value=""; $("productPrice").value=""; $("productDescription").value="";
     $("productImage").value=""; demoProductImage="";
     renderDemoProducts();
-  };
-
-
-  /* ========================================================
-     SITEZI V6.2 — exemplos visuais sem conflito com os modelos do wizard
-     ======================================================== */
-  const exampleTriggers=[...document.querySelectorAll("button,a")].filter(el=>{
-    const t=(el.textContent||"").trim().toLowerCase();
-    return t==="ver exemplo" || t==="ver exemplos";
-  });
-  exampleTriggers.forEach(el=>{
-    if(el.tagName==="A") el.removeAttribute("href");
-    el.onclick=e=>{e.preventDefault();showScreen(examples);};
-  });
-  $("closeExamples").onclick=()=>showScreen(home);
-
-  /* Mensagem SITEZI profissional */
-  function showSiteziModal(title,text){
-    $("siteziModalTitle").textContent=title;
-    $("siteziModalText").textContent=text;
-    $("siteziModal").classList.remove("hidden");
-  }
-  $("siteziModalOk").onclick=()=>$("siteziModal").classList.add("hidden");
-  $("siteziModal").onclick=e=>{
-    if(e.target===$("siteziModal")) $("siteziModal").classList.add("hidden");
   };
 
 });
