@@ -61,3 +61,55 @@
     }
   }
 }
+
+/* =========================================================
+   SITEZI V5.3 — fluxo mobile e header corrigidos
+   ========================================================= */
+
+/* A barra principal da landing some quando entramos no wizard/resultado.
+   Assim fica apenas UMA marca SITEZI na tela. */
+body.wizard-open .topbar,
+body.result-open .topbar{
+  display:none!important;
+}
+
+/* Botão local da etapa 2, logo abaixo das sugestões */
+.step-local-continue{
+  width:100%;
+  min-height:54px;
+  margin-top:14px;
+  font-size:16px;
+  position:relative;
+  z-index:5;
+}
+
+/* Na etapa 2 usamos o botão local; o botão "Continuar" do rodapé some */
+body.step-2-active .wizard-actions #nextBtn{
+  display:none!important;
+}
+
+/* Mantém o botão Voltar acessível no rodapé sem ocupar metade da tela */
+body.step-2-active .wizard-actions{
+  justify-content:flex-start;
+}
+
+@media(max-width:850px){
+  /* Como a topbar principal some no wizard, o conteúdo ocupa a tela toda */
+  body.wizard-open .wizard-screen,
+  body.result-open .result-screen{
+    height:100dvh;
+    min-height:100dvh;
+  }
+
+  .step[data-step="2"] .form-stack{
+    gap:14px;
+  }
+
+  .step[data-step="2"] .ai-action{
+    margin-top:2px;
+  }
+
+  .step[data-step="2"] .step-local-continue{
+    margin-top:8px;
+  }
+}

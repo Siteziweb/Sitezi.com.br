@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded",()=>{
   function showScreen(el){
     document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
     el.classList.add("active");
+
+    document.body.classList.remove("wizard-open","result-open");
+    if(el===wizard) document.body.classList.add("wizard-open");
+    if(el===result) document.body.classList.add("result-open");
   }
   function resetScroll(){
     const active=document.querySelector(".step.active");
@@ -21,17 +25,16 @@ document.addEventListener("DOMContentLoaded",()=>{
     $("progressBar").style.width=`${state.step/8*100}%`;
     $("backBtn").style.visibility=state.step===1?"hidden":"visible";
     $("nextBtn").classList.toggle("hidden",state.step===8);
-    if(state.step===2){
-      $("nextBtn").textContent="Salvar e continuar →";
-    }else if(state.step<8){
-      $("nextBtn").textContent="Continuar →";
-    }
+    $("nextBtn").textContent="Continuar →";
+
+    document.body.classList.toggle("step-2-active", state.step===2);
+
     if(state.step===8) renderReview();
     resetScroll();
   }
   function start(){showScreen(wizard);updateStep()}
   $("startBtn").onclick=start;$("topCreate").onclick=start;
-  $("brandHome").onclick=e=>{e.preventDefault();showScreen(home)};
+  $("brandHome").onclick=e=>{e.preventDefault();document.body.classList.remove("step-2-active");showScreen(home)};
   $("cancelWizard").onclick=()=>showScreen(home);
   $("newSite").onclick=()=>location.reload();
 
@@ -135,6 +138,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     return true;
   }
   $("nextBtn").onclick=()=>{if(validateStep()&&state.step<8){state.step++;updateStep()}};
+  $("saveNameContinue").onclick=()=>{
+    if(state.step!==2) return;
+    if(!validateStep()) return;
+    state.step=3;
+    updateStep();
+  };
   $("backBtn").onclick=()=>{if(state.step>1){state.step--;updateStep()}};
 
   function renderReview(){
