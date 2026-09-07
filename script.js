@@ -258,6 +258,45 @@ document.addEventListener("DOMContentLoaded", () => {
     if (active) active.scrollTop = 0;
   }
 
+  const businessPlaceholders = {
+    "Oficina Mecânica": {
+      name: "Ex.: Auto Prime",
+      slogan: "Ex.: Manutenção automotiva com confiança"
+    },
+    "Restaurante": {
+      name: "Ex.: Sabor da Casa",
+      slogan: "Ex.: Sabor que dá vontade de voltar"
+    },
+    "Barbearia": {
+      name: "Ex.: Barbearia Imperial",
+      slogan: "Ex.: Corte, barba e estilo em um só lugar"
+    },
+    "Salão de Beleza": {
+      name: "Ex.: Studio Bella",
+      slogan: "Ex.: Beleza e cuidado para você"
+    },
+    "Moda e Vestuário": {
+      name: "Ex.: Urban Style",
+      slogan: "Ex.: Moda que combina com você"
+    },
+    "Loja / Comércio": {
+      name: "Ex.: Loja Central",
+      slogan: "Ex.: Tudo o que você procura em um só lugar"
+    },
+    "Clínica / Saúde": {
+      name: "Ex.: Clínica Vida",
+      slogan: "Ex.: Cuidado e bem-estar em primeiro lugar"
+    },
+    "Prestador de Serviços": {
+      name: "Ex.: Prime Serviços",
+      slogan: "Ex.: Soluções profissionais para você"
+    },
+    "Outro": {
+      name: "Ex.: Meu Negócio",
+      slogan: "Ex.: Qualidade, confiança e bom atendimento"
+    }
+  };
+
   const servicePlaceholders = {
     "Oficina Mecânica": "Troca de óleo, Freios, Suspensão",
     "Restaurante": "Almoço, Delivery, Reservas",
@@ -269,6 +308,20 @@ document.addEventListener("DOMContentLoaded", () => {
     "Prestador de Serviços": "Serviço 1, Serviço 2, Serviço 3",
     "Outro": "Produto ou serviço 1, Produto ou serviço 2, Produto ou serviço 3"
   };
+
+  function updateBusinessPlaceholders() {
+    const fields =
+      businessPlaceholders[state.businessType] ||
+      businessPlaceholders.Outro;
+
+    if ($("businessName")) {
+      $("businessName").placeholder = fields.name;
+    }
+
+    if ($("businessSlogan")) {
+      $("businessSlogan").placeholder = fields.slogan;
+    }
+  }
 
   function updateServicesPlaceholder() {
     const field = $("servicesInput");
@@ -289,6 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.classList.toggle("step-2-active", state.step === 2);
 
+    if (state.step === 2) updateBusinessPlaceholders();
     if (state.step === 7) updateServicesPlaceholder();
     if (state.step === 8) renderReview();
     resetScroll();
