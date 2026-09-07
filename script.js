@@ -32,7 +32,16 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   document.querySelectorAll(".business").forEach(btn=>btn.onclick=()=>{
     document.querySelectorAll(".business").forEach(x=>x.classList.remove("active"));
-    btn.classList.add("active");state.businessType=btn.dataset.business;
+    btn.classList.add("active");
+    state.businessType=btn.dataset.business;
+    // A escolha do negócio já abre a próxima etapa, como um app.
+    setTimeout(()=>{
+      if(state.step===1){
+        state.step=2;
+        updateStep();
+        requestAnimationFrame(()=>document.getElementById("businessName")?.focus({preventScroll:true}));
+      }
+    },120);
   });
 
   const fallbackSuggestions={
