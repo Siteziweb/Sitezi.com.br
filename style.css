@@ -235,3 +235,40 @@ body.plans-open .plans-shell{
     overflow:visible!important;
   }
 }
+
+/* =========================================================
+   SITEZI V5.6 — modelos, inspirações e projeto personalizado
+   ========================================================= */
+body.examples-open{overflow-y:auto!important;overflow-x:hidden!important;height:auto!important}
+body.examples-open .topbar{display:none!important}
+.examples-screen{background:#030b15;color:#f7fbff;min-height:100dvh;height:auto!important;overflow:visible!important}
+.examples-shell{width:min(1120px,100%);margin:auto;padding:0 24px 52px}
+.examples-top{height:96px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #26384d}
+.examples-copy{padding:42px 0 28px;max-width:800px}
+.examples-copy h2,.developer-cta h2{font-size:clamp(32px,5vw,52px);line-height:1.04;margin:10px 0}
+.examples-copy p,.developer-cta p{color:#91a0b4;font-size:17px;line-height:1.55}
+.example-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.example-card{border:1px solid #30445d;background:#081321;border-radius:24px;padding:16px;display:flex;flex-direction:column}
+.example-card.available{border-color:#168cff;box-shadow:0 0 0 1px rgba(22,140,255,.35)}
+.example-preview{min-height:210px;border-radius:17px;padding:24px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;position:relative;background:linear-gradient(145deg,#101f31,#06101c)}
+.example-preview:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(42,157,255,.22),transparent 36%)}
+.example-preview span,.example-preview b,.example-preview small{position:relative;z-index:1}
+.example-preview span{font-size:10px;letter-spacing:.15em;font-weight:900;color:#55bdff}
+.example-preview b{font-size:30px;margin:5px 0}.example-preview small{color:#a9b7c9}
+.example-preview.achou{background:linear-gradient(145deg,#1a1707,#050505)}
+.example-preview.achou span{color:#ffd400}.example-preview.robertt{background:linear-gradient(145deg,#2b0808,#080808)}
+.example-preview.robertt span{color:#ff5555}.example-preview.je{background:linear-gradient(145deg,#111827,#05070b)}
+.example-badge{align-self:flex-start;margin:16px 4px 3px;padding:6px 9px;border-radius:999px;background:#0c2945;color:#51baff;font-size:10px;font-weight:900;letter-spacing:.08em}
+.custom-badge{background:#1b2230;color:#9bacbf}
+.example-card h3{font-size:22px;margin:10px 4px 5px}.example-card p{color:#91a0b4;line-height:1.5;margin:0 4px 20px}
+.example-card .btn{margin-top:auto}
+.developer-cta{margin-top:28px;border:1px solid #168cff;border-radius:26px;padding:34px;background:linear-gradient(120deg,#071426,#0a1d34);display:flex;align-items:center;justify-content:space-between;gap:30px}
+.developer-cta>div{max-width:720px}.developer-cta h2{font-size:34px}.developer-cta p{font-size:16px;margin-bottom:0}
+.developer-whatsapp{flex:0 0 auto;text-align:center}
+.examples-bottom{display:flex;justify-content:center;padding-top:28px}
+@media(max-width:800px){
+ .examples-shell{padding:0 16px 36px}.examples-top{height:82px}.examples-copy{padding:28px 0 20px}
+ .examples-copy h2{font-size:34px}.examples-copy p{font-size:15px}
+ .example-grid{grid-template-columns:1fr}.example-preview{min-height:180px}.example-preview b{font-size:26px}
+ .developer-cta{padding:24px;display:block}.developer-cta h2{font-size:28px}.developer-whatsapp{display:block;width:100%;margin-top:20px}
+}

@@ -5,16 +5,17 @@ document.addEventListener("DOMContentLoaded",()=>{
     logoMode:"text",logoData:"",imageMode:"none",photos:[],services:[],whatsapp:"",instagram:"",location:""
   };
   const steps=[...document.querySelectorAll(".step")];
-  const home=$("home"),wizard=$("wizard"),result=$("result"),plans=$("plans");
+  const home=$("home"),wizard=$("wizard"),result=$("result"),plans=$("plans"),examples=$("examples");
 
   function showScreen(el){
     document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
     el.classList.add("active");
 
-    document.body.classList.remove("wizard-open","result-open","plans-open");
+    document.body.classList.remove("wizard-open","result-open","plans-open","examples-open");
     if(el===wizard) document.body.classList.add("wizard-open");
     if(el===result) document.body.classList.add("result-open");
     if(el===plans) document.body.classList.add("plans-open");
+    if(el===examples) document.body.classList.add("examples-open");
   }
   function resetScroll(){
     const active=document.querySelector(".step.active");
@@ -219,7 +220,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const plan=btn.dataset.plan, price=btn.dataset.price;
     alert(`Plano ${plan} — R$ ${price}/mês\n\nA escolha do plano já está pronta. Na próxima integração, este botão abrirá o checkout e, após o pagamento, publicará o site.`);
   });
-  $("seeExample").onclick=()=>{alert("Na próxima etapa podemos adicionar uma galeria de exemplos reais da SITEZI.")};
+  $("seeExample").onclick=()=>showScreen(examples);
   updateStep();
   /* V5.5 — prévia em tela cheia antes da assinatura */
   const fullPreviewScreen=$("fullPreviewScreen");
@@ -280,5 +281,24 @@ document.addEventListener("DOMContentLoaded",()=>{
     $("productImage").value=""; demoProductImage="";
     renderDemoProducts();
   };
+
+  /* V5.6 — modelos, inspirações e desenvolvimento personalizado */
+  const exampleTriggers=[...document.querySelectorAll("button,a")].filter(el=>{
+    const t=(el.textContent||"").trim().toLowerCase();
+    return t==="ver exemplo" || t==="ver exemplos";
+  });
+  exampleTriggers.forEach(el=>{
+    if(el.tagName==="A") el.removeAttribute("href");
+    el.onclick=(e)=>{e.preventDefault();showScreen(examples);};
+  });
+  $("closeExamples").onclick=()=>showScreen(home);
+  $("createFromExamples").onclick=()=>{ showScreen(wizard); goStep(1); };
+  document.querySelectorAll(".use-template").forEach(btn=>btn.onclick=()=>{
+    const business=btn.dataset.business;
+    state.business=business;
+    document.querySelectorAll("[data-business]").forEach(x=>x.classList.toggle("selected",x.dataset.business===business));
+    showScreen(wizard);
+    goStep(2);
+  });
 
 });
