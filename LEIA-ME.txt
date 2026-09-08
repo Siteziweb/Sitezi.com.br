@@ -1,10 +1,17 @@
-SITEZI — IA REAL v2.0
+SITEZI — atualização de conta/créditos/rascunho
 
-1. Substitua no GitHub o arquivo antigo sitezi-ai-client.js por este novo.
-2. No final do index.html, deixe:
-   <script src="script.js?v=5.6.3"></script>
-   <script src="sitezi-ai-client.js?v=2.0"></script>
-3. Commit changes.
-4. Aguarde o GitHub Pages atualizar e teste criando um site.
+1) Substitua o arquivo existente:
+   sitezi-image-ai.js
 
-A chave da OpenAI NÃO está neste arquivo.
+2) Adicione o novo arquivo:
+   sitezi-account-state.js
+
+3) No final do index.html, deixe:
+<script src="script.js?v=5.6.3"></script>
+<script src="sitezi-ai-client.js?v=2.0"></script>
+<script src="sitezi-auth.js?v=1.0"></script>
+<script src="sitezi-checkout-client.js?v=1.0"></script>
+<script src="sitezi-image-ai.js?v=1.1"></script>
+<script src="sitezi-account-state.js?v=1.0"></script>
+</body>
+</html>
