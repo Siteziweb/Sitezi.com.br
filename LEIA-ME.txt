@@ -1,26 +1,25 @@
-SITEZI 5.8.0 — consolidação final
+SITEZI 5.9.0 — criador guiado + produtos vinculados + base do painel do proprietário
 
-Substitua estes 4 arquivos no repositório:
+Substitua:
 - index.html
 - script.js
 - sitezi-auth.js
 - sitezi-image-ai.js
 
-Principais mudanças:
-- Fluxo reduzido de 9 para 8 etapas.
-- Etapa redundante removida.
-- Produtos/serviços + preço + descrição + contato reunidos na etapa 5.
-- Upload de foto removido da etapa 5; fotos ficam apenas na etapa de imagens.
-- Campo de e-mail adicionado.
-- Sugestões simples de slogan e descrição continuam sem consumir crédito de imagem.
-- Login/Minha conta preservados.
-- Três modelos de site ficaram visualmente mais diferentes e mais completos.
-- Modo simples agora gera uma composição profissional mesmo sem fotos.
-- Prévia ganhou CTA de upgrade para IA.
-- IA recebe mais contexto do negócio.
-- Logo com IA solicita PNG e fundo transparente ao backend/provider.
-- Publicação continua protegida por autenticação.
+O que mudou:
+- Cadastro de produto/serviço agora ensina o cliente passo a passo.
+- Nome do item: limite ampliado de 60 para 120 caracteres.
+- Preço explicado como opcional.
+- Descrição explicada e separada do nome.
+- Foto vinculada ao próprio produto/serviço.
+- Na prévia, a foto do item aparece no card do item, junto do nome, preço e descrição.
+- Sem foto, o card usa um visual do modelo em vez de um espaço vazio.
+- Feedback depois de adicionar um item.
+- Botão “Tenho interesse” nos cards quando há WhatsApp.
+- “Minha conta” ganhou a base de “Gerenciar meu site”, permitindo alterar itens e salvar no registro do site.
 
-IMPORTANTE:
-A transparência real da logo depende de a Edge Function/provedor respeitar
-os campos transparentBackground/background enviados pelo frontend.
+Arquitetura:
+A tabela public.sites já possui configuration JSONB e generated_content JSONB, então a versão usa essa estrutura para persistir os dados do site sem criar uma tabela nova nesta etapa.
+
+IMPORTANTE PARA A PRÓXIMA FASE:
+O painel desta versão é a base administrativa dentro da SITEZI. Para que um site publicado em URL própria reflita alterações instantaneamente sem regerar HTML, a publicação precisa renderizar o site a partir dos dados salvos no Supabase (ou ter uma rotina de republicação). Isso deve ser ligado ao mecanismo real de publicação quando ele for finalizado.

@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — AUTENTICAÇÃO v1.2
+   SITEZI — AUTENTICAÇÃO v1.3
    - Login/cadastro real com Supabase Auth
    - API pública SITEZI_AUTH.openLogin()
    - preserva o progresso do criador
@@ -94,6 +94,7 @@
 
       <div id="siteziAuthLoggedIn" class="sitezi-auth-userbox hidden">
         <div class="sitezi-auth-email" id="siteziAuthEmail"></div>
+        <button id="siteziManageSite" class="sitezi-auth-submit" type="button">Gerenciar meu site</button>
         <button id="siteziAuthContinue" class="sitezi-auth-submit" type="button">Continuar →</button>
         <button id="siteziAuthLogout" class="sitezi-auth-logout" type="button">Sair da conta</button>
       </div>
@@ -102,6 +103,82 @@
     </div>
   `;
   document.body.appendChild(modal);
+
+  const manageModal = document.createElement("div");
+  manageModal.className = "sitezi-auth-modal hidden";
+  manageModal.id = "siteziManageModal";
+  manageModal.innerHTML = `
+    <div class="sitezi-auth-card" role="dialog" aria-modal="true">
+      <div class="sitezi-auth-head"><strong>Gerenciar meu site</strong><button id="siteziManageClose" class="sitezi-auth-close" type="button">×</button></div>
+      <p class="sitezi-auth-copy">Aqui você pode atualizar produtos, preços e descrições depois de criar o site.</p>
+      <div id="siteziManageList" style="display:grid;gap:10px"></div>
+      <button id="siteziManageAdd" class="sitezi-auth-submit" type="button" style="margin-top:12px;width:100%">+ Adicionar produto ou serviço</button>
+      <button id="siteziManageSave" class="sitezi-auth-submit" type="button" style="margin-top:10px;width:100%">Salvar alterações</button>
+      <div id="siteziManageMessage" class="sitezi-auth-message"></div>
+    </div>`;
+  document.body.appendChild(manageModal);
+
+  let managedProducts = [];
+
+  function renderManagedProducts() {
+    const list = $("siteziManageList");
+    if (!list) return;
+    if (!managedProducts.length) {
+      list.innerHTML = `<div class="sitezi-auth-email">Nenhum produto ou serviço cadastrado.</div>`;
+      return;
+    }
+    list.innerHTML = managedProducts.map((p,i)=>`
+      <div style="border:1px solid #253957;border-radius:14px;padding:12px;background:#040a13;display:grid;gap:8px">
+        <input data-m-name="${i}" value="${String(p.name||"").replace(/"/g,"&quot;")}" placeholder="Nome do produto ou serviço" maxlength="120" style="border:1px solid #293c5a;background:#07101d;color:#fff;border-radius:10px;padding:11px">
+        <input data-m-price="${i}" value="${String(p.price||"").replace(/"/g,"&quot;")}" placeholder="Preço (opcional)" maxlength="40" style="border:1px solid #293c5a;background:#07101d;color:#fff;border-radius:10px;padding:11px">
+        <textarea data-m-desc="${i}" placeholder="Descrição" maxlength="500" style="min-height:82px;border:1px solid #293c5a;background:#07101d;color:#fff;border-radius:10px;padding:11px">${String(p.description||"").replace(/</g,"&lt;")}</textarea>
+        <button data-m-remove="${i}" type="button" class="sitezi-auth-logout">Excluir item</button>
+      </div>`).join("");
+    list.querySelectorAll("[data-m-remove]").forEach(b=>b.onclick=()=>{managedProducts.splice(Number(b.dataset.mRemove),1);renderManagedProducts();});
+  }
+
+  function collectManagedProducts() {
+    managedProducts = managedProducts.map((p,i)=>({
+      ...p,
+      name: document.querySelector(`[data-m-name="${i}"]`)?.value.trim() || p.name || "",
+      price: document.querySelector(`[data-m-price="${i}"]`)?.value.trim() || "",
+      description: document.querySelector(`[data-m-desc="${i}"]`)?.value.trim() || ""
+    })).filter(p=>p.name);
+  }
+
+  async function openManage() {
+    if (!currentUser) return openModal("login");
+    const s = window.SITEZI_BUILDER_STATE || {};
+    managedProducts = Array.isArray(s.products) ? JSON.parse(JSON.stringify(s.products)) : [];
+    renderManagedProducts();
+    modal.classList.add("hidden");
+    manageModal.classList.remove("hidden");
+    document.body.style.overflow="hidden";
+  }
+
+  $("siteziManageSite")?.addEventListener("click", openManage);
+  $("siteziManageClose")?.addEventListener("click", ()=>{manageModal.classList.add("hidden");document.body.style.overflow="";});
+  $("siteziManageAdd")?.addEventListener("click", ()=>{
+    collectManagedProducts();
+    managedProducts.push({name:"",price:"",description:"",photo:""});
+    renderManagedProducts();
+  });
+  $("siteziManageSave")?.addEventListener("click", async ()=>{
+    collectManagedProducts();
+    const s = window.SITEZI_BUILDER_STATE;
+    if (s) {
+      s.products = JSON.parse(JSON.stringify(managedProducts));
+      window.dispatchEvent(new CustomEvent("sitezi:builder-state",{detail:s}));
+    }
+    const msg = $("siteziManageMessage");
+    try {
+      if (msg) msg.textContent="Salvando alterações...";
+      await saveDraftSite();
+      if (msg) { msg.textContent="✓ Alterações salvas. Gere/atualize a prévia para visualizar."; msg.className="sitezi-auth-message ok"; }
+    } catch(e) {
+      if (msg) { msg.textContent="Não foi possível salvar agora."; msg.className="sitezi-auth-message error"; }
+    }
+  });
 
   const message = $("siteziAuthMessage");
 
@@ -412,6 +489,6 @@
     updateUI();
   });
 
-  document.documentElement.dataset.siteziAuth = "1.2";
-  console.info("[SITEZI] Supabase Auth v1.2 carregado.");
+  document.documentElement.dataset.siteziAuth = "1.3";
+  console.info("[SITEZI] Supabase Auth v1.3 carregado.");
 })();

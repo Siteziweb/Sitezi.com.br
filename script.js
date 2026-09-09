@@ -231,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("colorPreview").style.setProperty("--accent", state.color);
 
   let draftProductDescription = "";
+  let draftProductPhoto = "";
 
   function descriptionSuggestion(name) {
     const item = name || "este serviço";
@@ -247,6 +248,18 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     return byType[state.businessType] || byType.Outro;
   }
+
+  $("productPhoto")?.addEventListener("change", e => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      draftProductPhoto = reader.result;
+      $("productPhotoPreview").innerHTML = `<img src="${reader.result}" alt="Foto do produto ou serviço">`;
+      $("productPhotoPreview").classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+  });
 
   $("suggestProductDescription").onclick = () => {
     const name = $("productName").value.trim();
@@ -269,7 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     box.innerHTML = state.products.map((p, i) => `
-      <div class="sitezi-builder-item">
+      <div class="sitezi-builder-item ${p.photo ? "has-photo" : ""}">
+        ${p.photo ? `<img class="item-thumb" src="${p.photo}" alt="${esc(p.name)}">` : ""}
         <div>
           <b>${esc(p.name)}</b>
           ${p.price ? `<span>${esc(p.price)}</span>` : ""}
@@ -303,13 +317,21 @@ document.addEventListener("DOMContentLoaded", () => {
     state.products.push({
       name,
       price,
-      description: description || descriptionSuggestion(name)
+      description: description || descriptionSuggestion(name),
+      photo: draftProductPhoto || ""
     });
 
     $("productName").value = "";
     $("productPrice").value = "";
     $("productDescription").value = "";
+    $("productPhoto").value = "";
+    $("productPhotoPreview").innerHTML = "";
+    $("productPhotoPreview").classList.add("hidden");
     draftProductDescription = "";
+    draftProductPhoto = "";
+
+    $("productAddedFeedback").classList.remove("hidden");
+    setTimeout(() => $("productAddedFeedback")?.classList.add("hidden"), 3500);
 
     renderProducts();
     emitBuilderState();
@@ -578,12 +600,15 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
     const productCards = state.products.map((item, i) => `
-      <article class="service-card">
-        <div class="service-index">${String(i + 1).padStart(2, "0")}</div>
-        <div class="service-icon">${p.icon}</div>
-        <h3>${esc(item.name)}</h3>
-        ${item.price ? `<strong class="service-price">${esc(item.price)}</strong>` : ""}
-        <p>${esc(item.description || descriptionSuggestion(item.name))}</p>
+      <article class="service-card ${item.photo ? "with-photo" : ""}">
+        ${item.photo ? `<img class="service-photo" src="${item.photo}" alt="${esc(item.name)}">` : `<div class="service-visual"><span>${p.icon}</span></div>`}
+        <div class="service-content">
+          <div class="service-index">${String(i + 1).padStart(2, "0")}</div>
+          <h3>${esc(item.name)}</h3>
+          ${item.price ? `<strong class="service-price">${esc(item.price)}</strong>` : ""}
+          <p>${esc(item.description || descriptionSuggestion(item.name))}</p>
+          ${wa ? `<a class="service-contact" href="${waHref}" target="_blank">Tenho interesse →</a>` : ""}
+        </div>
       </article>
     `).join("");
 
@@ -640,7 +665,12 @@ img{display:block}
 .section-head h2{margin:10px 0;font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:-2px}
 .section-head p{line-height:1.7}
 .services{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.service-card{position:relative;min-height:230px;padding:22px}
+.service-card{position:relative;min-height:230px;padding:0;overflow:hidden}
+.service-photo,.service-visual{width:100%;height:190px;object-fit:cover}
+.service-visual{display:grid;place-items:center;font-size:46px;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01))}
+.service-content{padding:22px}
+.service-contact{display:inline-flex;margin-top:12px;font-size:12px;font-weight:900}
+
 .service-index{font-size:11px;font-weight:900}
 .service-icon{float:right;font-size:22px}
 .service-card h3{margin:34px 0 7px;font-size:21px}
@@ -679,7 +709,7 @@ body.tpl-modern{background:#070b11;color:#f7fbff}
 .tpl-modern .visual-lines{border:1px solid #273747;background:linear-gradient(90deg,${state.color}22,transparent)}
 .tpl-modern .section.alt{background:#0e141b}
 .tpl-modern .section-head p{color:#98a7b7}
-.tpl-modern .service-card{border:1px solid #293642;border-radius:20px;background:#0b1016}
+.tpl-modern .service-card{border:1px solid #293642;border-radius:20px;background:#0b1016}.tpl-modern .service-contact{color:${state.color}}
 .tpl-modern .service-index{color:#66798d}.tpl-modern .service-icon{color:${state.color}}.tpl-modern .service-price{color:${state.color}}.tpl-modern .service-card p{color:#8d9bac}
 .tpl-modern .trust-strip{border:1px solid #263543;border-radius:18px;overflow:hidden}.tpl-modern .trust-item{background:#0b1118}.tpl-modern .trust-item span{color:${state.color}}
 .tpl-modern .about-panel{border:1px solid #2b3845;border-radius:24px;background:#0d131a}
@@ -711,7 +741,7 @@ body.tpl-premium{background:#f5f0e8;color:#191714;font-family:Georgia,"Times New
 .tpl-premium .section-head h2{font-weight:500}
 .tpl-premium .section-head p{color:#776d61}
 .tpl-premium .services{gap:24px}
-.tpl-premium .service-card{border-top:1px solid #bfb19e;padding:26px 4px 18px}
+.tpl-premium .service-card{border-top:1px solid #bfb19e}.tpl-premium .service-contact{color:#4e4439}
 .tpl-premium .service-index{color:#9b8b76;font-family:Inter,Arial,sans-serif}.tpl-premium .service-icon{color:${state.color}}.tpl-premium .service-price{color:#4e4439}
 .tpl-premium .service-card p{color:#756b60}
 .tpl-premium .trust-strip{border-top:1px solid #c7b8a5;border-bottom:1px solid #c7b8a5}.tpl-premium .trust-item span{color:${state.color};font-family:Inter,Arial,sans-serif}
@@ -736,7 +766,7 @@ body.tpl-dynamic{background:#101014;color:#fff}
 .tpl-dynamic .section.alt{background:#18181e}
 .tpl-dynamic .section-head h2{text-transform:uppercase}.tpl-dynamic .section-head p{color:#aaaab5}
 .tpl-dynamic .services{gap:12px}
-.tpl-dynamic .service-card{border-radius:22px;background:#222229;box-shadow:inset 0 5px 0 ${state.color}}
+.tpl-dynamic .service-card{border-radius:22px;background:#222229;box-shadow:inset 0 5px 0 ${state.color}}.tpl-dynamic .service-contact{color:#fff}
 .tpl-dynamic .service-card:nth-child(even){background:${state.color}}
 .tpl-dynamic .service-index{color:#9696a3}.tpl-dynamic .service-card:nth-child(even) .service-index,.tpl-dynamic .service-card:nth-child(even) p{color:rgba(255,255,255,.82)}
 .tpl-dynamic .service-price{color:#fff}.tpl-dynamic .service-card p{color:#a4a4af}

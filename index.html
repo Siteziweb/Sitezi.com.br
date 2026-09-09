@@ -83,6 +83,22 @@
     .sitezi-upgrade-card p{margin:0;color:#9badc3;line-height:1.5}
     .sitezi-upgrade-card .btn{justify-self:start}
 
+
+    .sitezi-field-guide{display:grid;gap:7px;color:#eaf2ff}
+    .sitezi-field-guide>b{font-size:14px}
+    .sitezi-field-guide>b em,.sitezi-product-photo em{font-style:normal;color:#8194aa;font-weight:700}
+    .sitezi-field-guide>small{color:#8fa1b8;line-height:1.45}
+    .sitezi-product-photo{display:flex;align-items:center;gap:12px;border:1px dashed #31557e;background:#081523;border-radius:15px;padding:14px;cursor:pointer}
+    .sitezi-product-photo .spark{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#0c3154;color:#57bcff;font-size:20px;flex:0 0 auto}
+    .sitezi-product-photo span:nth-child(2){display:grid;gap:3px}
+    .sitezi-product-photo b{font-size:14px}.sitezi-product-photo small{color:#8fa1b8;line-height:1.4}
+    .sitezi-product-photo input{display:none}
+    .sitezi-product-photo-preview{border:1px solid #263d5b;border-radius:15px;padding:10px;background:#07111e}
+    .sitezi-product-photo-preview img{width:100%;max-height:230px;object-fit:cover;border-radius:11px}
+    .sitezi-added-feedback{padding:12px;border:1px solid #176846;background:#071b14;color:#a9efcd;border-radius:12px;font-weight:800}
+    .sitezi-builder-item.has-photo{grid-template-columns:76px 1fr auto}
+    .sitezi-builder-item .item-thumb{width:76px;height:76px;object-fit:cover;border-radius:11px}
+
     @media(max-width:700px){
       .sitezi-builder-fields,.contact-merge{grid-template-columns:1fr}
       .contact-merge .full{grid-column:auto}
@@ -222,16 +238,38 @@
 
             <div class="sitezi-builder-grid">
               <div class="sitezi-builder-fields">
-                <input id="productName" type="text" placeholder="Nome do produto ou serviço" maxlength="60">
-                <input id="productPrice" type="text" placeholder="Preço (opcional)" maxlength="30">
-                <textarea id="productDescription" class="full" placeholder="Descrição curta"></textarea>
+                <label class="sitezi-field-guide full">
+                  <b>1. Nome do produto ou serviço</b>
+                  <small>Digite apenas o nome do que você vende ou oferece. Ex.: Troca de óleo.</small>
+                  <input id="productName" type="text" placeholder="Ex.: Troca de óleo" maxlength="120">
+                </label>
+
+                <label class="sitezi-field-guide full">
+                  <b>2. Preço <em>(opcional)</em></b>
+                  <small>Informe o valor somente se quiser mostrá-lo no site. Ex.: R$ 129,90.</small>
+                  <input id="productPrice" type="text" placeholder="Ex.: R$ 129,90" maxlength="40">
+                </label>
+
+                <label class="sitezi-field-guide full">
+                  <b>3. Descrição</b>
+                  <small>Explique o que está incluído neste produto ou serviço. Não precisa repetir o nome.</small>
+                  <textarea id="productDescription" placeholder="Ex.: Troca do óleo do motor com verificação do filtro e dos principais níveis." maxlength="500"></textarea>
+                </label>
 
                 <button id="suggestProductDescription" class="sitezi-suggestion-action full" type="button">
                   <span class="spark">✦</span>
-                  <span><b>Gerar uma descrição</b><small>A SITEZI sugere um texto a partir do item e do seu tipo de negócio.</small></span>
+                  <span><b>Me ajude a criar a descrição</b><small>A SITEZI cria uma sugestão usando o nome acima. Você pode editar antes de adicionar.</small></span>
                 </button>
 
-                <button id="addProduct" type="button" class="btn outline full">+ Adicionar produto ou serviço</button>
+                <label class="sitezi-product-photo full">
+                  <span class="spark">↑</span>
+                  <span><b>4. Foto deste produto ou serviço <em>(opcional)</em></b><small>Envie uma foto real deste trabalho ou produto. Ela aparecerá junto deste item no site.</small></span>
+                  <input id="productPhoto" type="file" accept="image/*">
+                </label>
+                <div id="productPhotoPreview" class="sitezi-product-photo-preview full hidden"></div>
+
+                <button id="addProduct" type="button" class="btn outline full">+ Adicionar este produto ou serviço</button>
+                <small id="productAddedFeedback" class="sitezi-added-feedback full hidden">✓ Item adicionado! Cadastre outro ou continue para a próxima etapa.</small>
               </div>
 
               <div id="productDemoList" class="sitezi-builder-list"></div>
@@ -346,9 +384,9 @@
   </main>
 </div>
 
-<script src="script.js?v=5.8.0"></script>
+<script src="script.js?v=5.9.0"></script>
 <script src="sitezi-ai-client.js?v=2.0"></script>
-<script src="sitezi-auth.js?v=1.2"></script>
+<script src="sitezi-auth.js?v=1.3"></script>
 <script src="sitezi-checkout-client.js?v=1.0"></script>
 <script src="sitezi-image-ai.js?v=1.4"></script>
 <script src="sitezi-account-state.js?v=1.0"></script>
