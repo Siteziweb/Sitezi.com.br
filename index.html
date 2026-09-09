@@ -112,6 +112,45 @@
       .template-thumb{height:86px}
     }
   </style>
+
+  <style id="sitezi-benefit-strip-fix-v1">
+    /* SITEZI 6.5 — corrige títulos/subtítulos da faixa de benefícios */
+    .benefit-strip article{
+      display:grid!important;
+      grid-template-columns:38px minmax(0,1fr)!important;
+      grid-template-rows:auto auto!important;
+      column-gap:10px!important;
+      row-gap:3px!important;
+      align-items:center!important;
+      min-width:0!important;
+    }
+    .benefit-strip article>b{
+      grid-column:2!important;
+      grid-row:1!important;
+      display:block!important;
+      line-height:1.15!important;
+      min-width:0!important;
+    }
+    .benefit-strip article>span{
+      grid-column:2!important;
+      grid-row:2!important;
+      display:block!important;
+      line-height:1.25!important;
+      min-width:0!important;
+    }
+    .benefit-strip article>svg,
+    .benefit-strip article>i:first-child{
+      grid-column:1!important;
+      grid-row:1 / 3!important;
+    }
+    @media(max-width:920px){
+      .benefit-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+    }
+    @media(max-width:560px){
+      .benefit-strip{grid-template-columns:1fr!important}
+    }
+  </style>
+
 </head>
 
 <body>
@@ -393,7 +432,7 @@
 <script src="sitezi-logo-display.js?v=1.1"></script>
 <script src="sitezi-site-design.js?v=1.0"></script>
 <script src="sitezi-account-state.js?v=2.2"></script>
-<script src="sitezi-dynamic-examples.js?v=2.0"></script>
+<script src="sitezi-dynamic-examples.js?v=2.1"></script>
 <script src="sitezi-premium-engine.js?v=2.0"></script>
 
 <script>

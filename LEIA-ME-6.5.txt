@@ -1,0 +1,18 @@
+SITEZI 6.5 — CORREÇÕES DOS MODELOS + HOME
+
+Substitua na raiz:
+- index.html
+- sitezi-dynamic-examples.js
+- modelos.html
+- modelos.js
+- modelos.css
+
+Corrigido:
+1) Faixa inferior da home: título e subtítulo não ficam mais sobrepostos no notebook.
+2) modelos.html agora usa os mesmos IDs reais do motor 2.0.
+3) "Usar este modelo" envia o preset real para o criador principal.
+4) "Criar do meu jeito" disponível na página de modelos.
+5) Página de modelos deixa claro que a base é adaptável e gera variações.
+6) Cache atualizado: modelos v2 e template system v2.1.
+
+Não consome créditos de IA.

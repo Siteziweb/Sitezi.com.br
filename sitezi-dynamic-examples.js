@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — MODELOS REAIS + EXEMPLOS DINÂMICOS v2.0
+   SITEZI — MODELOS REAIS + EXEMPLOS DINÂMICOS v2.1
    - transforma os exemplos em famílias reais de design
    - mantém "Criar do meu jeito"
    - salva a família escolhida em state.template
@@ -151,6 +151,49 @@
     };
   }
 
+
+  function applyExternalSelection(){
+    const s=state(); if(!s) return;
+    let presetId="";
+    let custom=false;
+    try{
+      const params=new URLSearchParams(location.search);
+      presetId=params.get("preset")||"";
+      custom=params.get("custom")==="1";
+      if(!presetId) presetId=localStorage.getItem("sitezi_model_preset")||"";
+      if(!custom) custom=localStorage.getItem("sitezi_model_custom")==="1";
+    }catch(_){}
+    if(custom){
+      try{
+        localStorage.removeItem("sitezi_model_custom");
+        localStorage.removeItem("sitezi_model_preset");
+      }catch(_){}
+      s.template="modern";
+      emit();
+      return;
+    }
+    const p=presetById(presetId);
+    if(!p) return;
+    s.businessType=p.business;
+    s.template=p.id;
+    document.querySelectorAll(".business").forEach(b=>b.classList.toggle("active",b.dataset.business===p.business));
+    emit();
+    try{
+      localStorage.removeItem("sitezi_model_preset");
+      localStorage.removeItem("sitezi_model_custom");
+    }catch(_){}
+    setTimeout(()=>{
+      if(typeof window.SITEZI_SHOW_SCREEN==="function" && $("wizard")) window.SITEZI_SHOW_SCREEN($("wizard"));
+      s.step=2;
+      document.querySelectorAll(".step").forEach(el=>el.classList.toggle("active",Number(el.dataset.step)===2));
+      if($("progressText")) $("progressText").textContent="2 de 8";
+      if($("progressBar")) $("progressBar").style.width="25%";
+      updateWizardPresetNote();
+      applyExamples();
+      $("businessName")?.focus({preventScroll:true});
+    },80);
+  }
+
   function install(){
     installStyle();
     $("seeExample")?.addEventListener("click",e=>{e.preventDefault();openGallery();},true);
@@ -165,9 +208,9 @@
     window.addEventListener("sitezi:builder-state",()=>{applyExamples();updateWizardPresetNote();});
     const obs=new MutationObserver(()=>{ if(document.querySelector('.step[data-step="3"].active')) updateWizardPresetNote(); });
     if($("wizard")) obs.observe($("wizard"),{attributes:true,subtree:true,attributeFilter:["class"]});
-    applyExamples(); updateWizardPresetNote();
+    applyExamples(); updateWizardPresetNote(); applyExternalSelection();
     window.SITEZI_TEMPLATE_SYSTEM={PRESETS,openGallery,presetById};
-    document.documentElement.dataset.siteziTemplates="2.0";
+    document.documentElement.dataset.siteziTemplates="2.1";
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",install,{once:true}); else install();
