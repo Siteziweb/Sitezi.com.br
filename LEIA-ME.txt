@@ -1,15 +1,22 @@
-MANO — SÓ OS 2 INDEX
+SITEZI 6.1.1 — CORREÇÕES DE INTERFACE + RECONHECIMENTO DE PLANO
 
-1) index.html
-   -> substituir o index.html que está na RAIZ do GitHub.
+SUBSTITUA NA RAIZ DO GITHUB:
+1. index.html
+2. sitezi-auth.js
+3. sitezi-account-state.js
+4. sitezi-site-design.js
 
-2) site/index.html
-   -> este arquivo precisa ficar DENTRO da pasta "site".
+CORREÇÕES DESTA VERSÃO:
+- Créditos aparecem também na tela final.
+- Card UPGRADE COM IA tem botão X e pode ser dispensado.
+- Visual premium do preview é carregado corretamente.
+- Publicação e barra de conta agora usam a MESMA fonte de verdade para assinatura.
+- A verificação de plano usa a função segura do Supabase:
+  get_my_sitezi_subscription()
+- Se a assinatura estiver ativa e dentro da validade, o cliente publica sem voltar à tela de planos.
+- Se não houver assinatura válida, a tela de planos continua sendo exibida.
+- Nenhuma geração extra de IA foi adicionada e não há custo adicional de IA.
 
-Estrutura final:
-/
-├── index.html
-└── site/
-    └── index.html
-
-Não coloque os dois index.html na raiz.
+IMPORTANTE:
+- A função get_my_sitezi_subscription() já foi criada no Supabase.
+- NÃO mexa na pasta /site.

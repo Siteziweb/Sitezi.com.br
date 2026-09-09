@@ -329,7 +329,8 @@
         <div class="preview-toolbar"><div><button class="device active" data-device="mobile">Celular</button><button class="device" data-device="desktop">Desktop</button></div><span id="previewDomain">meunegocio.sitezi.com.br</span></div>
         <div id="previewStage" class="preview-stage mobile"><iframe id="sitePreview" title="Prévia do site"></iframe></div>
 
-        <div class="sitezi-upgrade-card">
+        <div id="siteziUpgradeCard" class="sitezi-upgrade-card">
+          <button id="closeUpgradeAI" class="sitezi-upgrade-close" type="button" aria-label="Fechar aviso de recursos com IA">×</button>
           <span>✦ UPGRADE COM IA</span>
           <h3>Quer deixar seu site ainda mais profissional?</h3>
           <p>Com um plano ativo, a SITEZI pode gerar logo e imagens personalizadas para o seu negócio usando as informações que você já cadastrou.</p>
@@ -386,10 +387,50 @@
 
 <script src="script.js?v=5.9.0"></script>
 <script src="sitezi-ai-client.js?v=2.0"></script>
-<script src="sitezi-auth.js?v=2.0"></script>
+<script src="sitezi-auth.js?v=2.1"></script>
 <script src="sitezi-checkout-client.js?v=1.0"></script>
 <script src="sitezi-image-ai.js?v=1.4"></script>
 <script src="sitezi-logo-display.js?v=1.0"></script>
-<script src="sitezi-account-state.js?v=2.0"></script>
+<script src="sitezi-site-design.js?v=1.0"></script>
+<script src="sitezi-account-state.js?v=2.1"></script>
+
+<script>
+(() => {
+  "use strict";
+  const KEY="sitezi_upgrade_ai_dismissed_session";
+  const card=()=>document.getElementById("siteziUpgradeCard");
+  const close=()=>document.getElementById("closeUpgradeAI");
+
+  function hideCard(save=false){
+    const el=card();
+    if(el) el.classList.add("hidden");
+    if(save){
+      try{sessionStorage.setItem(KEY,"1");}catch(_){}
+    }
+  }
+
+  function showCard(){
+    const el=card();
+    if(!el) return;
+    let dismissed=false;
+    try{dismissed=sessionStorage.getItem(KEY)==="1";}catch(_){}
+    if(!dismissed) el.classList.remove("hidden");
+  }
+
+  document.addEventListener("click",e=>{
+    if(e.target?.closest?.("#closeUpgradeAI")) hideCard(true);
+  });
+
+  try{
+    if(sessionStorage.getItem(KEY)==="1") hideCard(false);
+  }catch(_){}
+
+  window.addEventListener("sitezi:account-info",e=>{
+    if(e.detail?.active) hideCard(false);
+    else showCard();
+  });
+})();
+</script>
+
 </body>
 </html>

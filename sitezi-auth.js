@@ -255,13 +255,21 @@
     return data;
   }
 
+  async function getSubscriptionStatus(){
+    if(!currentUser) return {active:false,plan:null,status:null,current_period_end:null};
+    const {data,error}=await client.rpc("get_my_sitezi_subscription");
+    if(error){
+      console.warn("[SITEZI] Falha ao consultar assinatura centralizada.",error);
+      return {active:false,plan:null,status:null,current_period_end:null,error:true};
+    }
+    return data&&typeof data==="object"
+      ? data
+      : {active:false,plan:null,status:null,current_period_end:null};
+  }
+
   async function hasActivePlan(){
-    const now=new Date().toISOString();
-    const {data,error}=await client.from("subscriptions")
-      .select("id").eq("user_id",currentUser.id).eq("status","active")
-      .gt("current_period_end",now).limit(1).maybeSingle();
-    if(error) console.warn("[SITEZI] Falha ao consultar plano.",error);
-    return !!data;
+    const info=await getSubscriptionStatus();
+    return info.active===true;
   }
 
   async function publishCurrentSite(){
@@ -469,7 +477,7 @@
 
   window.SITEZI_AUTH={
     openLogin:openModal,close:closeModal,getUser:()=>currentUser,getClient:()=>client,isLoggedIn:()=>!!currentUser,
-    saveCurrentSite,publishCurrentSite,openManage,listMySites
+    saveCurrentSite,publishCurrentSite,openManage,listMySites,getSubscriptionStatus,hasActivePlan
   };
   window.addEventListener("sitezi:open-login",e=>openModal(e.detail?.mode||"login"));
 
@@ -480,6 +488,6 @@
   setTimeout(()=>{protectPublishButton("publishSite");protectPublishButton("publishFromPreview");},0);
 
   client.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;updateUI();});
-  document.documentElement.dataset.siteziAuth="2.0";
-  console.info("[SITEZI] Auth/Publicação v2.0 carregado.");
+  document.documentElement.dataset.siteziAuth="2.1";
+  console.info("[SITEZI] Auth/Publicação v2.1 carregado.");
 })();
