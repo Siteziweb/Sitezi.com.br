@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — ESTADO DA CONTA v2.1
+   SITEZI — ESTADO DA CONTA v2.2
    - exibe plano e créditos
    - NÃO sobrescreve rascunhos/sites publicados
    - persistência do site fica centralizada no sitezi-auth.js v2
@@ -21,7 +21,7 @@
     .sitezi-creditbar.visible{display:flex}.sitezi-credit-dot{width:7px;height:7px;border-radius:50%;background:#2da8ff;box-shadow:0 0 0 4px rgba(45,168,255,.12);flex:0 0 auto}
     .sitezi-credit-item{color:#a9c2dd}.sitezi-credit-item b{color:#fff}.sitezi-creditbar.no-plan .sitezi-credit-dot{background:#76869a;box-shadow:none}
     #siteziTopCredits{margin-left:auto;margin-right:8px}.wizard-head #siteziWizardCredits{margin-left:auto;margin-right:10px}.result-top #siteziResultCredits{margin-left:auto;margin-right:10px}
-    @media(max-width:850px){.topbar #siteziTopCredits.visible{display:flex!important;margin-left:auto;margin-right:4px;padding:6px 8px;gap:5px;min-height:32px;font-size:9.5px;max-width:190px;overflow:hidden}.topbar #siteziTopCredits .sitezi-credit-dot{display:none}.topbar #siteziTopCredits .sitezi-plan{max-width:72px;overflow:hidden;text-overflow:ellipsis}.wizard-head #siteziWizardCredits{margin-left:auto;margin-right:2px;padding:6px 8px;gap:6px;font-size:10px}.wizard-head #siteziWizardCredits .sitezi-plan{display:none}.result-top #siteziResultCredits.visible{display:flex!important;margin-left:auto;margin-right:8px;padding:6px 8px;gap:5px;min-height:32px;font-size:9.5px;max-width:195px;overflow:hidden}.result-top #siteziResultCredits .sitezi-credit-dot{display:none}.result-top #siteziResultCredits .sitezi-plan{display:none}}
+    @media(max-width:850px){.wizard-head{flex-wrap:wrap}.wizard-head #siteziWizardCredits.visible{order:3;width:100%;box-sizing:border-box;justify-content:center;margin:6px 0 0!important}.topbar #siteziTopCredits.visible{display:flex!important;margin-left:auto;margin-right:4px;padding:6px 8px;gap:5px;min-height:32px;font-size:9.5px;max-width:190px;overflow:hidden}.topbar #siteziTopCredits .sitezi-credit-dot{display:none}.topbar #siteziTopCredits .sitezi-plan{max-width:72px;overflow:hidden;text-overflow:ellipsis}.wizard-head #siteziWizardCredits{margin-left:auto;margin-right:2px;padding:6px 8px;gap:6px;font-size:10px}.wizard-head #siteziWizardCredits .sitezi-plan{display:none}.result-top #siteziResultCredits.visible{display:flex!important;margin-left:auto;margin-right:8px;padding:6px 8px;gap:5px;min-height:32px;font-size:9.5px;max-width:195px;overflow:hidden}.result-top #siteziResultCredits .sitezi-credit-dot{display:none}.result-top #siteziResultCredits .sitezi-plan{display:none}}
     @media(max-width:560px){.topbar #siteziTopCredits.visible{max-width:155px;font-size:9px;padding:5px 7px}.topbar #siteziTopCredits .sitezi-plan{max-width:58px}.topbar #siteziTopCredits .sitezi-credit-item{font-size:9px}.result-top #siteziResultCredits.visible{max-width:170px;font-size:9px;padding:5px 7px}.result-top #siteziResultCredits .sitezi-credit-item{font-size:9px}}
   `;
   document.head.appendChild(style);
@@ -33,11 +33,28 @@
   }
   function install(){
     const top=document.querySelector(".topbar");
-    if(top&&!$("siteziTopCredits")){const b=makeBar("siteziTopCredits");const create=$("topCreate");create?top.insertBefore(b,create):top.appendChild(b);}
+    if(top&&!$("siteziTopCredits")){
+      const b=makeBar("siteziTopCredits");
+      const create=$("topCreate");
+      if(create&&create.parentElement===top) top.insertBefore(b,create);
+      else top.appendChild(b);
+    }
+
     const head=document.querySelector(".wizard-head");
-    if(head&&!$("siteziWizardCredits")){const b=makeBar("siteziWizardCredits");const cancel=$("cancelWizard");cancel?head.insertBefore(b,cancel):head.appendChild(b);}
+    if(head&&!$("siteziWizardCredits")){
+      const b=makeBar("siteziWizardCredits");
+      const actions=$("wizardLogin")?.parentElement;
+      if(actions&&actions.parentElement===head) head.insertBefore(b,actions);
+      else head.appendChild(b);
+    }
+
     const result=document.querySelector(".result-top");
-    if(result&&!$("siteziResultCredits")){const b=makeBar("siteziResultCredits");const create=$("newSite");create?result.insertBefore(b,create):result.appendChild(b);}
+    if(result&&!$("siteziResultCredits")){
+      const b=makeBar("siteziResultCredits");
+      const create=$("newSite");
+      if(create&&create.parentElement===result) result.insertBefore(b,create);
+      else result.appendChild(b);
+    }
   }
   function render(info){
     [$("siteziTopCredits"),$("siteziWizardCredits"),$("siteziResultCredits")].filter(Boolean).forEach(bar=>{
@@ -71,5 +88,5 @@
   client.auth.onAuthStateChange(async(_e,s)=>{currentUser=s?.user||null;await refresh();});
   window.addEventListener("sitezi:credits-changed",refresh);
   window.SITEZI_ACCOUNT_STATE={refresh};
-  document.documentElement.dataset.siteziAccountState="2.1";
+  document.documentElement.dataset.siteziAccountState="2.2";
 })();
