@@ -1,19 +1,17 @@
 /* =========================================================
-   SITEZI — LOGO FINAL v2.4
-   Arquitetura definitiva:
-   - IA gera somente o SÍMBOLO;
-   - nome da empresa é sempre texto HTML real;
-   - composição é gravada no próprio srcdoc da prévia;
-   - por isso a tela cheia e a publicação usam a mesma logo;
-   - upload manual de logo continua intacto.
+   SITEZI — LOGO FINAL v2.5
+   - IA gera somente o símbolo;
+   - nome da empresa permanece texto HTML real;
+   - símbolo maior e legível no mobile;
+   - mesma composição na prévia, tela cheia e publicação;
+   - suporte WhatsApp compacto no celular, sem cobrir ações.
    ========================================================= */
 (() => {
   "use strict";
 
-  const VERSION = "2.4";
-  const STYLE_ID = "sitezi-logo-final-v24";
-  const SOURCE_MARK = "sitezi-logo-source-v24";
-
+  const VERSION = "2.5";
+  const STYLE_ID = "sitezi-logo-final-v25";
+  const SOURCE_MARK = "siteziLogoSourceV25";
   const state = () => window.SITEZI_BUILDER_STATE || {};
 
   function cssText() {
@@ -21,30 +19,30 @@
       .brand,.site-brand-wrap{
         display:flex!important;
         align-items:center!important;
-        gap:10px!important;
+        gap:11px!important;
         min-width:0!important;
         flex:1 1 auto!important;
-        max-width:min(100%,360px)!important;
+        max-width:min(100%,390px)!important;
       }
 
       .sitezi-ai-symbol{
         display:block!important;
-        width:52px!important;
-        height:52px!important;
-        min-width:52px!important;
-        max-width:52px!important;
-        min-height:52px!important;
-        max-height:52px!important;
+        width:60px!important;
+        height:60px!important;
+        min-width:60px!important;
+        max-width:60px!important;
+        min-height:60px!important;
+        max-height:60px!important;
         object-fit:contain!important;
         object-position:center!important;
-        flex:0 0 52px!important;
+        flex:0 0 60px!important;
         border-radius:10px!important;
       }
 
       .sitezi-ai-brand-name{
         display:block!important;
         min-width:0!important;
-        max-width:235px!important;
+        max-width:255px!important;
         overflow:hidden!important;
         white-space:normal!important;
         overflow-wrap:anywhere!important;
@@ -56,24 +54,24 @@
       @media(max-width:700px){
         .brand,.site-brand-wrap{
           gap:8px!important;
-          max-width:min(56vw,220px)!important;
+          max-width:min(68vw,270px)!important;
         }
 
         .sitezi-ai-symbol{
-          width:42px!important;
-          height:42px!important;
-          min-width:42px!important;
-          max-width:42px!important;
-          min-height:42px!important;
-          max-height:42px!important;
-          flex-basis:42px!important;
+          width:56px!important;
+          height:56px!important;
+          min-width:56px!important;
+          max-width:56px!important;
+          min-height:56px!important;
+          max-height:56px!important;
+          flex-basis:56px!important;
           border-radius:9px!important;
         }
 
         .sitezi-ai-brand-name{
-          max-width:165px!important;
+          max-width:185px!important;
           font-size:16px!important;
-          line-height:1.02!important;
+          line-height:1.04!important;
           letter-spacing:-.25px!important;
           display:-webkit-box!important;
           -webkit-box-orient:vertical!important;
@@ -83,18 +81,23 @@
       }
 
       @media(max-width:390px){
-        .brand,.site-brand-wrap{max-width:54vw!important}
-        .sitezi-ai-symbol{
-          width:38px!important;
-          height:38px!important;
-          min-width:38px!important;
-          max-width:38px!important;
-          min-height:38px!important;
-          max-height:38px!important;
-          flex-basis:38px!important;
+        .brand,.site-brand-wrap{
+          max-width:min(70vw,245px)!important;
+          gap:7px!important;
         }
+
+        .sitezi-ai-symbol{
+          width:52px!important;
+          height:52px!important;
+          min-width:52px!important;
+          max-width:52px!important;
+          min-height:52px!important;
+          max-height:52px!important;
+          flex-basis:52px!important;
+        }
+
         .sitezi-ai-brand-name{
-          max-width:128px!important;
+          max-width:165px!important;
           font-size:15px!important;
         }
       }
@@ -114,11 +117,15 @@
 
   function findBrand(doc, logoData) {
     const candidates = [
-      ...doc.querySelectorAll(".brand-mark-ai,.brand-img,.brand-mark")
+      ...doc.querySelectorAll(
+        ".sitezi-ai-symbol,.brand-mark-ai,.brand-img,.brand-mark"
+      )
     ];
 
     const img =
-      candidates.find(el => String(el.getAttribute("src") || "") === String(logoData || "")) ||
+      candidates.find(el =>
+        String(el.getAttribute("src") || "") === String(logoData || "")
+      ) ||
       candidates.find(el => el.closest(".brand,.site-brand-wrap")) ||
       candidates[0];
 
@@ -183,7 +190,8 @@
       if (!compose(doc, s)) return false;
 
       doc.documentElement.dataset[SOURCE_MARK] = VERSION;
-      doc.documentElement.dataset.siteziLogoBusiness = String(s.businessName || "");
+      doc.documentElement.dataset.siteziLogoBusiness =
+        String(s.businessName || "");
 
       const next = "<!doctype html>\n" + doc.documentElement.outerHTML;
 
@@ -192,7 +200,10 @@
         return true;
       }
     } catch (error) {
-      console.warn("[SITEZI LOGO FINAL] Não foi possível consolidar o srcdoc.", error);
+      console.warn(
+        "[SITEZI LOGO FINAL] Não foi possível consolidar o srcdoc.",
+        error
+      );
     }
 
     return false;
@@ -209,10 +220,20 @@
 
       ensureStyle(doc);
 
-      const brand = doc.querySelector("[data-sitezi-ai-brand='symbol-text']");
+      const brand = doc.querySelector(
+        "[data-sitezi-ai-brand='symbol-text']"
+      );
+
       if (brand) {
+        const symbol = brand.querySelector(".sitezi-ai-symbol");
         const name = brand.querySelector(".sitezi-ai-brand-name");
-        if (name && name.textContent !== (s.businessName || "Seu negócio")) {
+
+        if (symbol && symbol.src !== s.logoData) symbol.src = s.logoData;
+
+        if (
+          name &&
+          name.textContent !== (s.businessName || "Seu negócio")
+        ) {
           name.textContent = s.businessName || "Seu negócio";
         }
         return;
@@ -237,12 +258,14 @@
     const text = document.querySelector('[data-logo-mode="ai"] small');
     if (text) {
       text.textContent =
-        "A IA cria o símbolo da marca. Fundo transparente nos planos Profissional e Premium.";
+        "A IA cria o símbolo da marca e o SITEZI combina com o nome do negócio.";
     }
   }
 
   function schedule() {
-    [0, 60, 160, 350, 700].forEach(ms => setTimeout(processAll, ms));
+    [0, 60, 160, 350, 700].forEach(ms =>
+      setTimeout(processAll, ms)
+    );
   }
 
   function install() {
@@ -260,7 +283,10 @@
     });
 
     const generate = document.getElementById("generateSite");
-    if (generate && generate.dataset.siteziLogoFinalBound !== VERSION) {
+    if (
+      generate &&
+      generate.dataset.siteziLogoFinalBound !== VERSION
+    ) {
       generate.dataset.siteziLogoFinalBound = VERSION;
       generate.addEventListener("click", schedule, true);
     }
@@ -276,7 +302,10 @@
   }
 
   window.addEventListener("sitezi:ai-logo-generated", schedule);
-  window.addEventListener("sitezi:builder-state", () => setTimeout(processAll, 25));
+  window.addEventListener(
+    "sitezi:builder-state",
+    () => setTimeout(processAll, 25)
+  );
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
@@ -293,19 +322,20 @@
 
 
 /* =========================================================
-   SITEZI — SUPORTE WHATSAPP v1.0
-   - aparece durante criação/resultado/planos;
-   - fica oculto somente na home;
-   - abre conversa direta com o desenvolvedor;
-   - mensagem pronta para contextualizar o atendimento.
+   SITEZI — SUPORTE WHATSAPP v1.1
+   - oculto na home;
+   - compacto no celular;
+   - sobe automaticamente quando existe barra de ações;
+   - não cobre Voltar/Continuar/Publicar.
    ========================================================= */
 (() => {
   "use strict";
 
   const SUPPORT_ID = "siteziWhatsappSupport";
-  const STYLE_ID = "sitezi-whatsapp-support-style-v1";
+  const STYLE_ID = "sitezi-whatsapp-support-style-v11";
   const PHONE = "5548996942186";
-  const MESSAGE = "Olá! Estou usando o SITEZI e preciso de ajuda com meu site.";
+  const MESSAGE =
+    "Olá! Estou usando o SITEZI e preciso de ajuda com meu site.";
 
   function ensureStyle() {
     if (document.getElementById(STYLE_ID)) return;
@@ -370,8 +400,9 @@
         font-weight:700;
       }
 
-      body.result-open #${SUPPORT_ID}{
-        bottom:88px;
+      body.result-open #${SUPPORT_ID},
+      body.sitezi-has-bottom-actions #${SUPPORT_ID}{
+        bottom:96px;
       }
 
       body.plans-open #${SUPPORT_ID}{
@@ -384,25 +415,36 @@
 
       @media(max-width:600px){
         #${SUPPORT_ID}{
-          left:10px;
-          bottom:12px;
-          min-height:40px;
-          padding:7px 10px 7px 8px;
-          gap:7px;
+          left:12px;
+          bottom:16px;
+          width:44px;
+          height:44px;
+          min-width:44px;
+          min-height:44px;
+          padding:0;
+          justify-content:center;
+          gap:0;
+          border-radius:50%;
         }
 
         #${SUPPORT_ID} .sitezi-wa-icon{
-          width:25px;
-          height:25px;
-          flex-basis:25px;
-          font-size:14px;
+          width:30px;
+          height:30px;
+          flex-basis:30px;
+          font-size:16px;
         }
 
-        #${SUPPORT_ID} .sitezi-wa-copy b{font-size:11px}
-        #${SUPPORT_ID} .sitezi-wa-copy small{display:none}
+        #${SUPPORT_ID} .sitezi-wa-copy{
+          display:none!important;
+        }
 
-        body.result-open #${SUPPORT_ID}{
-          bottom:94px;
+        body.result-open #${SUPPORT_ID},
+        body.sitezi-has-bottom-actions #${SUPPORT_ID}{
+          bottom:100px;
+        }
+
+        body.plans-open #${SUPPORT_ID}{
+          bottom:16px;
         }
       }
     `;
@@ -420,7 +462,10 @@
     button.rel = "noopener";
     button.href =
       `https://wa.me/${PHONE}?text=${encodeURIComponent(MESSAGE)}`;
-    button.setAttribute("aria-label", "Precisa de ajuda? Fale no WhatsApp");
+    button.setAttribute(
+      "aria-label",
+      "Precisa de ajuda? Fale no WhatsApp"
+    );
     button.innerHTML = `
       <span class="sitezi-wa-icon">✓</span>
       <span class="sitezi-wa-copy">
@@ -431,6 +476,33 @@
 
     document.body.appendChild(button);
     return button;
+  }
+
+  function hasVisibleBottomActions() {
+    const selectors = [
+      ".result-actions",
+      ".bottom-actions",
+      ".wizard-actions",
+      ".preview-actions",
+      ".result-footer",
+      ".sticky-actions",
+      ".fixed-actions"
+    ];
+
+    return selectors.some(selector => {
+      const el = document.querySelector(selector);
+      if (!el) return false;
+
+      const style = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        rect.height > 0 &&
+        rect.bottom >= window.innerHeight - 120
+      );
+    });
   }
 
   function shouldShow() {
@@ -450,28 +522,45 @@
     if (wizardActive || resultActive || plansActive) return true;
     if (homeActive) return false;
 
-    return document.body.classList.contains("wizard-open") ||
-           document.body.classList.contains("result-open") ||
-           document.body.classList.contains("plans-open");
+    return (
+      document.body.classList.contains("wizard-open") ||
+      document.body.classList.contains("result-open") ||
+      document.body.classList.contains("plans-open")
+    );
   }
 
   function refresh() {
     ensureStyle();
     const button = ensureButton();
+
+    document.body.classList.toggle(
+      "sitezi-has-bottom-actions",
+      hasVisibleBottomActions()
+    );
+
     button.classList.toggle("visible", shouldShow());
   }
 
   function install() {
     refresh();
 
+    if (document.body.dataset.siteziWhatsappBound === "1") return;
+    document.body.dataset.siteziWhatsappBound = "1";
+
     const observer = new MutationObserver(refresh);
     observer.observe(document.body, {
       attributes:true,
       attributeFilter:["class"],
+      childList:true,
       subtree:true
     });
 
-    document.addEventListener("click", () => setTimeout(refresh, 0), true);
+    document.addEventListener(
+      "click",
+      () => setTimeout(refresh, 0),
+      true
+    );
+    window.addEventListener("resize", refresh);
     window.addEventListener("popstate", refresh);
     window.addEventListener("sitezi:builder-state", refresh);
 
