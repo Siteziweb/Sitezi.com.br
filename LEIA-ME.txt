@@ -1,17 +1,22 @@
-SITEZI — atualização de conta/créditos/rascunho
+SITEZI update 5.7.0
 
-1) Substitua o arquivo existente:
-   sitezi-image-ai.js
+Arquivos alterados:
+- index.html
+- script.js
+- sitezi-image-ai.js
 
-2) Adicione o novo arquivo:
-   sitezi-account-state.js
+O pacote presume que estes arquivos atuais continuam no repositório:
+- style.css
+- sitezi-auth.js
+- sitezi-account-state.js
+- sitezi-checkout-client.js
+- sitezi-ai-client.js
 
-3) No final do index.html, deixe:
-<script src="script.js?v=5.6.3"></script>
-<script src="sitezi-ai-client.js?v=2.0"></script>
-<script src="sitezi-auth.js?v=1.0"></script>
-<script src="sitezi-checkout-client.js?v=1.0"></script>
-<script src="sitezi-image-ai.js?v=1.1"></script>
-<script src="sitezi-account-state.js?v=1.0"></script>
-</body>
-</html>
+Mudanças principais:
+- Login visível na home e no wizard.
+- Wizard passa de 8 para 9 etapas.
+- Produtos/serviços entram antes da IA.
+- Site simples continua funcionando sem plano.
+- IA exige login + plano ativo + créditos.
+- Erros de plano e crédito separados.
+- Requisição da IA inclui cor, slogan, produtos e serviços.

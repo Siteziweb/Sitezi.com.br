@@ -8,300 +8,46 @@
   <title>SITEZI — Seu negócio online em minutos</title>
   <link rel="stylesheet" href="style.css?v=5.5.3">
   <style id="sitezi-template-previews-v1">
-    /* =========================================================
-       SITEZI — MINIATURAS DOS MODELOS
-       Alteração isolada apenas na etapa 3.
-       ========================================================= */
-
-    .template-thumb{
-      position:relative;
-      height:88px;
-      border-radius:12px;
-      padding:0;
-      display:block;
-      overflow:hidden;
-      isolation:isolate;
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
-    }
-
-    .template-thumb i,
-    .template-thumb strong,
-    .template-thumb span{
-      position:absolute;
-      margin:0;
-      z-index:3;
-    }
-
-    /* ---------- MODERNO ---------- */
-    .template-thumb.modern{
-      background:
-        radial-gradient(circle at 76% 34%,rgba(21,120,255,.30),transparent 24%),
-        linear-gradient(145deg,#07101b,#0c1725 58%,#0d2a49);
-    }
-
-    .template-thumb.modern:before{
-      content:"";
-      position:absolute;
-      right:8px;
-      top:21px;
-      width:38px;
-      height:37px;
-      border-radius:7px;
-      background:
-        linear-gradient(145deg,rgba(30,136,255,.42),rgba(10,39,67,.35));
-      border:1px solid rgba(76,171,255,.22);
-      box-shadow:0 8px 20px rgba(0,0,0,.22);
-    }
-
-    .template-thumb.modern:after{
-      content:"";
-      position:absolute;
-      left:9px;
-      right:9px;
-      bottom:8px;
-      height:15px;
-      border-radius:5px;
-      background:
-        linear-gradient(90deg,#12243a 0 31%,transparent 31% 34%,#12243a 34% 65%,transparent 65% 68%,#12243a 68%);
-      border:1px solid rgba(72,126,179,.16);
-    }
-
-    .template-thumb.modern i{
-      left:9px;
-      top:9px;
-      width:24px;
-      height:5px;
-      border-radius:99px;
-      background:#3daaff;
-      box-shadow:76px 0 0 -1px rgba(255,255,255,.34);
-    }
-
-    .template-thumb.modern strong{
-      left:9px;
-      top:27px;
-      width:58px;
-      color:#fff;
-      font-size:0;
-      line-height:1;
-      letter-spacing:-.2px;
-    }
-
-    .template-thumb.modern strong:after{
-      content:"NEGÓCIO\A MODERNO";
-      white-space:pre;
-      font-size:9px;
-      line-height:1.02;
-      font-weight:950;
-    }
-
-    .template-thumb.modern span:nth-of-type(1){
-      left:9px;
-      top:50px;
-      width:42px;
-      height:4px;
-      border-radius:99px;
-      background:#71869b;
-    }
-
-    .template-thumb.modern span:nth-of-type(2){
-      left:9px;
-      top:59px;
-      width:28px;
-      height:8px;
-      border-radius:3px;
-      background:#1578ff;
-      box-shadow:none;
-    }
-
-    /* ---------- PREMIUM ---------- */
-    .template-thumb.premium{
-      background:
-        radial-gradient(circle at 77% 37%,rgba(255,255,255,.72),transparent 22%),
-        linear-gradient(145deg,#f3eadf,#d6c0a3);
-      border-color:#cbb89f;
-    }
-
-    .template-thumb.premium:before{
-      content:"";
-      position:absolute;
-      right:8px;
-      top:17px;
-      width:39px;
-      height:51px;
-      border-radius:20px 20px 6px 6px;
-      background:
-        radial-gradient(circle at 50% 31%,#f7eadb 0 14%,transparent 15%),
-        linear-gradient(160deg,#b89473,#e8d7c3);
-      border:1px solid rgba(99,75,51,.18);
-      box-shadow:0 8px 18px rgba(77,56,36,.16);
-    }
-
-    .template-thumb.premium:after{
-      content:"";
-      position:absolute;
-      left:9px;
-      bottom:8px;
-      width:40px;
-      height:1px;
-      background:#7c674f;
-      box-shadow:0 -4px 0 rgba(124,103,79,.16);
-    }
-
-    .template-thumb.premium i{
-      left:9px;
-      top:9px;
-      width:21px;
-      height:4px;
-      border-radius:0;
-      background:#2d251f;
-      box-shadow:78px 0 0 -1px rgba(45,37,31,.42);
-    }
-
-    .template-thumb.premium strong{
-      left:9px;
-      top:27px;
-      width:60px;
-      color:#211b16;
-      font-size:0;
-      line-height:1;
-      font-family:Georgia,"Times New Roman",serif;
-    }
-
-    .template-thumb.premium strong:after{
-      content:"Elegância\A em cada detalhe";
-      white-space:pre;
-      font-size:8.5px;
-      line-height:1.05;
-      font-weight:700;
-    }
-
-    .template-thumb.premium span:nth-of-type(1){
-      left:9px;
-      top:51px;
-      width:47px;
-      height:3px;
-      border-radius:0;
-      background:#8d7a68;
-    }
-
-    .template-thumb.premium span:nth-of-type(2){
-      left:9px;
-      top:59px;
-      width:30px;
-      height:7px;
-      border-radius:0;
-      background:#211b16;
-    }
-
-    /* ---------- DINÂMICO ---------- */
-    .template-thumb.dynamic{
-      background:
-        radial-gradient(circle at 76% 37%,rgba(255,189,72,.35),transparent 22%),
-        linear-gradient(135deg,#ec5a18 0 52%,#17171d 52.5%);
-      border-color:rgba(255,133,58,.35);
-    }
-
-    .template-thumb.dynamic:before{
-      content:"OFERTA";
-      position:absolute;
-      right:7px;
-      top:12px;
-      width:43px;
-      height:43px;
-      border-radius:9px;
-      background:linear-gradient(145deg,#2a2a31,#101014);
-      display:grid;
-      place-items:center;
-      color:#ffb24c;
-      font-size:7px;
-      font-weight:950;
-      letter-spacing:.5px;
-      transform:rotate(2deg);
-      border:2px solid rgba(255,255,255,.78);
-      box-shadow:0 8px 18px rgba(0,0,0,.25);
-      z-index:2;
-    }
-
-    .template-thumb.dynamic:after{
-      content:"";
-      position:absolute;
-      left:8px;
-      right:8px;
-      bottom:8px;
-      height:14px;
-      border-radius:6px;
-      background:
-        linear-gradient(90deg,rgba(255,255,255,.22) 0 31%,transparent 31% 34%,rgba(255,255,255,.15) 34% 65%,transparent 65% 68%,rgba(255,255,255,.10) 68%);
-      border:1px solid rgba(255,255,255,.12);
-    }
-
-    .template-thumb.dynamic i{
-      left:9px;
-      top:9px;
-      width:22px;
-      height:5px;
-      border-radius:99px;
-      background:#fff;
-      box-shadow:77px 0 0 -1px rgba(255,255,255,.52);
-    }
-
-    .template-thumb.dynamic strong{
-      left:9px;
-      top:27px;
-      width:58px;
-      color:#fff;
-      font-size:0;
-      line-height:1;
-    }
-
-    .template-thumb.dynamic strong:after{
-      content:"MAIS\A DESTAQUE";
-      white-space:pre;
-      font-size:9px;
-      line-height:1.02;
-      font-weight:950;
-    }
-
-    .template-thumb.dynamic span:nth-of-type(1){
-      left:9px;
-      top:50px;
-      width:43px;
-      height:4px;
-      border-radius:99px;
-      background:rgba(255,255,255,.72);
-    }
-
-    .template-thumb.dynamic span:nth-of-type(2){
-      left:9px;
-      top:59px;
-      width:31px;
-      height:8px;
-      border-radius:4px;
-      background:#fff;
-    }
-
-    @media(max-width:560px){
-      .template-card{
-        grid-template-columns:132px 1fr 24px;
-        gap:12px;
-      }
-
-      .template-thumb{
-        height:92px;
-      }
-    }
-
-    @media(max-width:390px){
-      .template-card{
-        grid-template-columns:116px 1fr 22px;
-        gap:10px;
-      }
-
-      .template-thumb{
-        height:86px;
-      }
-    }
+    .template-thumb{position:relative;height:88px;border-radius:12px;padding:0;display:block;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.10);box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+    .template-thumb i,.template-thumb strong,.template-thumb span{position:absolute;margin:0;z-index:3}
+    .template-thumb.modern{background:radial-gradient(circle at 76% 34%,rgba(21,120,255,.30),transparent 24%),linear-gradient(145deg,#07101b,#0c1725 58%,#0d2a49)}
+    .template-thumb.modern:before{content:"";position:absolute;right:8px;top:21px;width:38px;height:37px;border-radius:7px;background:linear-gradient(145deg,rgba(30,136,255,.42),rgba(10,39,67,.35));border:1px solid rgba(76,171,255,.22);box-shadow:0 8px 20px rgba(0,0,0,.22)}
+    .template-thumb.modern:after{content:"";position:absolute;left:9px;right:9px;bottom:8px;height:15px;border-radius:5px;background:linear-gradient(90deg,#12243a 0 31%,transparent 31% 34%,#12243a 34% 65%,transparent 65% 68%,#12243a 68%);border:1px solid rgba(72,126,179,.16)}
+    .template-thumb.modern i{left:9px;top:9px;width:24px;height:5px;border-radius:99px;background:#3daaff;box-shadow:76px 0 0 -1px rgba(255,255,255,.34)}
+    .template-thumb.modern strong{left:9px;top:27px;width:58px;color:#fff;font-size:0;line-height:1;letter-spacing:-.2px}
+    .template-thumb.modern strong:after{content:"NEGÓCIO\A MODERNO";white-space:pre;font-size:9px;line-height:1.02;font-weight:950}
+    .template-thumb.modern span:nth-of-type(1){left:9px;top:50px;width:42px;height:4px;border-radius:99px;background:#71869b}
+    .template-thumb.modern span:nth-of-type(2){left:9px;top:59px;width:28px;height:8px;border-radius:3px;background:#1578ff}
+    .template-thumb.premium{background:radial-gradient(circle at 77% 37%,rgba(255,255,255,.72),transparent 22%),linear-gradient(145deg,#f3eadf,#d6c0a3);border-color:#cbb89f}
+    .template-thumb.premium:before{content:"";position:absolute;right:8px;top:17px;width:39px;height:51px;border-radius:20px 20px 6px 6px;background:radial-gradient(circle at 50% 31%,#f7eadb 0 14%,transparent 15%),linear-gradient(160deg,#b89473,#e8d7c3);border:1px solid rgba(99,75,51,.18);box-shadow:0 8px 18px rgba(77,56,36,.16)}
+    .template-thumb.premium:after{content:"";position:absolute;left:9px;bottom:8px;width:40px;height:1px;background:#7c674f;box-shadow:0 -4px 0 rgba(124,103,79,.16)}
+    .template-thumb.premium i{left:9px;top:9px;width:21px;height:4px;background:#2d251f;box-shadow:78px 0 0 -1px rgba(45,37,31,.42)}
+    .template-thumb.premium strong{left:9px;top:27px;width:60px;color:#211b16;font-size:0;line-height:1;font-family:Georgia,"Times New Roman",serif}
+    .template-thumb.premium strong:after{content:"Elegância\A em cada detalhe";white-space:pre;font-size:8.5px;line-height:1.05;font-weight:700}
+    .template-thumb.premium span:nth-of-type(1){left:9px;top:51px;width:47px;height:3px;background:#8d7a68}
+    .template-thumb.premium span:nth-of-type(2){left:9px;top:59px;width:30px;height:7px;background:#211b16}
+    .template-thumb.dynamic{background:radial-gradient(circle at 76% 37%,rgba(255,189,72,.35),transparent 22%),linear-gradient(135deg,#ec5a18 0 52%,#17171d 52.5%);border-color:rgba(255,133,58,.35)}
+    .template-thumb.dynamic:before{content:"OFERTA";position:absolute;right:7px;top:12px;width:43px;height:43px;border-radius:9px;background:linear-gradient(145deg,#2a2a31,#101014);display:grid;place-items:center;color:#ffb24c;font-size:7px;font-weight:950;letter-spacing:.5px;transform:rotate(2deg);border:2px solid rgba(255,255,255,.78);box-shadow:0 8px 18px rgba(0,0,0,.25);z-index:2}
+    .template-thumb.dynamic:after{content:"";position:absolute;left:8px;right:8px;bottom:8px;height:14px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,.22) 0 31%,transparent 31% 34%,rgba(255,255,255,.15) 34% 65%,transparent 65% 68%,rgba(255,255,255,.10) 68%);border:1px solid rgba(255,255,255,.12)}
+    .template-thumb.dynamic i{left:9px;top:9px;width:22px;height:5px;border-radius:99px;background:#fff;box-shadow:77px 0 0 -1px rgba(255,255,255,.52)}
+    .template-thumb.dynamic strong{left:9px;top:27px;width:58px;color:#fff;font-size:0;line-height:1}
+    .template-thumb.dynamic strong:after{content:"MAIS\A DESTAQUE";white-space:pre;font-size:9px;line-height:1.02;font-weight:950}
+    .template-thumb.dynamic span:nth-of-type(1){left:9px;top:50px;width:43px;height:4px;border-radius:99px;background:rgba(255,255,255,.72)}
+    .template-thumb.dynamic span:nth-of-type(2){left:9px;top:59px;width:31px;height:8px;border-radius:4px;background:#fff}
+    .sitezi-login-btn{white-space:nowrap}
+    .sitezi-account-chip{display:inline-flex;align-items:center;gap:7px}
+    .sitezi-ai-plan-note{margin-top:8px;color:#8fa3bb;font-size:12px}
+    .sitezi-product-step{display:grid;gap:14px}
+    .sitezi-product-form{display:grid;grid-template-columns:1fr 180px;gap:10px}
+    .sitezi-product-form textarea,.sitezi-product-form .full{grid-column:1/-1}
+    .sitezi-product-list{display:grid;gap:10px}
+    .sitezi-product-item{display:grid;grid-template-columns:58px 1fr auto;gap:12px;align-items:center;padding:10px;border:1px solid #1f3148;border-radius:14px;background:#08111e}
+    .sitezi-product-item img{width:58px;height:58px;object-fit:cover;border-radius:10px}
+    .sitezi-product-item button{border:0;background:transparent;color:#ff8d8d;font-weight:800;cursor:pointer}
+    .sitezi-product-empty{padding:16px;border:1px dashed #263c58;border-radius:14px;color:#7f91a8;text-align:center}
+    @media(max-width:700px){.sitezi-product-form{grid-template-columns:1fr}}
+    @media(max-width:560px){.template-card{grid-template-columns:132px 1fr 24px;gap:12px}.template-thumb{height:92px}}
+    @media(max-width:390px){.template-card{grid-template-columns:116px 1fr 22px;gap:10px}.template-thumb{height:86px}}
   </style>
 </head>
 <body>
@@ -316,6 +62,7 @@
         <a href="#modelos">Modelos</a>
         <a href="#ajuda">Ajuda</a>
       </nav>
+      <button id="topLogin" class="btn outline compact sitezi-login-btn" type="button">Fazer login</button>
       <button id="topCreate" class="btn ghost compact">Criar meu site</button>
     </header>
 
@@ -335,16 +82,13 @@
             <button id="startBtn" class="btn primary big">Criar meu site agora <b>→</b></button>
             <button id="seeExample" class="btn outline big">Ver exemplo</button>
           </div>
-          <small class="ai-note">* Recursos de IA ficam ativos após conectar o backend.</small>
+          <small class="ai-note">* A geração simples funciona sem plano. Recursos avançados com IA exigem plano ativo.</small>
         </div>
 
         <div class="hero-device edu-hero" aria-label="Edu, mascote da SITEZI">
           <div class="edu-glow" aria-hidden="true"></div>
           <img class="edu-character" src="edu.png" alt="Edu, mascote da SITEZI">
-          <div class="edu-speech">
-            <strong>Olá! Eu sou o Edu!</strong>
-            <span>Vou te ajudar a criar o site do seu negócio de um jeito simples e rápido.</span>
-          </div>
+          <div class="edu-speech"><strong>Olá! Eu sou o Edu!</strong><span>Vou te ajudar a criar o site do seu negócio de um jeito simples e rápido.</span></div>
         </div>
 
         <div class="benefit-strip" id="recursos">
@@ -359,16 +103,16 @@
         <div class="wizard-shell">
           <header class="wizard-head">
             <div class="wizard-brand">
-              <svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="siteziG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#35c2ff"/><stop offset=".55" stop-color="#1479ff"/><stop offset="1" stop-color="#0b46d9"/></linearGradient></defs><path fill="url(#siteziG)" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg>
+              <svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64"><path fill="#1578ff" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg>
               <strong>SITEZI</strong>
             </div>
-            <button id="cancelWizard" class="text-btn">Cancelar</button>
+            <div style="display:flex;align-items:center;gap:10px">
+              <button id="wizardLogin" class="text-btn" type="button">Fazer login</button>
+              <button id="cancelWizard" class="text-btn">Cancelar</button>
+            </div>
           </header>
 
-          <div class="progress-wrap">
-            <span id="progressText">1 de 8</span>
-            <div class="progress"><i id="progressBar"></i></div>
-          </div>
+          <div class="progress-wrap"><span id="progressText">1 de 9</span><div class="progress"><i id="progressBar"></i></div></div>
 
           <div class="wizard-body">
             <section class="step active" data-step="1">
@@ -378,7 +122,7 @@
                 <button class="select-card business" data-business="Restaurante"><span class="svg-icon">◉</span><b>Restaurante</b></button>
                 <button class="select-card business" data-business="Barbearia"><span class="svg-icon">✂</span><b>Barbearia</b></button>
                 <button class="select-card business" data-business="Salão de Beleza"><span class="svg-icon">✦</span><b>Salão de Beleza</b></button>
-                <button class="select-card business" data-business="Moda e Vestuário"><svg class="business-svg" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M23 12c2.2 4.2 5.1 6 9 6s6.8-1.8 9-6l13 7-7 12-7-4v25H24V27l-7 4-7-12 13-7Z" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/><path d="M23 12c1.5 5.3 4.5 8 9 8s7.5-2.7 9-8" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg><b>Moda e Vestuário</b></button>
+                <button class="select-card business" data-business="Moda e Vestuário"><span class="svg-icon">◇</span><b>Moda e Vestuário</b></button>
                 <button class="select-card business" data-business="Loja / Comércio"><span class="svg-icon">▦</span><b>Loja / Comércio</b></button>
                 <button class="select-card business" data-business="Clínica / Saúde"><span class="svg-icon">✚</span><b>Clínica / Saúde</b></button>
                 <button class="select-card business" data-business="Prestador de Serviços"><span class="svg-icon">✓</span><b>Serviços</b></button>
@@ -391,10 +135,7 @@
               <div class="form-stack">
                 <label><span>Nome do negócio</span><input id="businessName" maxlength="60" placeholder="Ex.: Auto Prime"></label>
                 <label><span>Slogan <small>(opcional)</small></span><input id="businessSlogan" maxlength="100" placeholder="Ex.: Manutenção automotiva com confiança"></label>
-                <button id="suggestBrand" class="ai-action" type="button">
-                  <svg viewBox="0 0 24 24"><path d="m12 2 1.6 4.4L18 8l-4.4 1.6L12 14l-1.6-4.4L6 8l4.4-1.6L12 2Zm7 10 .9 2.1L22 15l-2.1.9L19 18l-.9-2.1L16 15l2.1-.9L19 12Z"/></svg>
-                  <span><b>Gerar sugestões</b><small>Usa o backend quando estiver conectado.</small></span>
-                </button>
+                <button id="suggestBrand" class="ai-action" type="button"><span><b>Gerar sugestões simples</b><small>Funciona sem plano.</small></span></button>
                 <div id="suggestionBox" class="suggestion-box hidden"></div>
                 <button id="saveNameContinue" class="btn primary step-local-continue" type="button">Salvar e continuar →</button>
               </div>
@@ -403,58 +144,58 @@
             <section class="step" data-step="3" id="modelos">
               <div class="step-copy"><h2>Escolha um modelo de site</h2><p>Cada modelo muda a estrutura e a apresentação do seu negócio.</p></div>
               <div class="template-list">
-                <button class="template-card active" data-template="modern">
-                  <div class="template-thumb modern"><i></i><strong>Seu negócio</strong><span></span><span></span></div>
-                  <div><b>Moderno</b><small>Visual limpo, forte e objetivo.</small></div><em>✓</em>
-                </button>
-                <button class="template-card" data-template="premium">
-                  <div class="template-thumb premium"><i></i><strong>Seu negócio</strong><span></span><span></span></div>
-                  <div><b>Premium</b><small>Elegante, sofisticado e com mais respiro.</small></div><em>✓</em>
-                </button>
-                <button class="template-card" data-template="dynamic">
-                  <div class="template-thumb dynamic"><i></i><strong>Seu negócio</strong><span></span><span></span></div>
-                  <div><b>Dinâmico</b><small>Mais comercial, destaque para ofertas e serviços.</small></div><em>✓</em>
-                </button>
+                <button class="template-card active" data-template="modern"><div class="template-thumb modern"><i></i><strong>Seu negócio</strong><span></span><span></span></div><div><b>Moderno</b><small>Visual limpo, forte e objetivo.</small></div><em>✓</em></button>
+                <button class="template-card" data-template="premium"><div class="template-thumb premium"><i></i><strong>Seu negócio</strong><span></span><span></span></div><div><b>Premium</b><small>Elegante, sofisticado e com mais respiro.</small></div><em>✓</em></button>
+                <button class="template-card" data-template="dynamic"><div class="template-thumb dynamic"><i></i><strong>Seu negócio</strong><span></span><span></span></div><div><b>Dinâmico</b><small>Mais comercial, destaque para ofertas e serviços.</small></div><em>✓</em></button>
               </div>
             </section>
 
             <section class="step" data-step="4">
               <div class="step-copy"><h2>Escolha as cores do seu site</h2><p>Defina a cor principal. Você poderá trocar depois.</p></div>
               <div class="color-row">
-                <button class="color active" data-color="#1578ff" style="--c:#1578ff" aria-label="Azul"></button>
-                <button class="color" data-color="#12b76a" style="--c:#12b76a" aria-label="Verde"></button>
-                <button class="color" data-color="#ef4444" style="--c:#ef4444" aria-label="Vermelho"></button>
-                <button class="color" data-color="#f59e0b" style="--c:#f59e0b" aria-label="Laranja"></button>
-                <button class="color" data-color="#7c3aed" style="--c:#7c3aed" aria-label="Roxo"></button>
-                <button class="color" data-color="#ec4899" style="--c:#ec4899" aria-label="Rosa"></button>
+                <button class="color active" data-color="#1578ff" style="--c:#1578ff"></button><button class="color" data-color="#12b76a" style="--c:#12b76a"></button><button class="color" data-color="#ef4444" style="--c:#ef4444"></button><button class="color" data-color="#f59e0b" style="--c:#f59e0b"></button><button class="color" data-color="#7c3aed" style="--c:#7c3aed"></button><button class="color" data-color="#ec4899" style="--c:#ec4899"></button>
               </div>
-              <div id="colorPreview" class="color-preview">
-                <div class="cp-nav"><span></span><b>Seu negócio</b><i></i></div>
-                <div class="cp-main"><small>SUA MARCA</small><h3>Uma presença profissional.</h3><p>Seu site com a identidade que você escolheu.</p><button>Botão de ação</button></div>
-              </div>
+              <div id="colorPreview" class="color-preview"><div class="cp-nav"><span></span><b>Seu negócio</b><i></i></div><div class="cp-main"><small>SUA MARCA</small><h3>Uma presença profissional.</h3><p>Seu site com a identidade que você escolheu.</p><button>Botão de ação</button></div></div>
             </section>
 
             <section class="step" data-step="5">
-              <div class="step-copy"><h2>Como será sua identidade?</h2><p>Você pode criar uma logo, enviar a sua ou começar só com o nome.</p></div>
-              <div class="option-list">
-                <button class="option-card" data-logo-mode="ai"><span class="option-icon">✦</span><div><b>Criar logo com IA</b><small>Gera opções de logo para o seu negócio.</small></div><em>→</em></button>
-                <label class="option-card upload-label"><span class="option-icon">↑</span><div><b>Enviar minha logo</b><small>PNG, JPG ou SVG.</small></div><em>→</em><input id="logoUpload" type="file" accept="image/*,.svg"></label>
-                <button class="option-card active" data-logo-mode="text"><span class="option-icon">Aa</span><div><b>Usar nome como marca</b><small>Você poderá adicionar uma logo depois.</small></div><em>✓</em></button>
+              <div class="step-copy"><h2>Quais produtos ou serviços você quer destacar?</h2><p>Cadastre agora para a prévia e para a IA entender melhor o seu negócio.</p></div>
+              <div class="sitezi-product-step">
+                <div class="sitezi-product-form">
+                  <input id="productName" type="text" placeholder="Nome do produto ou serviço" maxlength="60">
+                  <input id="productPrice" type="text" placeholder="Preço (opcional)" maxlength="30">
+                  <textarea id="productDescription" class="full" placeholder="Descrição curta" maxlength="140"></textarea>
+                  <label class="upload-product full">Adicionar foto<input id="productImage" type="file" accept="image/*"></label>
+                  <button id="addProduct" type="button" class="btn outline full">+ Adicionar</button>
+                </div>
+                <div id="productDemoList" class="sitezi-product-list"></div>
+                <small>Você pode começar sem plano. Os limites finais são aplicados conforme o plano contratado.</small>
               </div>
-              <div id="logoPreview" class="asset-preview hidden"></div>
             </section>
 
             <section class="step" data-step="6">
-              <div class="step-copy"><h2>Como você quer as imagens do site?</h2><p>Escolha uma opção. Imagens reais deixam o resultado mais profissional.</p></div>
+              <div class="step-copy"><h2>Como será sua identidade?</h2><p>Você pode criar uma logo, enviar a sua ou começar só com o nome.</p></div>
               <div class="option-list">
-                <button class="option-card" data-image-mode="ai"><span class="option-icon">✦</span><div><b>Gerar com IA</b><small>A SITEZI cria imagens relacionadas ao seu negócio.</small></div><em>→</em></button>
-                <label class="option-card upload-label"><span class="option-icon">↑</span><div><b>Enviar minhas fotos</b><small>Use imagens reais do seu negócio.</small></div><em>→</em><input id="photoUpload" type="file" accept="image/*" multiple></label>
-                <button class="option-card active" data-image-mode="none"><span class="option-icon">—</span><div><b>Continuar sem imagens</b><small>Você poderá adicionar depois.</small></div><em>✓</em></button>
+                <button class="option-card" data-logo-mode="ai"><span class="option-icon">✦</span><div><b>Criar logo com IA</b><small>Disponível para clientes com plano ativo.</small></div><em>→</em></button>
+                <label class="option-card upload-label"><span class="option-icon">↑</span><div><b>Enviar minha logo</b><small>PNG, JPG ou SVG.</small></div><em>→</em><input id="logoUpload" type="file" accept="image/*,.svg"></label>
+                <button class="option-card active" data-logo-mode="text"><span class="option-icon">Aa</span><div><b>Usar nome como marca</b><small>Geração simples sem plano.</small></div><em>✓</em></button>
               </div>
-              <div id="photoPreview" class="photo-preview hidden"></div>
+              <div id="logoPreview" class="asset-preview hidden"></div>
+              <div class="sitezi-ai-plan-note">A IA avançada só é gerada com plano ativo. Sem plano, o site continua normalmente no modo simples.</div>
             </section>
 
             <section class="step" data-step="7">
+              <div class="step-copy"><h2>Como você quer as imagens do site?</h2><p>Escolha uma opção. Você pode continuar sem IA.</p></div>
+              <div class="option-list">
+                <button class="option-card" data-image-mode="ai"><span class="option-icon">✦</span><div><b>Gerar com IA</b><small>Disponível para clientes com plano ativo.</small></div><em>→</em></button>
+                <label class="option-card upload-label"><span class="option-icon">↑</span><div><b>Enviar minhas fotos</b><small>Use imagens reais do seu negócio.</small></div><em>→</em><input id="photoUpload" type="file" accept="image/*" multiple></label>
+                <button class="option-card active" data-image-mode="none"><span class="option-icon">—</span><div><b>Continuar sem imagens</b><small>Geração simples sem plano.</small></div><em>✓</em></button>
+              </div>
+              <div id="photoPreview" class="photo-preview hidden"></div>
+              <div class="sitezi-ai-plan-note">Para usar imagens com IA, finalize a criação e efetue o pagamento de um plano.</div>
+            </section>
+
+            <section class="step" data-step="8">
               <div class="step-copy"><h2>Serviços e contato</h2><p>Adicione o essencial para o cliente falar com você.</p></div>
               <div class="form-grid">
                 <label class="full"><span>Serviços <small>(separe por vírgula)</small></span><textarea id="servicesInput" rows="3" placeholder="Troca de óleo, Freios, Suspensão"></textarea></label>
@@ -464,144 +205,50 @@
               </div>
             </section>
 
-            <section class="step" data-step="8">
+            <section class="step" data-step="9">
               <div class="step-copy"><h2>Seu site está pronto para gerar.</h2><p>Confira suas escolhas e crie a primeira prévia.</p></div>
               <div id="reviewCard" class="review-card"></div>
               <button id="generateSite" class="btn primary huge">Gerar meu site <b>✦</b></button>
             </section>
           </div>
 
-          <footer class="wizard-actions">
-            <button id="backBtn" class="btn outline">← Voltar</button>
-            <button id="nextBtn" class="btn primary">Continuar →</button>
-          </footer>
+          <footer class="wizard-actions"><button id="backBtn" class="btn outline">← Voltar</button><button id="nextBtn" class="btn primary">Continuar →</button></footer>
         </div>
       </section>
 
       <section id="result" class="result-screen screen">
         <div class="result-shell">
-          <header class="result-top">
-            <div class="wizard-brand"><svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="siteziG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#35c2ff"/><stop offset=".55" stop-color="#1479ff"/><stop offset="1" stop-color="#0b46d9"/></linearGradient></defs><path fill="url(#siteziG)" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg><strong>SITEZI</strong></div>
-            <button id="newSite" class="text-btn">Criar outro</button>
-          </header>
-          <div class="result-summary">
-            <span class="success">✓ Site gerado</span>
-            <h2>Veja como seu negócio ficou.</h2>
-            <p>Esta é a prévia criada pela SITEZI com suas escolhas.</p>
-          </div>
-          <div class="preview-toolbar">
-            <div>
-              <button class="device active" data-device="mobile">Celular</button>
-              <button class="device" data-device="desktop">Desktop</button>
-            </div>
-            <span id="previewDomain">meunegocio.sitezi.com.br</span>
-          </div>
-          <div id="previewStage" class="preview-stage mobile">
-            <iframe id="sitePreview" title="Prévia do site"></iframe>
-          </div>
-          <div class="result-actions">
-            <button id="editSite" class="btn outline">Editar informações</button>
-            <button id="fullPreview" class="btn outline">↗ Ver site em tela cheia</button>
-          <button id="publishSite" class="btn primary">Publicar meu site</button>
-          </div>
+          <header class="result-top"><div class="wizard-brand"><strong>SITEZI</strong></div><button id="newSite" class="text-btn">Criar outro</button></header>
+          <div class="result-summary"><span class="success">✓ Site gerado</span><h2>Veja como seu negócio ficou.</h2><p>Esta é a prévia criada pela SITEZI com suas escolhas.</p></div>
+          <div class="preview-toolbar"><div><button class="device active" data-device="mobile">Celular</button><button class="device" data-device="desktop">Desktop</button></div><span id="previewDomain">meunegocio.sitezi.com.br</span></div>
+          <div id="previewStage" class="preview-stage mobile"><iframe id="sitePreview" title="Prévia do site"></iframe></div>
+          <div class="result-actions"><button id="editSite" class="btn outline">Editar informações</button><button id="fullPreview" class="btn outline">↗ Ver site em tela cheia</button><button id="publishSite" class="btn primary">Publicar meu site</button></div>
           <div id="publishMessage" class="publish-message hidden"></div>
         </div>
       </section>
 
-
-
-      <section id="fullPreviewScreen" class="full-preview-screen hidden" aria-label="Prévia do site em tela cheia">
-        <div class="preview-toolbar">
-          <button id="exitFullPreview" type="button" class="preview-back">← Voltar para edição</button>
-          <span><b>Prévia SITEZI</b> · Ainda não publicado</span>
-          <button id="publishFromPreview" type="button" class="preview-publish">Publicar meu site</button>
-        </div>
-        <iframe id="fullPreviewFrame" title="Prévia completa do seu site"></iframe>
-      </section>
+      <section id="fullPreviewScreen" class="full-preview-screen hidden"><div class="preview-toolbar"><button id="exitFullPreview" type="button" class="preview-back">← Voltar para edição</button><span><b>Prévia SITEZI</b> · Ainda não publicado</span><button id="publishFromPreview" type="button" class="preview-publish">Publicar meu site</button></div><iframe id="fullPreviewFrame" title="Prévia completa do seu site"></iframe></section>
 
       <section id="plans" class="plans-screen screen">
         <div class="plans-shell">
-          <header class="plans-top">
-            <div class="wizard-brand"><svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="siteziPlansG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#35c2ff"/><stop offset=".55" stop-color="#1479ff"/><stop offset="1" stop-color="#0b46d9"/></linearGradient></defs><path fill="url(#siteziPlansG)" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg><strong>SITEZI</strong></div>
-            <button id="closePlans" class="text-btn">Voltar</button>
-          </header>
-          <div class="plans-copy">
-            <span class="eyebrow">PUBLIQUE SEU SITE</span>
-            <h2>Escolha como colocar seu negócio no ar.</h2>
-            <p>Sua prévia continua grátis. Você só escolhe um plano quando quiser publicar.</p>
-          </div>
+          <header class="plans-top"><div class="wizard-brand"><strong>SITEZI</strong></div><button id="closePlans" class="text-btn">Voltar</button></header>
+          <div class="plans-copy"><span class="eyebrow">PUBLIQUE SEU SITE</span><h2>Escolha como colocar seu negócio no ar.</h2><p>Sua prévia continua grátis. A IA avançada é liberada após a ativação do plano.</p></div>
           <div class="pricing-grid">
-            <article class="price-card">
-              <span class="plan-name">Básico</span>
-              <div class="price"><b>R$ 14,90</b><small>/mês</small></div>
-              <p>Para começar com um site profissional.</p>
-              <ul><li>Site responsivo</li><li>Botão de WhatsApp</li><li>Subdomínio SITEZI</li><li>Edição das informações</li><li>Até 5 produtos no catálogo</li></ul>
-              <button class="btn outline choose-plan" data-plan="Básico" data-price="14,90">Escolher Básico</button>
-            </article>
-            <article class="price-card featured">
-              <span class="popular">MAIS ESCOLHIDO</span>
-              <span class="plan-name">Profissional</span>
-              <div class="price"><b>R$ 29,90</b><small>/mês</small></div>
-              <p>Mais recursos para apresentar sua marca.</p>
-              <ul><li>Tudo do Básico</li><li>Até 30 produtos no catálogo</li><li>Logo e imagens com IA*</li><li>Domínio próprio <button type="button" class="domain-help" aria-label="O que é domínio próprio?">ⓘ</button></li></ul>
-              <button class="btn primary choose-plan" data-plan="Profissional" data-price="29,90">Escolher Profissional</button>
-            </article>
-            <article class="price-card">
-              <span class="plan-name">Premium</span>
-              <div class="price"><b>R$ 49,90</b><small>/mês</small></div>
-              <p>Para quem quer uma presença mais completa.</p>
-              <ul><li>Tudo do Profissional</li><li>Catálogo ampliado de produtos</li><li>Mais gerações com IA*</li><li>Domínio próprio + conexão guiada</li></ul>
-              <button class="btn outline choose-plan" data-plan="Premium" data-price="49,90">Escolher Premium</button>
-            </article>
+            <article class="price-card"><span class="plan-name">Básico</span><div class="price"><b>R$ 14,90</b><small>/mês</small></div><p>Para começar com um site profissional.</p><ul><li>Site responsivo</li><li>Botão de WhatsApp</li><li>Subdomínio SITEZI</li><li>Edição das informações</li><li>Até 5 produtos no catálogo</li></ul><button class="btn outline choose-plan" data-plan="Básico" data-price="14,90">Escolher Básico</button></article>
+            <article class="price-card featured"><span class="popular">MAIS ESCOLHIDO</span><span class="plan-name">Profissional</span><div class="price"><b>R$ 29,90</b><small>/mês</small></div><p>Mais recursos para apresentar sua marca.</p><ul><li>Tudo do Básico</li><li>Até 30 produtos no catálogo</li><li>Logo e imagens com IA*</li><li>Domínio próprio</li></ul><button class="btn primary choose-plan" data-plan="Profissional" data-price="29,90">Escolher Profissional</button></article>
+            <article class="price-card"><span class="plan-name">Premium</span><div class="price"><b>R$ 49,90</b><small>/mês</small></div><p>Para quem quer uma presença mais completa.</p><ul><li>Tudo do Profissional</li><li>Catálogo ampliado de produtos</li><li>Mais gerações com IA*</li><li>Domínio próprio + conexão guiada</li></ul><button class="btn outline choose-plan" data-plan="Premium" data-price="49,90">Escolher Premium</button></article>
           </div>
-
-          <div class="pro-tools">
-            <article class="tool-panel">
-              <span class="eyebrow">CATÁLOGO</span>
-              <h3>Venda mostrando seus produtos.</h3>
-              <p>Adicione foto, nome, preço e descrição. O botão do produto leva o visitante direto para o WhatsApp.</p>
-              <div id="productBuilder" class="product-builder">
-                <input id="productName" type="text" placeholder="Nome do produto" maxlength="60">
-                <input id="productPrice" type="text" placeholder="Preço (ex.: R$ 89,90)" maxlength="30">
-                <textarea id="productDescription" placeholder="Descrição curta" maxlength="140"></textarea>
-                <label class="upload-product">Adicionar foto<input id="productImage" type="file" accept="image/*"></label>
-                <button id="addProduct" type="button" class="btn outline">+ Adicionar produto</button>
-              </div>
-              <div id="productDemoList" class="product-demo-list"></div>
-              <small>Na versão publicada, os limites serão aplicados conforme o plano contratado.</small>
-            </article>
-            <article class="tool-panel">
-              <span class="eyebrow">DOMÍNIO PRÓPRIO</span>
-              <h3>Seu endereço, sua marca.</h3>
-              <div class="domain-compare">
-                <div><small>Endereço SITEZI</small><b>minhaloja.sitezi.com.br</b><span>Incluído para publicação</span></div>
-                <div><small>Domínio próprio</small><b>minhaloja.com.br</b><span>Mais exclusivo para sua marca</span></div>
-              </div>
-              <button id="domainInfo" type="button" class="btn outline">O que é domínio próprio?</button>
-              <div id="domainInfoBox" class="domain-info hidden">
-                <b>Domínio próprio é o endereço exclusivo do seu negócio na internet.</b>
-                <p>Exemplo: em vez de <strong>minhaloja.sitezi.com.br</strong>, você pode usar <strong>minhaloja.com.br</strong>. O registro do domínio pode ter custo separado.</p>
-              </div>
-              <div class="domain-flow">
-                <p><b>Depois da assinatura:</b></p>
-                <span>1. Você informa se já possui um domínio.</span>
-                <span>2. A SITEZI orienta o registro ou a conexão.</span>
-                <span>3. Verificamos a configuração e ativamos o HTTPS.</span>
-                <span>4. Seu site passa a abrir no endereço próprio.</span>
-              </div>
-            </article>
-          </div>
-<p class="plans-note">* Recursos de IA, domínio próprio e pagamento serão ativados com o backend. Os valores podem ser ajustados antes do lançamento comercial.</p>
+          <p class="plans-note">* Recursos de IA exigem plano ativo e saldo de créditos disponível.</p>
         </div>
       </section>
     </main>
   </div>
 
-  <script src="script.js?v=5.6.3"></script>
-<script src="sitezi-ai-client.js?v=2.0"></script>
-<script src="sitezi-auth.js?v=1.0"></script>
-<script src="sitezi-checkout-client.js?v=1.0"></script>
-<script src="sitezi-image-ai.js?v=1.1"></script>
-<script src="sitezi-account-state.js?v=1.0"></script>
+  <script src="script.js?v=5.7.0"></script>
+  <script src="sitezi-ai-client.js?v=2.0"></script>
+  <script src="sitezi-auth.js?v=1.0"></script>
+  <script src="sitezi-checkout-client.js?v=1.0"></script>
+  <script src="sitezi-image-ai.js?v=1.2"></script>
+  <script src="sitezi-account-state.js?v=1.0"></script>
 </body>
 </html>
