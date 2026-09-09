@@ -1,10 +1,11 @@
 /* =========================================================
-   SITEZI — IA DE MARCA + IMAGENS + CRÉDITOS v1.6
+   SITEZI — IA DE MARCA + IMAGENS + CRÉDITOS v1.6.1
    - login obrigatório
    - plano ativo obrigatório
    - separa plano, crédito e falha do provedor
    - envia produtos/serviços e identidade para personalização
    - solicita logo PNG com fundo transparente
+   - corrige passagem do tipo de geração para o contexto da marca
    ========================================================= */
 (() => {
   "use strict";
@@ -52,7 +53,7 @@
     return window.SITEZI_BUILDER_STATE || {};
   }
 
-  function inferBrandContext(s) {
+  function inferBrandContext(s, kind) {
     const items = Array.isArray(s.products) ? s.products : [];
     const corpus = [s.businessType, s.businessName, s.slogan, ...items.flatMap(p => [p?.name, p?.description])]
       .filter(Boolean).join(" ").toLowerCase();
@@ -84,7 +85,7 @@
 
   function buildRequest(kind) {
     const s = builderState();
-    const brandContext = inferBrandContext(s);
+    const brandContext = inferBrandContext(s, kind);
 
     const body = {
       purpose: kind === "logo" ? "logo" : "hero",
@@ -116,7 +117,6 @@
         offerings: Array.isArray(s.products) ? s.products.slice(0, 30).map(p => ({name:p.name||"", description:p.description||""})) : []
       },
 
-      // O backend/provider deve respeitar estes campos para a logo.
       outputFormat: "png",
       transparentBackground: kind === "logo",
       background: kind === "logo" ? "transparent" : "auto"
@@ -319,7 +319,6 @@
     return new File([bytes], filename, { type: mime });
   }
 
-
   async function trimTransparentImage(src) {
     if (!String(src || "").startsWith("data:image/")) return src;
     return await new Promise(resolve => {
@@ -471,10 +470,10 @@
   }
 
   function installStyle() {
-    if ($("sitezi-image-ai-style-v16")) return;
+    if ($("sitezi-image-ai-style-v161")) return;
 
     const style = document.createElement("style");
-    style.id = "sitezi-image-ai-style-v16";
+    style.id = "sitezi-image-ai-style-v161";
     style.textContent = `
       .sitezi-ai-status{margin-top:10px;padding:9px 11px;border:1px solid #1d694d;border-radius:11px;background:#071b14;color:#bdf3d7;font:700 12px/1.4 Inter,Arial,sans-serif}
       .sitezi-ai-plan-modal{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:20px;background:rgba(0,3,10,.82);backdrop-filter:blur(12px)}
@@ -512,8 +511,8 @@
   function init() {
     installStyle();
     installHandlers();
-    document.documentElement.dataset.siteziImageAi = "1.6";
-    console.info("[SITEZI] IA de imagens + créditos v1.4 carregada.");
+    document.documentElement.dataset.siteziImageAi = "1.6.1";
+    console.info("[SITEZI] IA de marca + imagens + créditos v1.6.1 carregada.");
   }
 
   if (document.readyState === "loading") {
