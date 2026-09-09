@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SITEZI</title></head>
+<body>
+<script>
+(function(){
+  var m=location.pathname.match(/^\/site\/([^/?#]+)\/?$/i);
+  if(m){
+    location.replace("/site/?slug="+encodeURIComponent(decodeURIComponent(m[1])));
+    return;
+  }
+  location.replace("/");
+})();
+</script>
+</body>
+</html>

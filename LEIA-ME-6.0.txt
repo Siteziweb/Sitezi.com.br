@@ -1,0 +1,31 @@
+SITEZI 6.0 — PUBLICAÇÃO + SITE AO VIVO
+
+O Supabase já foi preparado nesta etapa:
+- RPC público seguro get_published_site(slug)
+- bucket público site-assets
+- políticas para cada usuário gravar apenas na própria pasta
+
+ARQUIVOS PARA O GITHUB:
+1. Substitua index.html
+2. Substitua sitezi-auth.js
+3. Substitua sitezi-account-state.js
+4. Adicione 404.html na raiz
+5. Crie a pasta site e adicione site/index.html
+
+NÃO substitua os outros arquivos do projeto.
+
+FLUXO FINAL DESTA ETAPA:
+Criar site -> salvar dados no Supabase -> publicar -> endereço /site/nome-do-negocio -> site público lê dados atuais do Supabase -> Minha conta > Gerenciar meu site -> salvar -> site público usa os novos dados.
+
+OBSERVAÇÃO GITHUB PAGES:
+O 404.html faz a ponte de /site/nome-do-negocio para o renderizador genérico em /site/ e o navegador restaura a URL bonita.
+
+IMAGENS:
+Fotos e logos em DataURL são enviados ao bucket site-assets antes de salvar/publicar. No banco ficam URLs, não base64, evitando crescimento desnecessário dos registros.
+
+AJUSTE 6.0 — CRÉDITOS NO CELULAR
+- A barra de créditos continua visível após o login.
+- No celular ela aparece compacta no topo, por exemplo: Profissional · 18 img · 4 logos.
+- Dentro do criador continua compacta para não ocupar espaço.
+
+- Barra de créditos: rótulo padronizado como “Créditos disponíveis” no desktop e no celular.
