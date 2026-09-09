@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — IA DE IMAGENS + CRÉDITOS v1.4
+   SITEZI — IA DE MARCA + IMAGENS + CRÉDITOS v1.6
    - login obrigatório
    - plano ativo obrigatório
    - separa plano, crédito e falha do provedor
@@ -52,8 +52,39 @@
     return window.SITEZI_BUILDER_STATE || {};
   }
 
+  function inferBrandContext(s) {
+    const items = Array.isArray(s.products) ? s.products : [];
+    const corpus = [s.businessType, s.businessName, s.slogan, ...items.flatMap(p => [p?.name, p?.description])]
+      .filter(Boolean).join(" ").toLowerCase();
+
+    const rules = [
+      ["electrical", /(elétr|eletr|fiação|fiacao|disjunt|quadro de luz|energia|instalação elétrica)/],
+      ["plumbing", /(encan|hidrául|hidraul|vazamento|torneira|tubula)/],
+      ["automotive", /(mecân|mecan|oficina|automot|carro|moto|óleo|oleo|pneu)/],
+      ["restaurant", /(restaurante|lanch|pizza|hamb|comida|cozinha|delivery|cafeteria)/],
+      ["barber", /(barbear|barber|corte masculino|barba)/],
+      ["beauty", /(salão|salao|beleza|estética|estetica|manicure|cabelo|make)/],
+      ["fashion", /(moda|roupa|camisa|vestido|calçado|calcado|tênis|tenis)/],
+      ["health", /(clínica|clinica|saúde|saude|dent|fisi|psic|nutri)/],
+      ["retail", /(loja|varejo|produto|catálogo|catalogo)/]
+    ];
+    const category = rules.find(([,rx]) => rx.test(corpus))?.[0] || "professional-service";
+    const style = String(s.template || document.querySelector(".template-card.active")?.dataset.template || "modern");
+    return {
+      category,
+      style,
+      objective: kind === "logo" ? "brand-identity-logo" : "website-commercial-hero",
+      audience: "clientes reais procurando este tipo de negócio",
+      locale: "pt-BR",
+      creativeRule: kind === "logo"
+        ? "Crie um símbolo de marca original, simples, memorável e específico para o ramo; não faça fotografia, mockup, cartaz ou tela de site."
+        : "Crie uma imagem comercial realista e específica do serviço/produto em ação; não faça logo, mockup, tela de computador, anúncio ou página de site."
+    };
+  }
+
   function buildRequest(kind) {
     const s = builderState();
+    const brandContext = inferBrandContext(s);
 
     const body = {
       purpose: kind === "logo" ? "logo" : "hero",
@@ -72,6 +103,17 @@
       contact: {
         location: s.location || "",
         instagram: s.instagram || ""
+      },
+      brandContext,
+      generationIntent: brandContext.objective,
+      brandBrief: {
+        name: s.businessName || $("businessName")?.value?.trim() || "Meu negócio",
+        type: s.businessType || document.querySelector(".business.active")?.dataset.business || "Outro",
+        slogan: s.slogan || $("businessSlogan")?.value?.trim() || "",
+        category: brandContext.category,
+        visualStyle: brandContext.style,
+        primaryColor: s.color || "#1578ff",
+        offerings: Array.isArray(s.products) ? s.products.slice(0, 30).map(p => ({name:p.name||"", description:p.description||""})) : []
       },
 
       // O backend/provider deve respeitar estes campos para a logo.
@@ -277,6 +319,47 @@
     return new File([bytes], filename, { type: mime });
   }
 
+
+  async function trimTransparentImage(src) {
+    if (!String(src || "").startsWith("data:image/")) return src;
+    return await new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const c = document.createElement("canvas");
+          c.width = img.naturalWidth || img.width;
+          c.height = img.naturalHeight || img.height;
+          const ctx = c.getContext("2d", { willReadFrequently: true });
+          ctx.drawImage(img, 0, 0);
+          const data = ctx.getImageData(0, 0, c.width, c.height).data;
+          let minX = c.width, minY = c.height, maxX = -1, maxY = -1;
+          for (let y = 0; y < c.height; y++) {
+            for (let x = 0; x < c.width; x++) {
+              const a = data[(y * c.width + x) * 4 + 3];
+              if (a > 18) {
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+                if (y < minY) minY = y;
+                if (y > maxY) maxY = y;
+              }
+            }
+          }
+          if (maxX < minX || maxY < minY) return resolve(src);
+          const bw = maxX - minX + 1, bh = maxY - minY + 1;
+          const pad = Math.max(8, Math.round(Math.max(bw, bh) * 0.07));
+          const sx = Math.max(0, minX - pad), sy = Math.max(0, minY - pad);
+          const sw = Math.min(c.width - sx, bw + pad * 2), sh = Math.min(c.height - sy, bh + pad * 2);
+          const out = document.createElement("canvas");
+          out.width = sw; out.height = sh;
+          out.getContext("2d").drawImage(c, sx, sy, sw, sh, 0, 0, sw, sh);
+          resolve(out.toDataURL("image/png"));
+        } catch (_) { resolve(src); }
+      };
+      img.onerror = () => resolve(src);
+      img.src = src;
+    });
+  }
+
   function feedGeneratedAsset(kind, src) {
     if (!src.startsWith("data:")) return false;
 
@@ -336,8 +419,14 @@
     button.classList.add("active");
   }
 
-  function notifyCreditRefresh() {
-    window.dispatchEvent(new CustomEvent("sitezi:ai-credit-change"));
+  function notifyCreditRefresh(kind=null, remaining=null) {
+    const detail = { kind, remaining };
+    window.dispatchEvent(new CustomEvent("sitezi:credits-changed", { detail }));
+    window.dispatchEvent(new CustomEvent("sitezi:ai-credit-change", { detail }));
+    try {
+      const p = window.SITEZI_ACCOUNT_STATE?.refresh?.();
+      if (p?.catch) p.catch(() => {});
+    } catch (_) {}
   }
 
   async function handle(kind, button) {
@@ -350,6 +439,8 @@
     try {
       const result = await generate(kind);
 
+      if (kind === "logo") result.src = await trimTransparentImage(result.src);
+
       feedGeneratedAsset(kind, result.src);
       markModeActive(kind, button);
       showPreview(kind, result.src, result.remaining);
@@ -359,7 +450,7 @@
         { detail: result }
       ));
 
-      notifyCreditRefresh();
+      notifyCreditRefresh(kind, result.remaining);
     } catch (error) {
       console.error("[SITEZI IMAGE AI]", error);
 
@@ -380,10 +471,10 @@
   }
 
   function installStyle() {
-    if ($("sitezi-image-ai-style-v14")) return;
+    if ($("sitezi-image-ai-style-v16")) return;
 
     const style = document.createElement("style");
-    style.id = "sitezi-image-ai-style-v14";
+    style.id = "sitezi-image-ai-style-v16";
     style.textContent = `
       .sitezi-ai-status{margin-top:10px;padding:9px 11px;border:1px solid #1d694d;border-radius:11px;background:#071b14;color:#bdf3d7;font:700 12px/1.4 Inter,Arial,sans-serif}
       .sitezi-ai-plan-modal{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:20px;background:rgba(0,3,10,.82);backdrop-filter:blur(12px)}
@@ -421,7 +512,7 @@
   function init() {
     installStyle();
     installHandlers();
-    document.documentElement.dataset.siteziImageAi = "1.4";
+    document.documentElement.dataset.siteziImageAi = "1.6";
     console.info("[SITEZI] IA de imagens + créditos v1.4 carregada.");
   }
 

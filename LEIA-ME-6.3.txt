@@ -1,0 +1,26 @@
+SITEZI 6.3 — BRAND INTELLIGENCE
+
+Objetivo desta revisão:
+- transformar o cadastro do cliente em um briefing central de marca;
+- separar rigidamente geração de LOGO e geração de IMAGEM comercial;
+- enviar nome, ramo, slogan, cor, modelo e produtos/serviços para a geração;
+- reconhecer categorias comuns pelo conteúdo real digitado;
+- usar motor de site sensível ao ramo e ao plano;
+- manter nome exato da empresa em HTML ao lado do símbolo da logo;
+- corrigir atualização visual dos créditos após uso da IA;
+- manter site público responsivo e gerado pelo contexto do negócio.
+
+Referências de produto usadas como régua (sem copiar código/design): Wix AI Website Builder, Squarespace Blueprint AI e Hostinger AI Builder.
+
+ARQUIVOS PARA SUBSTITUIR NA RAIZ:
+1. index.html
+2. sitezi-image-ai.js
+3. sitezi-logo-display.js
+4. sitezi-premium-engine.js (novo caso ainda não exista)
+
+PASTA /site:
+5. substituir /site/index.html
+
+IMPORTANTE:
+- Não gastar créditos antes de confirmar que estes arquivos estão publicados.
+- O backend sitezi-images v12 já deve estar ativo no Supabase.
