@@ -1,243 +1,292 @@
 /* =========================================================
-   SITEZI — LOGO VISÍVEL v2.2
-   Correção adaptativa:
-   - se a IA retornar logo horizontal com nome embutido, usa a imagem inteira;
-   - se a IA retornar somente símbolo/quadrado, monta símbolo + nome em texto real;
-   - evita nome duplicado no cabeçalho;
-   - mantém upload de logo e modo texto intactos.
+   SITEZI — LOGO FINAL v2.4
+   Arquitetura definitiva:
+   - IA gera somente o SÍMBOLO;
+   - nome da empresa é sempre texto HTML real;
+   - composição é gravada no próprio srcdoc da prévia;
+   - por isso a tela cheia e a publicação usam a mesma logo;
+   - upload manual de logo continua intacto.
    ========================================================= */
 (() => {
   "use strict";
 
-  const STYLE_ID = "sitezi-customer-logo-size-v22";
+  const VERSION = "2.4";
+  const STYLE_ID = "sitezi-logo-final-v24";
+  const SOURCE_MARK = "sitezi-logo-source-v24";
 
-  function getState() {
-    return window.SITEZI_BUILDER_STATE || {};
-  }
+  const state = () => window.SITEZI_BUILDER_STATE || {};
 
-  function ensureStyle(doc) {
-    if (!doc?.head || doc.getElementById(STYLE_ID)) return;
-
-    const style = doc.createElement("style");
-    style.id = STYLE_ID;
-    style.textContent = `
+  function cssText() {
+    return `
       .brand,.site-brand-wrap{
         display:flex!important;
         align-items:center!important;
         gap:10px!important;
         min-width:0!important;
+        flex:1 1 auto!important;
+        max-width:min(100%,360px)!important;
       }
 
-      /* Logo horizontal completa gerada pela IA */
-      .sitezi-ai-full-logo{
-        width:auto!important;
-        height:auto!important;
-        max-height:54px!important;
-        max-width:190px!important;
-        object-fit:contain!important;
-        object-position:left center!important;
-        flex:0 1 auto!important;
-      }
-
-      /* Símbolo isolado gerado pela IA */
       .sitezi-ai-symbol{
+        display:block!important;
         width:52px!important;
         height:52px!important;
+        min-width:52px!important;
         max-width:52px!important;
+        min-height:52px!important;
         max-height:52px!important;
         object-fit:contain!important;
         object-position:center!important;
         flex:0 0 52px!important;
+        border-radius:10px!important;
       }
 
       .sitezi-ai-brand-name{
         display:block!important;
         min-width:0!important;
-        max-width:230px!important;
+        max-width:235px!important;
         overflow:hidden!important;
-        text-overflow:ellipsis!important;
-        white-space:nowrap!important;
+        white-space:normal!important;
+        overflow-wrap:anywhere!important;
         font:900 20px/1.05 Inter,Arial,sans-serif!important;
-        letter-spacing:-.45px!important;
+        letter-spacing:-.4px!important;
         color:inherit!important;
       }
 
       @media(max-width:700px){
-        .sitezi-ai-full-logo{
-          max-height:46px!important;
-          max-width:155px!important;
+        .brand,.site-brand-wrap{
+          gap:8px!important;
+          max-width:min(56vw,220px)!important;
         }
 
         .sitezi-ai-symbol{
-          width:44px!important;
-          height:44px!important;
-          max-width:44px!important;
-          max-height:44px!important;
-          flex-basis:44px!important;
+          width:42px!important;
+          height:42px!important;
+          min-width:42px!important;
+          max-width:42px!important;
+          min-height:42px!important;
+          max-height:42px!important;
+          flex-basis:42px!important;
+          border-radius:9px!important;
         }
 
         .sitezi-ai-brand-name{
-          max-width:155px!important;
-          font-size:17px!important;
-          letter-spacing:-.3px!important;
+          max-width:165px!important;
+          font-size:16px!important;
+          line-height:1.02!important;
+          letter-spacing:-.25px!important;
+          display:-webkit-box!important;
+          -webkit-box-orient:vertical!important;
+          -webkit-line-clamp:2!important;
+          overflow:hidden!important;
         }
       }
 
       @media(max-width:390px){
-        .sitezi-ai-full-logo{max-width:140px!important}
-        .sitezi-ai-brand-name{max-width:130px!important;font-size:16px!important}
+        .brand,.site-brand-wrap{max-width:54vw!important}
+        .sitezi-ai-symbol{
+          width:38px!important;
+          height:38px!important;
+          min-width:38px!important;
+          max-width:38px!important;
+          min-height:38px!important;
+          max-height:38px!important;
+          flex-basis:38px!important;
+        }
+        .sitezi-ai-brand-name{
+          max-width:128px!important;
+          font-size:15px!important;
+        }
       }
     `;
-
-    doc.head.appendChild(style);
   }
 
-  function normalizeText(value) {
-    return String(value || "").replace(/\s+/g, " ").trim().toLowerCase();
+  function ensureStyle(doc) {
+    if (!doc?.head) return;
+    let style = doc.getElementById(STYLE_ID);
+    if (!style) {
+      style = doc.createElement("style");
+      style.id = STYLE_ID;
+      style.textContent = cssText();
+      doc.head.appendChild(style);
+    }
   }
 
-  function getBrand(img) {
-    return (
-      img?.closest?.("header .brand") ||
-      img?.closest?.(".nav .brand") ||
-      img?.closest?.(".navin .brand") ||
-      img?.closest?.(".site-brand-wrap") ||
-      img?.closest?.(".brand")
-    );
+  function findBrand(doc, logoData) {
+    const candidates = [
+      ...doc.querySelectorAll(".brand-mark-ai,.brand-img,.brand-mark")
+    ];
+
+    const img =
+      candidates.find(el => String(el.getAttribute("src") || "") === String(logoData || "")) ||
+      candidates.find(el => el.closest(".brand,.site-brand-wrap")) ||
+      candidates[0];
+
+    if (!img) return null;
+
+    const brand =
+      img.closest("header .brand") ||
+      img.closest(".nav .brand") ||
+      img.closest(".navin .brand") ||
+      img.closest(".site-brand-wrap") ||
+      img.closest(".brand");
+
+    return brand ? { brand, img } : null;
   }
 
-  function removeInjectedName(brand) {
-    brand?.querySelectorAll?.(".sitezi-ai-brand-name").forEach(el => el.remove());
-  }
+  function compose(doc, s) {
+    if (!s.aiLogoGenerated || !s.logoData) return false;
 
-  function removeExactDuplicateOutsideBrand(doc, brand, businessName) {
-    const wanted = normalizeText(businessName);
-    if (!wanted || !brand) return;
+    const found = findBrand(doc, s.logoData);
+    if (!found) return false;
 
-    const header =
-      brand.closest("header") ||
-      brand.closest(".nav") ||
-      brand.closest(".navin");
+    const { brand } = found;
+    ensureStyle(doc);
 
-    if (!header) return;
-
-    header.querySelectorAll("span,strong,b,h1,h2,h3,p,a,div").forEach(el => {
-      if (brand.contains(el)) return;
-      if (el.children.length) return;
-      if (normalizeText(el.textContent) !== wanted) return;
-
-      el.style.setProperty("display", "none", "important");
-      el.setAttribute("aria-hidden", "true");
-      el.dataset.siteziDuplicateBrand = "1";
-    });
-  }
-
-  function useAsFullLogo(doc, brand, img, state) {
-    removeInjectedName(brand);
-
-    img.classList.remove("sitezi-ai-symbol");
-    img.classList.add("sitezi-ai-full-logo");
-    img.setAttribute("alt", state.businessName || "Logo");
-
-    brand.setAttribute("aria-label", state.businessName || "Logo");
-    removeExactDuplicateOutsideBrand(doc, brand, state.businessName);
-  }
-
-  function useAsSymbol(doc, brand, img, state) {
-    img.classList.remove("sitezi-ai-full-logo");
-    img.classList.add("sitezi-ai-symbol");
-    img.setAttribute("alt", "");
+    const img = doc.createElement("img");
+    img.className = "sitezi-ai-symbol";
+    img.src = s.logoData;
+    img.alt = "";
     img.setAttribute("aria-hidden", "true");
 
-    let name = brand.querySelector(".sitezi-ai-brand-name");
-    if (!name) {
-      name = doc.createElement("span");
-      name.className = "sitezi-ai-brand-name";
-      brand.appendChild(name);
-    }
+    const name = doc.createElement("span");
+    name.className = "sitezi-ai-brand-name";
+    name.textContent = s.businessName || "Seu negócio";
 
-    name.textContent = state.businessName || "";
-    brand.setAttribute("aria-label", state.businessName || "");
-    removeExactDuplicateOutsideBrand(doc, brand, state.businessName);
+    brand.replaceChildren(img, name);
+    brand.setAttribute("aria-label", s.businessName || "Seu negócio");
+    brand.dataset.siteziAiBrand = "symbol-text";
+
+    return true;
   }
 
-  function classifyAndCompose(doc, img, state) {
-    const brand = getBrand(img);
-    if (!brand) return;
+  function rewriteSrcdoc(frame) {
+    if (!frame) return false;
 
-    const apply = () => {
-      const w = img.naturalWidth || img.width || 1;
-      const h = img.naturalHeight || img.height || 1;
-      const ratio = w / Math.max(1, h);
+    const s = state();
+    if (!s.aiLogoGenerated || !s.logoData) return false;
 
-      /*
-       * Logos que já vieram da IA em formato horizontal normalmente
-       * possuem símbolo + nome dentro da própria imagem.
-       * Acima de 1.35 usamos a imagem inteira e NÃO repetimos o nome.
-       */
-      if (ratio >= 1.35) {
-        useAsFullLogo(doc, brand, img, state);
-      } else {
-        useAsSymbol(doc, brand, img, state);
+    const source = String(frame.srcdoc || "");
+    if (!source || source.length < 50) return false;
+
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(source, "text/html");
+
+      const oldMark = doc.documentElement?.dataset?.[SOURCE_MARK];
+      const oldName = doc.documentElement?.dataset?.siteziLogoBusiness || "";
+
+      if (oldMark === VERSION && oldName === String(s.businessName || "")) {
+        return false;
       }
-    };
 
-    if (img.complete && img.naturalWidth) {
-      apply();
-    } else {
-      img.addEventListener("load", apply, { once: true });
+      if (!compose(doc, s)) return false;
+
+      doc.documentElement.dataset[SOURCE_MARK] = VERSION;
+      doc.documentElement.dataset.siteziLogoBusiness = String(s.businessName || "");
+
+      const next = "<!doctype html>\n" + doc.documentElement.outerHTML;
+
+      if (next !== source) {
+        frame.srcdoc = next;
+        return true;
+      }
+    } catch (error) {
+      console.warn("[SITEZI LOGO FINAL] Não foi possível consolidar o srcdoc.", error);
     }
+
+    return false;
   }
 
-  function enhanceFrame(frame) {
+  function patchLiveFrame(frame) {
     if (!frame) return;
 
     try {
       const doc = frame.contentDocument;
-      if (!doc?.head) return;
+      const s = state();
+
+      if (!doc?.head || !s.aiLogoGenerated || !s.logoData) return;
 
       ensureStyle(doc);
 
-      const state = getState();
-      if (!state.aiLogoGenerated || !state.logoData) return;
+      const brand = doc.querySelector("[data-sitezi-ai-brand='symbol-text']");
+      if (brand) {
+        const name = brand.querySelector(".sitezi-ai-brand-name");
+        if (name && name.textContent !== (s.businessName || "Seu negócio")) {
+          name.textContent = s.businessName || "Seu negócio";
+        }
+        return;
+      }
 
-      const img = doc.querySelector(".brand-mark-ai,.brand-img,.brand-mark");
-      if (!img) return;
-
-      classifyAndCompose(doc, img, state);
+      compose(doc, s);
     } catch (_) {}
   }
 
+  function processFrame(frame) {
+    if (!frame) return;
+    const rewritten = rewriteSrcdoc(frame);
+    if (!rewritten) patchLiveFrame(frame);
+  }
+
+  function processAll() {
+    processFrame(document.getElementById("sitePreview"));
+    processFrame(document.getElementById("fullPreviewFrame"));
+  }
+
+  function updateBuilderCopy() {
+    const text = document.querySelector('[data-logo-mode="ai"] small');
+    if (text) {
+      text.textContent =
+        "A IA cria o símbolo da marca. Fundo transparente nos planos Profissional e Premium.";
+    }
+  }
+
+  function schedule() {
+    [0, 60, 160, 350, 700].forEach(ms => setTimeout(processAll, ms));
+  }
+
   function install() {
+    updateBuilderCopy();
+
     ["sitePreview", "fullPreviewFrame"].forEach(id => {
       const frame = document.getElementById(id);
-      if (!frame) return;
+      if (!frame || frame.dataset.siteziLogoFinalBound === VERSION) return;
 
-      if (!frame.dataset.siteziLogoBoundV22) {
-        frame.dataset.siteziLogoBoundV22 = "1";
-        frame.addEventListener("load", () => {
-          setTimeout(() => enhanceFrame(frame), 40);
-        });
-      }
-
-      enhanceFrame(frame);
+      frame.dataset.siteziLogoFinalBound = VERSION;
+      frame.addEventListener("load", () => {
+        setTimeout(() => patchLiveFrame(frame), 25);
+        setTimeout(() => rewriteSrcdoc(frame), 80);
+      });
     });
+
+    const generate = document.getElementById("generateSite");
+    if (generate && generate.dataset.siteziLogoFinalBound !== VERSION) {
+      generate.dataset.siteziLogoFinalBound = VERSION;
+      generate.addEventListener("click", schedule, true);
+    }
+
+    const full = document.getElementById("fullPreview");
+    if (full && full.dataset.siteziLogoFinalBound !== VERSION) {
+      full.dataset.siteziLogoFinalBound = VERSION;
+      full.addEventListener("click", schedule, true);
+    }
+
+    processAll();
+    document.documentElement.dataset.siteziLogoFinal = VERSION;
   }
 
-  window.addEventListener("sitezi:ai-logo-generated", () => {
-    setTimeout(install, 0);
-    setTimeout(install, 150);
-  });
-
-  window.addEventListener("sitezi:builder-state", () => {
-    setTimeout(install, 25);
-  });
+  window.addEventListener("sitezi:ai-logo-generated", schedule);
+  window.addEventListener("sitezi:builder-state", () => setTimeout(processAll, 25));
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", install);
+    document.addEventListener("DOMContentLoaded", () => {
+      install();
+      schedule();
+    });
   } else {
     install();
+    schedule();
   }
 
-  setInterval(install, 800);
+  setInterval(install, 700);
 })();

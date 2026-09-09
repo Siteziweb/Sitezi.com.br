@@ -1,17 +1,15 @@
-SITEZI — CORREÇÃO DOS EXEMPLOS DA ETAPA 5
+SITEZI — LOGO FINAL v2.4
 
-Substitua na RAIZ do GitHub:
-1. index.html
-2. sitezi-dynamic-examples.js
+O backend sitezi-images já foi atualizado para a versão 18 no Supabase.
 
-Os demais arquivos do pacote são mantidos apenas por segurança.
+No GitHub:
+1. Substitua SOMENTE o arquivo sitezi-logo-display.js por este.
+2. Não mexa em script.js, style.css, sitezi-premium-engine.js ou sitezi-image-ai.js.
+3. Depois do upload, abra o SITEZI em aba anônima/privada para evitar cache antigo.
 
-O que foi corrigido:
-- Os exemplos de produto/serviço agora mudam conforme o tipo de negócio.
-- Prestador de Serviços usa exemplo de instalação elétrica.
-- Oficina usa troca de óleo.
-- Restaurante usa prato executivo.
-- Barbearia, salão, moda, loja e clínica possuem exemplos próprios.
-- "Outro" usa exemplo neutro.
-- Não usa IA e não consome créditos.
-- Não altera a pasta /site.
+A nova regra é:
+- IA = símbolo apenas.
+- Nome do negócio = texto HTML real.
+- Profissional e Premium recebem tentativa de remoção automática do fundo.
+- Básico não usa o serviço extra de remoção de fundo.
+- A composição é gravada no srcdoc, então prévia e tela cheia usam a mesma estrutura.
