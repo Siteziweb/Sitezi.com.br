@@ -1,18 +1,10 @@
-SITEZI — LOGO FINAL + SUPORTE WHATSAPP v2.5
+SITEZI — IDENTIDADE DO NOME COM IA
 
-Substitua SOMENTE o arquivo:
-sitezi-logo-display.js
+Substitua no repositório:
+1) /sitezi-ai-client.js
+2) /sitezi-logo-display.js
+3) /site/index.html  (use o arquivo site_index.html deste ZIP)
 
-O que esta versão mantém:
-- correção definitiva da logo (símbolo IA + nome real em HTML);
-- composição persistida na prévia.
+O backend sitezi-ai já foi atualizado para remover a Stability da criação de logo e gerar somente a identidade tipográfica do nome com Gemini.
 
-O que foi adicionado:
-- barra pequena “Precisa de ajuda? / Fale no WhatsApp”;
-- aparece durante o criador, prévia, planos e tela cheia;
-- não aparece na home inicial;
-- abre direto o WhatsApp do desenvolvedor;
-- mensagem pronta: “Olá! Estou usando o SITEZI e preciso de ajuda com meu site.”
-
-Número configurado:
-+55 48 99694-2186
+Depois do upload, aguarde o GitHub Pages publicar e faça um teste gerando um NOVO site. Sites antigos continuam funcionando; logos antigas geradas por IA deixam de ser usadas na página pública, mas logos enviadas pelo cliente continuam funcionando.
