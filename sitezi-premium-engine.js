@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — MOTOR DE QUALIDADE v2.0
+   SITEZI — MOTOR DE QUALIDADE v2.1
    Famílias reais de design + variações por negócio + planos.
    Não gera imagens e não consome créditos.
    ========================================================= */
@@ -9,7 +9,7 @@
   let account={active:false,plan:"Básico"};
   const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
   const hash=s=>{let h=2166136261;for(const ch of String(s)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
-  const tier=plan=>/premium/i.test(plan||"")?"premium":/profissional/i.test(plan||"")?"professional":"basic";
+  const tier=plan=>/master|premium/i.test(plan||"")?"premium":/profissional/i.test(plan||"")?"professional":"basic";
 
   const PROFILE={
     electrical:{eyebrow:"SERVIÇOS ELÉTRICOS",headline:"Segurança e precisão em cada instalação.",intro:"Instalações, manutenção e soluções elétricas com atendimento direto e profissional.",icon:"⚡",cta:"Solicitar orçamento",trust:["Atendimento direto","Serviço organizado","Residencial e comercial","Contato rápido"]},
@@ -71,7 +71,11 @@
     const wa=String(s.whatsapp||"").replace(/\D/g,"");
     const waHref=wa?`https://wa.me/${wa}?text=${encodeURIComponent("Olá! Vim pelo site e gostaria de mais informações.")}`:"#";
     const cta=esc(p.cta), heroPhoto=photos[0]||"";
-    const logo=s.logoData?`<img class="brand-mark" src="${s.logoData}" alt=""><span>${name}</span>`:`<span class="brand-symbol">${p.icon}</span><span>${name}</span>`;
+    const logo=s.logoData
+      ?(s.aiLogoGenerated
+        ?`<img class="brand-mark brand-mark-ai" src="${s.logoData}" alt="${name}">`
+        :`<img class="brand-mark" src="${s.logoData}" alt=""><span>${name}</span>`)
+      :`<span class="brand-symbol">${p.icon}</span><span>${name}</span>`;
     const cards=(products.length?products:[{name:"Atendimento personalizado",description:p.intro}]).map((item,i)=>`
       <article class="service-card">
         ${item.photo?`<img class="service-photo" src="${item.photo}" alt="${esc(item.name)}">`:`<div class="service-fallback"><span>${p.icon}</span><small>${String(i+1).padStart(2,"0")}</small></div>`}
@@ -84,7 +88,12 @@
     <style>
       :root{--bg:${tv.bg};--card:${tv.card};--soft:${tv.soft};--text:${tv.text};--muted:${tv.muted};--line:${tv.line};--a:${tv.a};--radius:${preset?.shape==="sharp"?"10px":preset?.shape==="square"?"2px":"22px"}}
       *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:${preset?.font||"Inter,system-ui,sans-serif"}}a{text-decoration:none;color:inherit}img{display:block}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}
-      .nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 89%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.navin{min-height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:20px}.brand-mark{height:64px;max-width:170px;object-fit:contain}.brand-symbol{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius);background:var(--a);color:${preset?.theme==="editorial"?"#fff":"inherit"}}
+      .nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 89%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+      .navin{min-height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+      .brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:20px;min-width:0}
+      .brand-mark{height:64px;max-width:170px;object-fit:contain}
+      .brand-mark-ai{height:72px;width:auto;max-width:300px;object-fit:contain;object-position:left center}
+      .brand-symbol{display:grid;place-items:center;width:44px;height:44px;border-radius:var(--radius);background:var(--a);color:${preset?.theme==="editorial"?"#fff":"inherit"}}
       .links{display:flex;gap:20px;color:var(--muted);font:800 13px Arial,sans-serif}.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 18px;background:var(--a);color:${preset?.theme==="warm"||preset?.theme==="editorial"?"#17120d":"#fff"};border:1px solid color-mix(in srgb,var(--a) 75%,white 10%);border-radius:var(--radius);font:900 14px Arial,sans-serif}.ghost{background:transparent;color:var(--text);border-color:var(--line)}
       .hero{padding:64px 0 48px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:${preset?.layout==="immersive"?"1.18fr .82fr":"1fr 1fr"};gap:48px;align-items:center}.eyebrow{color:var(--a);font:950 11px Arial,sans-serif;letter-spacing:2px}.hero h1{font-size:clamp(48px,7vw,86px);line-height:.93;letter-spacing:-4px;margin:15px 0 18px}.hero p{font:400 17px/1.7 Arial,sans-serif;color:var(--muted);max-width:650px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
       .hero-media{min-height:500px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:var(--card);position:relative}.hero-media>img{width:100%;height:500px;object-fit:cover}.hero-fallback{height:500px;position:relative;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,var(--card),var(--soft))}.big{font-size:150px;opacity:.10}.shape{position:absolute;width:240px;height:240px;right:-30px;top:36px;border:2px solid var(--a);opacity:.65}.shape.s1{border-radius:50%}.shape.s2{border-radius:28% 72% 58% 42%;transform:rotate(28deg)}.shape.s3{transform:skew(-15deg);border-radius:12px}.shape.s4{border-radius:50% 10% 50% 10%;transform:rotate(18deg)}.panel{position:absolute;left:26px;right:26px;bottom:26px;padding:20px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(14px);border-radius:var(--radius)}.panel small,.panel b,.panel span{display:block}.panel b{font-size:22px;margin:4px 0}.panel span{color:var(--muted);font:13px Arial,sans-serif}
@@ -93,8 +102,8 @@
       .whygrid{display:grid;grid-template-columns:1fr 1fr;gap:42px}.whylist{display:grid;gap:10px}.whylist div{display:grid;grid-template-columns:45px 1fr;align-items:center;gap:13px;padding:17px;border:1px solid var(--line);background:var(--card);border-radius:var(--radius)}.whylist span{display:grid;place-items:center;width:45px;height:45px;background:var(--soft);color:var(--a);font:900 12px Arial,sans-serif}.whylist b{font:800 14px Arial,sans-serif}
       .gallery{display:grid;grid-template-columns:1.3fr .7fr .7fr;gap:10px;margin-top:24px}.gallery img{width:100%;height:300px;object-fit:cover;border-radius:var(--radius)}.contact{padding:84px 0}.contactbox{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:34px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}footer{padding:28px 0;border-top:1px solid var(--line);color:var(--muted);font:13px Arial,sans-serif}.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       body.variant-2 .hero-grid{grid-template-columns:.86fr 1.14fr}body.variant-3 .hero h1{max-width:760px}body.variant-3 .hero-media{transform:rotate(1deg)}body.variant-4 .service-card:nth-child(even){transform:translateY(12px)}
-      @media(max-width:850px){.links{display:none}.hero-grid,.whygrid,.contactbox{grid-template-columns:1fr}.hero-media,.hero-media>img,.hero-fallback{height:360px;min-height:360px}.services{grid-template-columns:1fr 1fr}.trustgrid{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr 1fr}.gallery img:first-child{grid-column:1/3}}
-      @media(max-width:560px){.wrap{width:min(100% - 24px,1180px)}.hero{padding:42px 0 32px}.hero h1{font-size:49px;letter-spacing:-3px}.hero-media,.hero-media>img,.hero-fallback{height:300px;min-height:300px}.services{grid-template-columns:1fr}.trustitem{padding:14px}.section{padding:66px 0}.gallery{grid-template-columns:1fr}.gallery img,.gallery img:first-child{grid-column:auto;height:240px}.contactbox{padding:25px}}
+      @media(max-width:850px){.links{display:none}.brand-mark-ai{height:68px;max-width:250px}.hero-grid,.whygrid,.contactbox{grid-template-columns:1fr}.hero-media,.hero-media>img,.hero-fallback{height:360px;min-height:360px}.services{grid-template-columns:1fr 1fr}.trustgrid{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr 1fr}.gallery img:first-child{grid-column:1/3}}
+      @media(max-width:560px){.wrap{width:min(100% - 24px,1180px)}.navin{min-height:78px;gap:10px}.brand-mark-ai{height:62px;max-width:205px}.hero{padding:42px 0 32px}.hero h1{font-size:49px;letter-spacing:-3px}.hero-media,.hero-media>img,.hero-fallback{height:300px;min-height:300px}.services{grid-template-columns:1fr}.trustitem{padding:14px}.section{padding:66px 0}.gallery{grid-template-columns:1fr}.gallery img,.gallery img:first-child{grid-column:auto;height:240px}.contactbox{padding:25px}}
     </style></head><body class="variant-${variant} tier-${plan}">
       <header class="nav"><div class="wrap navin"><div class="brand">${logo}</div><nav class="links"><a href="#servicos">${key==="restaurant"?"Cardápio":"Serviços"}</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav>${wa?`<a class="btn" href="${waHref}" target="_blank">${cta}</a>`:""}</div></header>
       <main><section class="hero"><div class="wrap hero-grid"><div><span class="eyebrow">${p.eyebrow}</span><h1>${esc(s.slogan||p.headline)}</h1><p>${p.intro}</p><div class="actions">${wa?`<a class="btn" href="${waHref}" target="_blank">${cta} →</a>`:""}<a class="btn ghost" href="#servicos">${key==="restaurant"?"Ver destaques":"Conhecer serviços"}</a></div></div><div class="hero-media">${visual}</div></div></section>
@@ -110,7 +119,7 @@
   function install(){
     const btn=$("generateSite"); if(!btn)return;
     btn.onclick=async()=>{await syncAccount();const frame=$("sitePreview");if(frame)frame.srcdoc=buildHTML();const s=window.SITEZI_BUILDER_STATE||{};if($("previewDomain")){const sl=String(s.businessName||"meu-negocio").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");$("previewDomain").textContent=`${sl||"meu-negocio"}.sitezi.com.br`}if(typeof window.SITEZI_SHOW_SCREEN==="function"&&$("result"))window.SITEZI_SHOW_SCREEN($("result"))};
-    document.documentElement.dataset.siteziPremiumEngine="2.0";
+    document.documentElement.dataset.siteziPremiumEngine="2.1";
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{install();syncAccount()});else{install();syncAccount()}
 })();
