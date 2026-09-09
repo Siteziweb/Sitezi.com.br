@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — IA DE IMAGENS + CRÉDITOS v1.2
+   SITEZI — IA DE IMAGENS + CRÉDITOS v1.3
    - login obrigatório para IA
    - plano obrigatório para IA avançada
    - separa plano, crédito e provedor
@@ -111,11 +111,15 @@
     return { src, remaining: typeof data.remainingCredits==="number" ? data.remainingCredits : typeof data.remaining==="number" ? data.remaining : null };
   }
 
-  function openLogin() {
-    const candidates=[window.siteziAuth?.openLogin,window.SiteziAuth?.openLogin,window.SITEZI_AUTH?.openLogin,window.openSiteziLogin,window.showSiteziLogin,window.openLoginModal];
-    const fn=candidates.find(x=>typeof x==="function");
-    if(fn) return fn();
-    window.dispatchEvent(new CustomEvent("sitezi:open-login"));
+  function openLogin(mode = "login") {
+    if (typeof window.SITEZI_AUTH?.openLogin === "function") {
+      window.SITEZI_AUTH.openLogin(mode);
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent("sitezi:open-login", {
+      detail: { mode }
+    }));
   }
 
   function openPlanNotice() {
@@ -188,7 +192,7 @@
       window.dispatchEvent(new CustomEvent(kind==="logo"?"sitezi:ai-logo-generated":"sitezi:ai-image-generated",{detail:result})); notifyCreditRefresh();
     } catch(error) {
       console.error("[SITEZI IMAGE AI]",error);
-      if(error?.code==="AUTH_REQUIRED"){openLogin(); alert("Entre na sua conta SITEZI para usar a geração com IA.");}
+      if(error?.code==="AUTH_REQUIRED"){openLogin("login");}
       else if(error?.code==="PLAN_REQUIRED") openPlanNotice();
       else if(error?.code==="NO_CREDIT") alert(error.message || "Você não possui crédito disponível para esta geração.");
       else alert(error?.message || "Não consegui gerar a imagem agora.");
@@ -197,8 +201,8 @@
   }
 
   function installStyle() {
-    if($("sitezi-image-ai-style-v12"))return;
-    const style=document.createElement("style");style.id="sitezi-image-ai-style-v12";
+    if($("sitezi-image-ai-style-v13"))return;
+    const style=document.createElement("style");style.id="sitezi-image-ai-style-v13";
     style.textContent=`.sitezi-ai-status{margin-top:10px;padding:9px 11px;border:1px solid #1d694d;border-radius:11px;background:#071b14;color:#bdf3d7;font:700 12px/1.4 Inter,Arial,sans-serif}
     .sitezi-ai-plan-modal{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:20px;background:rgba(0,3,10,.82);backdrop-filter:blur(12px)}
     .sitezi-ai-plan-card{width:min(520px,100%);position:relative;padding:26px;border:1px solid #225dd0;border-radius:24px;background:linear-gradient(180deg,#0c1628,#050b16);color:#f8fbff;box-shadow:0 30px 100px rgba(0,0,0,.65)}
@@ -212,6 +216,6 @@
     if(imageBtn) imageBtn.onclick=e=>{e.preventDefault();e.stopPropagation();handle("image",imageBtn)};
   }
 
-  function init(){installStyle();installHandlers();document.documentElement.dataset.siteziImageAi="1.2";console.info("[SITEZI] IA de imagens + créditos v1.2 carregada.")}
+  function init(){installStyle();installHandlers();document.documentElement.dataset.siteziImageAi="1.3";console.info("[SITEZI] IA de imagens + créditos v1.3 carregada.")}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();

@@ -1,22 +1,15 @@
-SITEZI update 5.7.0
+SITEZI 5.7.1 — correção rápida
 
-Arquivos alterados:
+Substitua estes 4 arquivos no repositório:
 - index.html
 - script.js
+- sitezi-auth.js
 - sitezi-image-ai.js
 
-O pacote presume que estes arquivos atuais continuam no repositório:
-- style.css
-- sitezi-auth.js
-- sitezi-account-state.js
-- sitezi-checkout-client.js
-- sitezi-ai-client.js
-
-Mudanças principais:
-- Login visível na home e no wizard.
-- Wizard passa de 8 para 9 etapas.
-- Produtos/serviços entram antes da IA.
-- Site simples continua funcionando sem plano.
-- IA exige login + plano ativo + créditos.
-- Erros de plano e crédito separados.
-- Requisição da IA inclui cor, slogan, produtos e serviços.
+Corrigido:
+1. Fazer login agora abre o modal real do Supabase.
+2. O mesmo botão muda para "Minha conta" quando autenticado.
+3. Login funciona tanto na home quanto dentro do criador.
+4. Campos da etapa de produtos agora seguem o tema escuro no mobile.
+5. IA usa a mesma função pública de login quando a sessão não existe.
+6. Não cria botão de login duplicado.

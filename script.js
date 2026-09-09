@@ -27,25 +27,22 @@ document.addEventListener("DOMContentLoaded", () => {
     window.dispatchEvent(new CustomEvent("sitezi:builder-state", { detail: structuredClone ? structuredClone(state) : JSON.parse(JSON.stringify(state)) }));
   }
 
-  function triggerLogin() {
-    const candidates = [
-      window.siteziAuth?.openLogin,
-      window.SiteziAuth?.openLogin,
-      window.SITEZI_AUTH?.openLogin,
-      window.openSiteziLogin,
-      window.showSiteziLogin,
-      window.openLoginModal
-    ];
-    const fn = candidates.find(x => typeof x === "function");
-    if (fn) return fn();
-    window.dispatchEvent(new CustomEvent("sitezi:open-login"));
+  function triggerLogin(mode = "login") {
+    if (typeof window.SITEZI_AUTH?.openLogin === "function") {
+      window.SITEZI_AUTH.openLogin(mode);
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent("sitezi:open-login", {
+      detail: { mode }
+    }));
   }
 
   $("topLogin")?.addEventListener("click", triggerLogin);
   $("wizardLogin")?.addEventListener("click", triggerLogin);
 
   window.addEventListener("sitezi:auth-state", e => {
-    const logged = !!e.detail?.user;
+    const logged = e.detail?.loggedIn ?? !!e.detail?.user;
     const label = logged ? "Minha conta" : "Fazer login";
     if ($("topLogin")) $("topLogin").textContent = label;
     if ($("wizardLogin")) $("wizardLogin").textContent = label;
