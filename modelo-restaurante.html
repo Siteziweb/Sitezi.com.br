@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111">
+<title>Restaurante — Modelo SITEZI</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif}a{text-decoration:none;color:inherit}button{font:inherit}
+
+body{background:#fff7eb;color:#2b1409}.wrap{width:min(1180px,calc(100% - 34px));margin:auto}.nav{height:76px;display:flex;align-items:center;justify-content:space-between}.brand{font-family:Georgia,serif;font-size:25px;font-weight:900;color:#9b2617}.links{display:flex;gap:22px;font-weight:800;font-size:13px}.order{background:#a62d1c;color:#fff;padding:12px 17px;border-radius:999px;font-weight:900}
+.hero{padding:40px 0 60px}.hero-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:34px;align-items:center}.ey{color:#b23a25;font-size:11px;font-weight:950;letter-spacing:2px}.copy h1{font-family:Georgia,serif;font-size:clamp(54px,7vw,92px);line-height:.92;margin:12px 0 18px}.copy p{color:#6f4a39;line-height:1.7}.visual{min-height:520px;border-radius:42px;background:radial-gradient(circle at 63% 45%,#ffd17a 0 12%,#e3582d 13% 27%,#a72218 28% 47%,#61130d 48% 62%,transparent 63%),linear-gradient(145deg,#f15b37,#8f1d12);position:relative;overflow:hidden}.leaf{position:absolute;width:80px;height:32px;background:#356d2b;border-radius:100% 0 100% 0;transform:rotate(-28deg)}.l1{right:16%;top:14%}.l2{left:12%;bottom:16%}.ticket{position:absolute;left:24px;bottom:24px;background:#fff5df;padding:17px 20px;border-radius:20px;box-shadow:0 10px 30px #65160e55}.ticket b{display:block;font-size:22px;color:#a72b1c}
+.menu{background:#8f2015;color:#fff;padding:78px 0}.menu h2{font-family:Georgia,serif;font-size:48px;margin:8px 0 30px}.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.dish{background:#a82d1f;border-radius:24px;padding:22px}.dish .thumb{height:160px;border-radius:18px;background:radial-gradient(circle,#ffd98c 0 18%,#e96c38 19% 37%,#7f160e 38% 60%,transparent 61%),#6d130e}.dish h3{font-size:20px;margin:16px 0 7px}.dish p{color:#f1c9bd;line-height:1.5;font-size:14px}.dish strong{display:block;margin-top:12px;color:#ffd877}.story{padding:80px 0}.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}.story h2{font-family:Georgia,serif;font-size:45px;margin:0}.story p{color:#6e4939;line-height:1.8}footer{padding:28px 0;border-top:1px solid #dfc9b5}
+@media(max-width:760px){.links{display:none}.hero-grid,.story-grid{grid-template-columns:1fr}.visual{min-height:350px}.menu-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body class="restaurant">
+
+<header class="nav wrap"><div class="brand">CASA SABOR</div><nav class="links"><a href="#menu">Menu</a><a href="#historia">Nossa casa</a><a href="#contato">Contato</a></nav><a class="order" href="#menu">Pedir agora</a></header>
+<main><section class="hero"><div class="wrap hero-grid"><div class="copy"><span class="ey">COZINHA AFETIVA</span><h1>Comida que reúne.</h1><p>Pratos preparados na hora, ingredientes selecionados e sabores que lembram casa.</p><a class="order" style="display:inline-block;margin-top:18px" href="#menu">Ver cardápio →</a></div><div class="visual"><div class="leaf l1"></div><div class="leaf l2"></div><div class="ticket"><small>PRATO DO DIA</small><b>R$ 32,90</b></div></div></div></section>
+<section class="menu" id="menu"><div class="wrap"><span class="ey" style="color:#ffd877">DESTAQUES</span><h2>Escolha seu favorito.</h2><div class="menu-grid"><article class="dish"><div class="thumb"></div><h3>Parmegiana da casa</h3><p>Arroz, fritas e molho artesanal.</p><strong>R$ 39,90</strong></article><article class="dish"><div class="thumb"></div><h3>Risoto cremoso</h3><p>Finalizado com parmesão e ervas.</p><strong>R$ 36,90</strong></article><article class="dish"><div class="thumb"></div><h3>Burger artesanal</h3><p>Pão brioche, carne e molho da casa.</p><strong>R$ 29,90</strong></article></div></div></section>
+<section class="story" id="historia"><div class="wrap story-grid"><h2>Feito com ingredientes de verdade.</h2><p>Uma experiência simples e acolhedora, da escolha do prato até o pedido. O modelo valoriza cardápio, preço, delivery e identidade gastronômica.</p></div></section></main><footer><div class="wrap">CASA SABOR · Modelo SITEZI</div></footer>
+
+</body></html>

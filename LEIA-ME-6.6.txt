@@ -1,0 +1,22 @@
+SITEZI 6.6 — MODELOS VISUALMENTE REFEITOS
+
+Substitua na raiz:
+- modelos.html
+- modelos.css
+- modelos.js
+
+Adicione/substitua também:
+- modelo-barbearia.html
+- modelo-restaurante.html
+- modelo-loja.html
+- modelo-estetica.html
+- modelo-oficina.html
+- modelo-profissional.html
+
+Mudança principal:
+Os cards agora exibem dentro deles o próprio modelo REAL em iframe, reduzido.
+Assim, a miniatura e o botão "Ver modelo" mostram a mesma página.
+Os 6 layouts foram refeitos e são visualmente diferentes entre si:
+Barbearia, Restaurante, Moda, Estética, Oficina e Profissional.
+
+Não usa IA e não consome créditos.

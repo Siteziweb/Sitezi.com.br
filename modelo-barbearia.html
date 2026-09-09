@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111">
+<title>Barbearia — Modelo SITEZI</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif}a{text-decoration:none;color:inherit}button{font:inherit}
+
+body{background:#0a0807;color:#f8efe4}.wrap{width:min(1180px,calc(100% - 34px));margin:auto}
+.nav{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #3a2a1f}.brand{font-weight:950;letter-spacing:2px}.brand b{color:#d2a15e}.links{display:flex;gap:24px;color:#b8a995;font-size:13px}
+.hero{min-height:560px;display:grid;grid-template-columns:1.1fr .9fr}.copy{padding:80px max(18px,calc((100vw - 1180px)/2));padding-right:30px;display:flex;flex-direction:column;justify-content:center}.ey{color:#d2a15e;font-size:11px;letter-spacing:2px;font-weight:900}.copy h1{font-family:Georgia,serif;font-size:clamp(52px,8vw,102px);line-height:.88;margin:14px 0 22px}.copy p{color:#b7a896;max-width:570px;line-height:1.7}.actions{display:flex;gap:10px;margin-top:25px}.btn{padding:14px 18px;border-radius:0;border:1px solid #d2a15e;background:#d2a15e;color:#18100a;font-weight:900}.btn.alt{background:transparent;color:#f8efe4}
+.visual{position:relative;overflow:hidden;background:radial-gradient(circle at 70% 40%,#7a5a3c33,transparent 25%),repeating-linear-gradient(115deg,#0d0a08 0 14px,#16110d 14px 28px)}.ring{position:absolute;width:330px;height:330px;border:36px solid #8c6339;opacity:.35;border-radius:50%;right:7%;top:14%}.blade{position:absolute;right:18%;bottom:13%;width:250px;height:62px;border:2px solid #d2a15e;transform:rotate(-24deg)}.stamp{position:absolute;left:28px;bottom:26px;padding:15px;border:1px solid #5d442f;background:#0b0806cc}
+.services{padding:80px 0;background:#120e0b}.section-title{font-family:Georgia,serif;font-size:42px;margin:8px 0 30px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{border:1px solid #3a2a1f;padding:25px;background:#0d0a08}.card span{color:#d2a15e;font-size:11px}.card h3{font-family:Georgia,serif;font-size:25px;margin:20px 0 10px}.card p{color:#a99986;line-height:1.6}.price{margin-top:16px;font-weight:900;color:#d2a15e}
+.quote{padding:70px 0}.quote .box{border-top:1px solid #4c3828;border-bottom:1px solid #4c3828;padding:34px 0;display:flex;justify-content:space-between;gap:20px;align-items:center}.quote strong{font-family:Georgia,serif;font-size:32px}
+footer{padding:30px 0;color:#8f806f;border-top:1px solid #2b2018}
+@media(max-width:760px){.links{display:none}.hero{grid-template-columns:1fr}.copy{padding:56px 18px}.visual{min-height:330px}.grid{grid-template-columns:1fr}.quote .box{display:block}}
+
+</style>
+</head>
+<body class="barber">
+
+<header class="nav wrap"><div class="brand">NOIR <b>BARBER</b></div><nav class="links"><a href="#servicos">Serviços</a><a href="#agenda">Agenda</a><a href="#contato">Contato</a></nav><a class="btn" href="#agenda">Agendar</a></header>
+<main>
+<section class="hero"><div class="copy"><span class="ey">BARBEARIA CONTEMPORÂNEA</span><h1>Corte com presença.</h1><p>Precisão no corte, cuidado na barba e uma experiência pensada para quem leva estilo a sério.</p><div class="actions"><a class="btn" href="#agenda">Agendar horário</a><a class="btn alt" href="#servicos">Ver serviços</a></div></div><div class="visual"><div class="ring"></div><div class="blade"></div><div class="stamp"><small>HOJE</small><br><b>09h — 20h</b></div></div></section>
+<section class="services" id="servicos"><div class="wrap"><span class="ey">SERVIÇOS</span><h2 class="section-title">Escolha seu cuidado.</h2><div class="grid"><article class="card"><span>01</span><h3>Corte Signature</h3><p>Consultoria rápida de estilo, corte e finalização.</p><div class="price">R$ 55</div></article><article class="card"><span>02</span><h3>Barba Premium</h3><p>Toalha quente, desenho e acabamento preciso.</p><div class="price">R$ 45</div></article><article class="card"><span>03</span><h3>Combo Completo</h3><p>Corte + barba com atendimento completo.</p><div class="price">R$ 89</div></article></div></div></section>
+<section class="quote"><div class="wrap box"><strong>Seu horário. Seu estilo.</strong><a class="btn" href="#agenda">Agendar agora →</a></div></section>
+</main><footer><div class="wrap">NOIR BARBER · Modelo SITEZI</div></footer>
+
+</body></html>

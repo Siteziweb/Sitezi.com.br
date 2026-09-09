@@ -1,119 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#02050f" />
-  <meta name="description" content="Escolha uma família de design real da SITEZI ou crie do seu jeito." />
-  <title>SITEZI — Escolha seu modelo</title>
-  <link rel="stylesheet" href="modelos.css?v=2" />
-</head>
-<body>
-  <main class="page-shell">
-    <header class="models-header">
-      <a class="brand" href="index.html" aria-label="Voltar para a página inicial">
-        <div class="brand-mark">S</div><div class="brand-name">SITE<span>ZI</span></div>
-      </a>
-      <a class="back-link" href="index.html">← Voltar</a>
-    </header>
-
-    <section class="intro">
-      <div class="eyebrow">✦ Famílias de design SITEZI</div>
-      <h1>Escolha uma base. <span>A SITEZI personaliza.</span></h1>
-      <p>Os modelos abaixo são bases reais de criação. Seu site mantém a qualidade visual do modelo, mas recebe seus dados, suas cores e uma variação própria para não ficar igual ao de outros clientes.</p>
-      <div class="filter-row" aria-label="Filtros de modelos">
-        <button class="filter-btn active" type="button" data-filter="todos">Todos</button>
-        <button class="filter-btn" type="button" data-filter="servicos">Serviços</button>
-        <button class="filter-btn" type="button" data-filter="comercio">Comércio</button>
-        <button class="filter-btn" type="button" data-filter="alimentacao">Alimentação</button>
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#02050f"><title>SITEZI — Escolha seu modelo</title>
+<link rel="stylesheet" href="modelos.css?v=3">
+</head><body><main class="page-shell">
+<header class="models-header"><a class="brand" href="index.html"><div class="brand-mark">S</div><div class="brand-name">SITE<span>ZI</span></div></a><a class="back-link" href="index.html">← Voltar</a></header>
+<section class="intro"><div class="eyebrow">✦ Modelos reais SITEZI</div><h1>Escolha o visual que <span>representa seu negócio.</span></h1><p>Agora cada card abaixo mostra o próprio site-modelo de verdade. O que você vê aqui é a mesma família visual que a SITEZI usa como base ao criar o site.</p><div class="filter-row"><button class="filter-btn active" data-filter="todos">Todos</button><button class="filter-btn" data-filter="servicos">Serviços</button><button class="filter-btn" data-filter="comercio">Comércio</button><button class="filter-btn" data-filter="alimentacao">Alimentação</button></div></section>
+<section class="custom-path"><div><span>SEM MODELO FIXO</span><h2>Prefere criar do seu jeito?</h2><p>Comece sem família pronta e personalize estilo, cores, logo, imagens e seções.</p></div><button class="btn primary custom-model">Criar do meu jeito →</button></section>
+<section class="models-grid">
+    <article class="model-card" data-category="servicos">
+      <div class="live-preview">
+        <iframe src="modelo-barbearia.html" title="Prévia Barbearia" loading="lazy" tabindex="-1"></iframe>
+        <div class="preview-shield"></div>
+        <span class="real-badge">PRÉVIA DO MODELO REAL</span>
       </div>
-    </section>
-
-    <section class="custom-path">
-      <div><span>SEM MODELO FIXO</span><h2>Quer criar do seu jeito?</h2><p>Escolha cores, estilo, imagens, logo e conteúdo sem ficar preso a uma família pronta.</p></div>
-      <button class="btn primary custom-model" type="button">Criar do meu jeito →</button>
-    </section>
-
-    <section class="models-grid" id="modelsGrid">
-      <article class="model-card" data-category="servicos">
-        <div class="real-badge">MODELO REAL · VARIÁVEL</div>
-        <div class="preview preview-barber">
-          <div class="mini-top"><span>BARBER</span><b>Agendar</b></div>
-          <div class="mini-copy"><small>BARBEARIA SIGNATURE</small><strong>Seu estilo.<br>Nossa atitude.</strong><i>Agende seu horário</i></div>
-          <div class="barber-lines"></div>
-        </div>
-        <div class="card-body"><div><span class="tag">Serviços</span><h2>Barbearia</h2><p>Escuro, elegante e com foco em corte, barba e agendamento.</p></div>
-          <div class="card-actions"><a href="modelo-barbearia.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="barber-signature" data-business="Barbearia">Usar este modelo</button></div>
-        </div>
-      </article>
-
-      <article class="model-card" data-category="alimentacao">
-        <div class="real-badge">MODELO REAL · VARIÁVEL</div>
-        <div class="preview preview-food">
-          <div class="mini-top"><span>SABOR</span><b>Menu</b></div><div class="food-circle">🍕</div>
-          <div class="mini-copy"><small>RESTAURANTE & DELIVERY</small><strong>Feito com<br>ingredientes de verdade.</strong><i>Pedir agora</i></div>
-        </div>
-        <div class="card-body"><div><span class="tag">Alimentação</span><h2>Restaurante</h2><p>Cardápio, pratos, preços e pedido em uma experiência gastronômica forte.</p></div>
-          <div class="card-actions"><a href="modelo-restaurante.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="restaurant-flavor" data-business="Restaurante">Usar este modelo</button></div>
-        </div>
-      </article>
-
-      <article class="model-card" data-category="comercio">
-        <div class="real-badge">MODELO REAL · VARIÁVEL</div>
-        <div class="preview preview-fashion">
-          <div class="mini-top"><span>URBAN</span><b>Shop</b></div><div class="fashion-shape"></div>
-          <div class="mini-copy"><small>VITRINE EDITORIAL</small><strong>Moda que<br>combina com você.</strong><i>Comprar agora</i></div>
-        </div>
-        <div class="card-body"><div><span class="tag">Comércio</span><h2>Loja de roupas</h2><p>Editorial, moderno e feito para valorizar produtos, coleções e preços.</p></div>
-          <div class="card-actions"><a href="modelo-loja.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="fashion-urban" data-business="Moda e Vestuário">Usar este modelo</button></div>
-        </div>
-      </article>
-
-      <article class="model-card" data-category="servicos">
-        <div class="real-badge">MODELO REAL · VARIÁVEL</div>
-        <div class="preview preview-beauty">
-          <div class="mini-top"><span>ESSENZA</span><b>Agendar</b></div><div class="beauty-orb"></div>
-          <div class="mini-copy"><small>BELEZA & BEM-ESTAR</small><strong>Realce a sua<br>melhor versão.</strong><i>Conhecer serviços</i></div>
-        </div>
-        <div class="card-body"><div><span class="tag">Serviços</span><h2>Estética & salão</h2><p>Leve, refinado e pensado para serviços, resultados e agendamento.</p></div>
-          <div class="card-actions"><a href="modelo-estetica.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="beauty-essence" data-business="Salão de Beleza">Usar este modelo</button></div>
-        </div>
-      </article>
-
-      <article class="model-card" data-category="servicos">
-        <div class="real-badge">MODELO REAL · VARIÁVEL</div>
-        <div class="preview preview-auto">
-          <div class="mini-top"><span>DRIVE</span><b>Orçamento</b></div><div class="car-shape">▰</div>
-          <div class="mini-copy"><small>AUTO CENTER</small><strong>Seu carro em<br>boas mãos.</strong><i>Solicitar orçamento</i></div>
-        </div>
-        <div class="card-body"><div><span class="tag">Serviços</span><h2>Oficina / Auto Center</h2><p>Técnico, forte e orientado a serviços, confiança e orçamento.</p></div>
-          <div class="card-actions"><a href="modelo-oficina.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="auto-drive" data-business="Oficina Mecânica">Usar este modelo</button></div>
-        </div>
-      </article>
-
-      <article class="model-card" data-category="servicos">
-        <div class="real-badge">MODELO REAL · VARIÁVEL</div>
-        <div class="preview preview-pro">
-          <div class="mini-top"><span>NEO</span><b>Contato</b></div><div class="pro-grid"></div>
-          <div class="mini-copy"><small>SOLUÇÕES PROFISSIONAIS</small><strong>Seu serviço com<br>presença digital.</strong><i>Falar agora</i></div>
-        </div>
-        <div class="card-body"><div><span class="tag">Serviços</span><h2>Profissional / Empresa</h2><p>Versátil, moderno e ideal para empresas locais e prestadores de serviços.</p></div>
-          <div class="card-actions"><a href="modelo-profissional.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="professional-neo" data-business="Prestador de Serviços">Usar este modelo</button></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="edu-tip"><div class="edu-avatar">👋</div><div><strong>Oi! Eu sou o Edu.</strong><p>Escolha uma base ou crie do seu jeito. Depois eu te guio para colocar nome, produtos, preços, fotos e contato.</p></div></section>
-  </main>
-
-  <div class="selection-modal" id="selectionModal" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" id="modalClose" type="button" aria-label="Fechar">×</button>
-      <div class="modal-icon">✓</div><h3 id="selectedTitle">Modelo selecionado</h3>
-      <p>Perfeito. Essa família será usada como base e a SITEZI criará uma variação própria para o seu negócio.</p>
-      <a href="index.html" id="continueButton" class="btn primary big">Continuar →</a>
-    </div>
-  </div>
-  <script src="modelos.js?v=2"></script>
-</body>
-</html>
+      <div class="card-body">
+        <div><span class="tag">Serviços</span><h2>Barbearia</h2><p>Escuro, editorial e focado em agendamento.</p></div>
+        <div class="card-actions"><a href="modelo-barbearia.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="barber-signature" data-business="Barbearia">Usar este modelo</button></div>
+      </div>
+    </article>
+    <article class="model-card" data-category="alimentacao">
+      <div class="live-preview">
+        <iframe src="modelo-restaurante.html" title="Prévia Restaurante" loading="lazy" tabindex="-1"></iframe>
+        <div class="preview-shield"></div>
+        <span class="real-badge">PRÉVIA DO MODELO REAL</span>
+      </div>
+      <div class="card-body">
+        <div><span class="tag">Alimentação</span><h2>Restaurante</h2><p>Gastronômico, quente e pensado para cardápio e pedido.</p></div>
+        <div class="card-actions"><a href="modelo-restaurante.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="restaurant-flavor" data-business="Restaurante">Usar este modelo</button></div>
+      </div>
+    </article>
+    <article class="model-card" data-category="comercio">
+      <div class="live-preview">
+        <iframe src="modelo-loja.html" title="Prévia Loja de roupas" loading="lazy" tabindex="-1"></iframe>
+        <div class="preview-shield"></div>
+        <span class="real-badge">PRÉVIA DO MODELO REAL</span>
+      </div>
+      <div class="card-body">
+        <div><span class="tag">Comércio</span><h2>Loja de roupas</h2><p>Editorial e ousado, feito para produto e coleção.</p></div>
+        <div class="card-actions"><a href="modelo-loja.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="fashion-urban" data-business="Moda e Vestuário">Usar este modelo</button></div>
+      </div>
+    </article>
+    <article class="model-card" data-category="servicos">
+      <div class="live-preview">
+        <iframe src="modelo-estetica.html" title="Prévia Estética & salão" loading="lazy" tabindex="-1"></iframe>
+        <div class="preview-shield"></div>
+        <span class="real-badge">PRÉVIA DO MODELO REAL</span>
+      </div>
+      <div class="card-body">
+        <div><span class="tag">Serviços</span><h2>Estética & salão</h2><p>Suave, sofisticado e orientado a agendamento.</p></div>
+        <div class="card-actions"><a href="modelo-estetica.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="beauty-essence" data-business="Salão de Beleza">Usar este modelo</button></div>
+      </div>
+    </article>
+    <article class="model-card" data-category="servicos">
+      <div class="live-preview">
+        <iframe src="modelo-oficina.html" title="Prévia Oficina / Auto Center" loading="lazy" tabindex="-1"></iframe>
+        <div class="preview-shield"></div>
+        <span class="real-badge">PRÉVIA DO MODELO REAL</span>
+      </div>
+      <div class="card-body">
+        <div><span class="tag">Serviços</span><h2>Oficina / Auto Center</h2><p>Técnico, moderno e orientado a orçamento.</p></div>
+        <div class="card-actions"><a href="modelo-oficina.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="auto-drive" data-business="Oficina Mecânica">Usar este modelo</button></div>
+      </div>
+    </article>
+    <article class="model-card" data-category="servicos">
+      <div class="live-preview">
+        <iframe src="modelo-profissional.html" title="Prévia Profissional / Empresa" loading="lazy" tabindex="-1"></iframe>
+        <div class="preview-shield"></div>
+        <span class="real-badge">PRÉVIA DO MODELO REAL</span>
+      </div>
+      <div class="card-body">
+        <div><span class="tag">Serviços</span><h2>Profissional / Empresa</h2><p>Corporativo, limpo e focado em confiança.</p></div>
+        <div class="card-actions"><a href="modelo-profissional.html" class="btn secondary">Ver modelo</a><button class="btn primary choose-model" data-preset="professional-neo" data-business="Prestador de Serviços">Usar este modelo</button></div>
+      </div>
+    </article></section>
+<section class="edu-tip"><div class="edu-avatar">👋</div><div><strong>Oi! Eu sou o Edu.</strong><p>Você pode abrir qualquer modelo em tela cheia antes de escolher. Depois eu te ajudo a personalizar tudo.</p></div></section>
+</main>
+<div class="selection-modal" id="selectionModal" aria-hidden="true"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div class="modal-icon">✓</div><h3 id="selectedTitle">Modelo selecionado</h3><p>Esse modelo será usado como família visual e receberá os seus dados e uma variação própria.</p><a href="index.html" id="continueButton" class="btn primary big">Continuar →</a></div></div>
+<script src="modelos.js?v=3"></script></body></html>
