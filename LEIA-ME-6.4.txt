@@ -1,0 +1,28 @@
+SITEZI 6.4 — MODELOS REAIS + MOTOR DE QUALIDADE 2.0
+
+ARQUIVOS PARA SUBSTITUIR NA RAIZ DO REPOSITÓRIO:
+1. sitezi-dynamic-examples.js
+2. sitezi-premium-engine.js
+3. sitezi-image-ai.js
+
+O QUE MUDA:
+- Os 6 exemplos viram famílias reais de design:
+  Barbearia / Restaurante / Loja de roupas / Estética & salão / Oficina / Profissional.
+- "Usar este modelo" passa a salvar aquela família em state.template.
+- "Criar do meu jeito" continua disponível e usa Moderno / Premium / Dinâmico.
+- Dois clientes do mesmo ramo recebem variações determinísticas diferentes, baseadas no nome + ramo + modelo.
+- O site mantém a mesma variação ao editar, em vez de mudar aleatoriamente.
+- O motor 2.0 aplica estrutura, atmosfera, CTA e estilo adequados a cada família.
+- Plano Básico continua profissional; Profissional adiciona seções extras; Premium pode exibir galeria ampliada.
+- sitezi-image-ai.js permanece na versão 1.6.1 corrigida.
+
+IMPORTANTE:
+O index.html atual ainda usa query strings antigas nos <script>.
+Após substituir os arquivos, faça um recarregamento completo/limpe o cache do navegador para garantir a leitura dos arquivos novos.
+Na próxima consolidação do index.html, atualizar para:
+sitezi-image-ai.js?v=1.6.1
+sitezi-dynamic-examples.js?v=2.0
+sitezi-premium-engine.js?v=2.0
+
+BACKEND:
+A Edge Function sitezi-images precisa estar na v13 para aproveitar brandBrief/generationIntent.
