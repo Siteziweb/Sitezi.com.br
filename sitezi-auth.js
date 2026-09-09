@@ -1,12 +1,10 @@
 /* =========================================================
-   SITEZI — AUTENTICAÇÃO v1.1
-   Cadastro/Login real com Supabase Auth.
-   - expõe API pública SITEZI_AUTH.openLogin()
-   - conecta os botões topLogin e wizardLogin
-   - atualiza "Fazer login" / "Minha conta"
-   - preserva publicação protegida e salvamento de rascunho
+   SITEZI — AUTENTICAÇÃO v1.2
+   - Login/cadastro real com Supabase Auth
+   - API pública SITEZI_AUTH.openLogin()
+   - preserva o progresso do criador
+   - salva produtos/contato no rascunho
    ========================================================= */
-
 (async () => {
   "use strict";
 
@@ -14,7 +12,6 @@
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Gx-4spNVicrUfn3Pd8GxCg_7ii-70Lw";
 
   let createClient;
-
   try {
     ({ createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"));
   } catch (error) {
@@ -39,68 +36,28 @@
   const style = document.createElement("style");
   style.id = "sitezi-auth-styles";
   style.textContent = `
-    .sitezi-auth-trigger{margin-left:8px}
-    .sitezi-auth-modal{
-      position:fixed;inset:0;z-index:99999;
-      display:grid;place-items:center;padding:18px;
-      background:rgba(0,7,18,.80);backdrop-filter:blur(10px)
-    }
+    .sitezi-auth-modal{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:18px;background:rgba(0,7,18,.80);backdrop-filter:blur(10px)}
     .sitezi-auth-modal.hidden{display:none}
-    .sitezi-auth-card{
-      width:min(430px,100%);background:#07101d;
-      border:1px solid #1d3150;border-radius:24px;
-      padding:24px;color:#fff;
-      box-shadow:0 28px 80px rgba(0,0,0,.48);
-      font-family:Inter,Arial,sans-serif
-    }
+    .sitezi-auth-card{width:min(430px,100%);background:#07101d;border:1px solid #1d3150;border-radius:24px;padding:24px;color:#fff;box-shadow:0 28px 80px rgba(0,0,0,.48);font-family:Inter,Arial,sans-serif}
     .sitezi-auth-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
     .sitezi-auth-head strong{font-size:22px}
     .sitezi-auth-close{border:0;background:transparent;color:#9fb0c8;font-size:28px;line-height:1;cursor:pointer}
     .sitezi-auth-copy{color:#94a3b8;margin:0 0 18px;line-height:1.45}
-    .sitezi-auth-tabs{
-      display:grid;grid-template-columns:1fr 1fr;
-      background:#040914;border:1px solid #20304a;
-      border-radius:14px;padding:4px;margin-bottom:18px
-    }
+    .sitezi-auth-tabs{display:grid;grid-template-columns:1fr 1fr;background:#040914;border:1px solid #20304a;border-radius:14px;padding:4px;margin-bottom:18px}
     .sitezi-auth-tab{border:0;border-radius:10px;background:transparent;color:#91a0b7;padding:11px;font-weight:800;cursor:pointer}
     .sitezi-auth-tab.active{background:#123cca;color:#fff}
-    .sitezi-auth-form{display:grid;gap:12px}
-    .sitezi-auth-form.hidden{display:none}
+    .sitezi-auth-form{display:grid;gap:12px}.sitezi-auth-form.hidden{display:none}
     .sitezi-auth-form label{display:grid;gap:6px;font-size:13px;color:#aebbd0}
-    .sitezi-auth-form input{
-      width:100%;border:1px solid #293c5a;
-      background:#040a13;color:#fff;border-radius:12px;
-      padding:14px 15px;outline:none;box-sizing:border-box
-    }
+    .sitezi-auth-form input{width:100%;border:1px solid #293c5a;background:#040a13;color:#fff;border-radius:12px;padding:14px 15px;outline:none;box-sizing:border-box}
     .sitezi-auth-form input:focus{border-color:#2368ff;box-shadow:0 0 0 3px rgba(35,104,255,.14)}
-    .sitezi-auth-submit{
-      border:0;border-radius:13px;padding:14px 16px;
-      background:#123fe8;color:#fff;font-weight:900;
-      font-size:15px;cursor:pointer
-    }
+    .sitezi-auth-submit{border:0;border-radius:13px;padding:14px 16px;background:#123fe8;color:#fff;font-weight:900;font-size:15px;cursor:pointer}
     .sitezi-auth-submit:disabled{opacity:.6;cursor:wait}
     .sitezi-auth-message{min-height:22px;margin-top:12px;font-size:13px;line-height:1.4;color:#9fb0c8}
-    .sitezi-auth-message.error{color:#ff8b8b}
-    .sitezi-auth-message.ok{color:#72e6a1}
-    .sitezi-auth-userbox{display:grid;gap:10px}
-    .sitezi-auth-userbox.hidden{display:none}
-    .sitezi-auth-email{
-      padding:13px;border:1px solid #253957;
-      background:#040a13;border-radius:12px;color:#c8d3e4;
-      overflow-wrap:anywhere
-    }
-    .sitezi-auth-logout{
-      border:1px solid #344965;background:transparent;
-      color:#fff;border-radius:12px;padding:12px;
-      font-weight:800;cursor:pointer
-    }
-    @media(max-width:760px){
-      .sitezi-auth-modal{align-items:end;padding:10px}
-      .sitezi-auth-card{
-        width:100%;max-height:92vh;overflow:auto;
-        border-radius:20px;padding:20px
-      }
-    }
+    .sitezi-auth-message.error{color:#ff8b8b}.sitezi-auth-message.ok{color:#72e6a1}
+    .sitezi-auth-userbox{display:grid;gap:10px}.sitezi-auth-userbox.hidden{display:none}
+    .sitezi-auth-email{padding:13px;border:1px solid #253957;background:#040a13;border-radius:12px;color:#c8d3e4;overflow-wrap:anywhere}
+    .sitezi-auth-logout{border:1px solid #344965;background:transparent;color:#fff;border-radius:12px;padding:12px;font-weight:800;cursor:pointer}
+    @media(max-width:760px){.sitezi-auth-modal{align-items:end;padding:10px}.sitezi-auth-card{width:100%;max-height:92vh;overflow:auto;border-radius:20px;padding:20px}}
   `;
   document.head.appendChild(style);
 
@@ -108,15 +65,12 @@
   modal.id = "siteziAuthModal";
   modal.className = "sitezi-auth-modal hidden";
   modal.innerHTML = `
-    <div class="sitezi-auth-card" role="dialog" aria-modal="true" aria-labelledby="siteziAuthTitle">
+    <div class="sitezi-auth-card" role="dialog" aria-modal="true">
       <div class="sitezi-auth-head">
-        <strong id="siteziAuthTitle">Sua conta SITEZI</strong>
+        <strong>Sua conta SITEZI</strong>
         <button class="sitezi-auth-close" type="button" aria-label="Fechar">×</button>
       </div>
-
-      <p class="sitezi-auth-copy">
-        Entre ou crie sua conta sem perder o que você já configurou no site.
-      </p>
+      <p class="sitezi-auth-copy">Entre ou crie sua conta sem perder o que você já configurou no site.</p>
 
       <div id="siteziAuthLoggedOut">
         <div class="sitezi-auth-tabs">
@@ -172,36 +126,29 @@
 
   function emitAuthState() {
     window.dispatchEvent(new CustomEvent("sitezi:auth-state", {
-      detail: {
-        user: currentUser,
-        loggedIn: !!currentUser
-      }
+      detail: { user: currentUser, loggedIn: !!currentUser }
     }));
-  }
-
-  function updateExternalButtons() {
-    const label = currentUser ? "Minha conta" : "Fazer login";
-    ["topLogin", "wizardLogin", "siteziAccountButton"].forEach(id => {
-      const button = $(id);
-      if (button) button.textContent = label;
-    });
   }
 
   function updateUI() {
     const loggedOut = $("siteziAuthLoggedOut");
     const loggedIn = $("siteziAuthLoggedIn");
-    const email = $("siteziAuthEmail");
+    const emailBox = $("siteziAuthEmail");
+    const label = currentUser ? "Minha conta" : "Fazer login";
+
+    ["topLogin","wizardLogin"].forEach(id => {
+      if ($(id)) $(id).textContent = label;
+    });
 
     if (currentUser) {
       loggedOut.classList.add("hidden");
       loggedIn.classList.remove("hidden");
-      email.textContent = currentUser.email || "Conta conectada";
+      emailBox.textContent = currentUser.email || "Conta conectada";
     } else {
       loggedOut.classList.remove("hidden");
       loggedIn.classList.add("hidden");
     }
 
-    updateExternalButtons();
     emitAuthState();
   }
 
@@ -227,7 +174,6 @@
     document.body.style.overflow = "";
   }
 
-  // API pública usada pelo script.js e pelo sitezi-image-ai.js.
   window.SITEZI_AUTH = {
     openLogin: openModal,
     close: closeModal,
@@ -236,67 +182,28 @@
     isLoggedIn: () => !!currentUser
   };
 
-  // Também aceita abertura por evento para evitar dependência da ordem dos scripts.
-  window.addEventListener("sitezi:open-login", event => {
-    openModal(event.detail?.mode || "login");
-  });
-
-  function bindExternalAccountButtons() {
-    ["topLogin", "wizardLogin"].forEach(id => {
-      const button = $(id);
-      if (!button || button.dataset.siteziAuthBound === "1") return;
-      button.addEventListener("click", event => {
-        event.preventDefault();
-        openModal("login");
-      });
-      button.dataset.siteziAuthBound = "1";
-    });
-  }
-
-  function addAccountButton() {
-    // Nas versões novas do index já existem topLogin e wizardLogin.
-    // Não cria um terceiro botão duplicado.
-    if ($("topLogin") || $("wizardLogin")) {
-      bindExternalAccountButtons();
-      return;
-    }
-
-    const create = $("topCreate");
-    if (!create || $("siteziAccountButton")) return;
-
-    const button = document.createElement("button");
-    button.id = "siteziAccountButton";
-    button.type = "button";
-    button.className = "btn ghost compact sitezi-auth-trigger";
-    button.textContent = "Fazer login";
-    button.addEventListener("click", () => openModal("login"));
-    create.parentNode.insertBefore(button, create);
-  }
+  window.addEventListener("sitezi:open-login", e => openModal(e.detail?.mode || "login"));
 
   function draftPayload() {
+    const s = window.SITEZI_BUILDER_STATE || {};
     const frame = $("sitePreview");
-    const builder = window.SITEZI_BUILDER_STATE || {};
 
     return {
       user_id: currentUser.id,
-      business_name: $("businessName")?.value?.trim() || "Meu site",
-      business_type: document.querySelector(".business.active")?.dataset.business || builder.businessType || "Outro",
-      template: document.querySelector(".template-card.active")?.dataset.template || builder.template || "modern",
+      business_name: s.businessName || $("businessName")?.value?.trim() || "Meu site",
+      business_type: s.businessType || "Outro",
+      template: s.template || "modern",
       status: "draft",
       configuration: {
-        slogan: $("businessSlogan")?.value?.trim() || "",
-        services: $("servicesInput")?.value?.trim() || "",
-        whatsapp: $("whatsapp")?.value?.trim() || "",
-        instagram: $("instagram")?.value?.trim() || "",
-        location: $("location")?.value?.trim() || "",
-        color: document.querySelector(".color.active")?.dataset.color || builder.color || "#1578ff",
-        logo_mode: document.querySelector("[data-logo-mode].active")?.dataset.logoMode || builder.logoMode || "text",
-        image_mode: document.querySelector("[data-image-mode].active")?.dataset.imageMode || builder.imageMode || "none",
-        products: Array.isArray(builder.products) ? builder.products.map(p => ({
-          name: p.name || "",
-          price: p.price || "",
-          description: p.description || ""
-        })) : []
+        slogan: s.slogan || "",
+        color: s.color || "#1578ff",
+        products: Array.isArray(s.products) ? s.products : [],
+        whatsapp: s.whatsapp || "",
+        instagram: s.instagram || "",
+        email: s.email || "",
+        location: s.location || "",
+        logo_mode: s.logoMode || "text",
+        image_mode: s.imageMode || "none"
       },
       generated_content: {
         html: frame?.srcdoc || ""
@@ -334,7 +241,6 @@
 
       const { data, error } = await client.from("sites").insert(payload).select("id").single();
       if (error) throw error;
-
       if (data?.id) sessionStorage.setItem("sitezi_current_site_id", data.id);
       return data;
     } finally {
@@ -364,15 +270,12 @@
 
     try {
       await saveDraftSite();
-      setMessage("Site salvo. Continuando...", "ok");
-
       const action = pendingPublish;
       pendingPublish = null;
       closeModal();
-
       if (typeof action === "function") action();
     } catch (error) {
-      console.error("[SITEZI AUTH] Erro ao salvar site:", error);
+      console.error("[SITEZI AUTH] Erro ao salvar:", error);
       setMessage("Sua conta entrou, mas não consegui salvar a prévia agora. Tente novamente.", "error");
     } finally {
       if (continueBtn) {
@@ -399,11 +302,11 @@
 
       try {
         button.disabled = true;
-        const originalText = button.textContent;
+        const old = button.textContent;
         button.textContent = "Salvando...";
         await saveDraftSite();
         original.call(button, event);
-        button.textContent = originalText;
+        button.textContent = old;
         button.disabled = false;
       } catch (error) {
         console.error("[SITEZI AUTH] Erro ao salvar:", error);
@@ -432,11 +335,9 @@
       });
 
       if (error) throw error;
-
       currentUser = data.user;
       updateUI();
       setMessage("Conta conectada com sucesso.", "ok");
-
       if (pendingPublish) await runPendingPublish();
     } catch (error) {
       setMessage(friendlyError(error), "error");
@@ -463,7 +364,6 @@
       });
 
       if (error) throw error;
-
       currentUser = data.user || null;
 
       if (data.session) {
@@ -500,8 +400,6 @@
     if (event.target === modal) closeModal();
   });
 
-  addAccountButton();
-
   const { data } = await client.auth.getSession();
   currentUser = data.session?.user || null;
   updateUI();
@@ -514,6 +412,6 @@
     updateUI();
   });
 
-  document.documentElement.dataset.siteziAuth = "1.1";
-  console.info("[SITEZI] Supabase Auth v1.1 carregado.");
+  document.documentElement.dataset.siteziAuth = "1.2";
+  console.info("[SITEZI] Supabase Auth v1.2 carregado.");
 })();
