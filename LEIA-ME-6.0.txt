@@ -29,3 +29,42 @@ AJUSTE 6.0 — CRÉDITOS NO CELULAR
 - Dentro do criador continua compacta para não ocupar espaço.
 
 - Barra de créditos: rótulo padronizado como “Créditos disponíveis” no desktop e no celular.
+
+
+ATUALIZAÇÃO — LOGO MAIS VISÍVEL
+- Adicionar também: sitezi-logo-display.js
+- A logo aparece maior na prévia e no site publicado.
+- Desktop: até ~68 px de altura / 190 px de largura.
+- Celular: até ~56 px de altura / 150 px de largura.
+
+
+============================================================
+SITEZI 6.1 — VISUAL PREMIUM SEM CUSTO EXTRA
+============================================================
+
+NOVO ARQUIVO:
+- sitezi-site-design.js
+
+O QUE MUDOU:
+- Site publicado com visual mais próximo de uma agência profissional.
+- Hero maior e mais impactante.
+- Logo maior e mais visível.
+- Barra de benefícios.
+- Cards de produtos/serviços mais profissionais.
+- Preço e botão de WhatsApp destacados.
+- Seção Sobre nós com imagem e diferenciais.
+- CTA final de contato.
+- Melhor adaptação para celular.
+
+IMPORTANTE SOBRE IMAGENS E CUSTO:
+- NÃO foi adicionada geração automática de uma imagem por produto/serviço.
+- Portanto, esta versão NÃO cria custo adicional de IA.
+- Se o cliente enviar uma foto do produto/serviço, a foto aparece no card.
+- Se não enviar, o card NÃO fica vazio: a SITEZI cria um visual gráfico elegante com CSS.
+- A geração de logo e imagem principal continua usando apenas o sistema/créditos já existentes.
+
+UPLOAD:
+Substitua os arquivos da 6.0 pelos deste ZIP e adicione:
+- sitezi-site-design.js
+
+Mantenha os demais arquivos antigos que não vieram neste pacote.
