@@ -1,19 +1,17 @@
-SITEZI 6.1.1 — CORREÇÃO DA BARRINHA DE CRÉDITOS
+SITEZI — CORREÇÃO DOS EXEMPLOS DA ETAPA 5
 
 Substitua na RAIZ do GitHub:
-- index.html
-- sitezi-account-state.js
+1. index.html
+2. sitezi-dynamic-examples.js
 
-Os outros arquivos do pacote permanecem iguais à 6.1.1 anterior.
+Os demais arquivos do pacote são mantidos apenas por segurança.
 
-O problema encontrado:
-O script tentava inserir a barrinha antes do botão "Cancelar", mas esse botão fica dentro de outro <div>.
-Isso fazia insertBefore() falhar no cabeçalho do criador.
-
-Correção:
-- barrinha instalada corretamente no cabeçalho do wizard;
-- aparece desde as primeiras etapas do criador quando o usuário está logado;
-- no celular ela ganha uma linha própria para não ficar espremida;
-- continua usando a assinatura e os créditos reais do Supabase;
-- nenhuma alteração na pasta /site;
-- nenhum custo extra de IA.
+O que foi corrigido:
+- Os exemplos de produto/serviço agora mudam conforme o tipo de negócio.
+- Prestador de Serviços usa exemplo de instalação elétrica.
+- Oficina usa troca de óleo.
+- Restaurante usa prato executivo.
+- Barbearia, salão, moda, loja e clínica possuem exemplos próprios.
+- "Outro" usa exemplo neutro.
+- Não usa IA e não consome créditos.
+- Não altera a pasta /site.
