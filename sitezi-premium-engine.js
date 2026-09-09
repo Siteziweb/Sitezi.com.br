@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — MOTOR DE QUALIDADE v2.1
+   SITEZI — MOTOR DE QUALIDADE v2.2
    Famílias reais de design + variações por negócio + planos.
    Não gera imagens e não consome créditos.
    ========================================================= */
@@ -114,12 +114,33 @@
       <footer><div class="wrap foot"><span>${name}</span><span>Site criado com SITEZI.</span></div></footer></body></html>`;
   }
 
+  async function svgDataUriToPng(dataUri){
+    if(!String(dataUri||"").startsWith("data:image/svg+xml"))return dataUri;
+    return new Promise((resolve,reject)=>{
+      const img=new Image();
+      img.onload=()=>{
+        try{
+          const canvas=document.createElement("canvas");
+          const w=1200,h=360;
+          canvas.width=w;canvas.height=h;
+          const ctx=canvas.getContext("2d");
+          if(!ctx)throw new Error("Canvas indisponível.");
+          ctx.clearRect(0,0,w,h);
+          ctx.drawImage(img,0,0,w,h);
+          resolve(canvas.toDataURL("image/png"));
+        }catch(e){reject(e)}
+      };
+      img.onerror=()=>reject(new Error("Não foi possível converter a logo SVG para PNG."));
+      img.src=dataUri;
+    });
+  }
+
   async function syncAccount(){try{const i=await window.SITEZI_ACCOUNT_STATE?.refresh?.();if(i)account=i}catch(_){}}
   window.addEventListener("sitezi:account-info",e=>{account=e.detail||account});
   function install(){
     const btn=$("generateSite"); if(!btn)return;
-    btn.onclick=async()=>{await syncAccount();const frame=$("sitePreview");if(frame)frame.srcdoc=buildHTML();const s=window.SITEZI_BUILDER_STATE||{};if($("previewDomain")){const sl=String(s.businessName||"meu-negocio").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");$("previewDomain").textContent=`${sl||"meu-negocio"}.sitezi.com.br`}if(typeof window.SITEZI_SHOW_SCREEN==="function"&&$("result"))window.SITEZI_SHOW_SCREEN($("result"))};
-    document.documentElement.dataset.siteziPremiumEngine="2.1";
+    btn.onclick=async()=>{await syncAccount();const s=window.SITEZI_BUILDER_STATE||{};if(String(s.logoData||"").startsWith("data:image/svg+xml")){try{s.logoData=await svgDataUriToPng(s.logoData);s.logoFormat="png"}catch(e){console.error("[SITEZI LOGO PNG]",e);alert("Não foi possível preparar a logo para publicação. Tente gerar novamente.");throw e}}const frame=$("sitePreview");if(frame)frame.srcdoc=buildHTML();if($("previewDomain")){const sl=String(s.businessName||"meu-negocio").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");$("previewDomain").textContent=`${sl||"meu-negocio"}.sitezi.com.br`}if(typeof window.SITEZI_SHOW_SCREEN==="function"&&$("result"))window.SITEZI_SHOW_SCREEN($("result"))};
+    document.documentElement.dataset.siteziPremiumEngine="2.2";
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{install();syncAccount()});else{install();syncAccount()}
 })();
