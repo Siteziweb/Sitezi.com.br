@@ -14,8 +14,41 @@ body{background:#fff8fb;color:#482b38}.wrap{width:min(1160px,calc(100% - 34px));
 @media(max-width:760px){.links{display:none}.hero-grid,.test .box{grid-template-columns:1fr}.visual{height:380px}.service-grid{grid-template-columns:1fr}}
 
 </style>
+
+<style id="sitezi-model-back-v1">
+  .sitezi-model-back{
+    position:fixed;
+    left:14px;
+    top:14px;
+    z-index:9999;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:999px;
+    background:rgba(5,10,18,.88);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.20);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    font:800 13px/1 Inter,Arial,sans-serif;
+    box-shadow:0 10px 30px rgba(0,0,0,.28);
+  }
+  .sitezi-model-back:hover{background:rgba(10,20,34,.96)}
+  @media(max-width:620px){
+    .sitezi-model-back{
+      left:10px;
+      top:10px;
+      padding:9px 12px;
+      font-size:12px;
+    }
+  }
+</style>
+
 </head>
 <body class="beauty">
+<a class="sitezi-model-back" href="modelos.html" aria-label="Voltar aos modelos">← Voltar aos modelos</a>
+
 
 <header class="nav wrap"><div class="brand">Essenza <i>Studio</i></div><nav class="links"><a href="#servicos">Serviços</a><a href="#resultados">Resultados</a><a href="#contato">Contato</a></nav><a class="book" href="#servicos">Agendar</a></header>
 <main><section class="hero"><div class="wrap hero-grid"><div class="copy"><span class="ey">BELEZA & BEM-ESTAR</span><h1>Um cuidado só seu.</h1><p>Procedimentos e serviços apresentados com leveza, confiança e uma experiência elegante do primeiro clique ao agendamento.</p><a class="book" style="display:inline-block;margin-top:16px" href="#servicos">Conhecer serviços →</a></div><div class="visual"><div class="orb"></div><div class="line"></div><div class="note"><small>ATENDIMENTO PERSONALIZADO</small><b>Seu momento.</b></div></div></div></section>

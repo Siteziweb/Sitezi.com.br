@@ -14,8 +14,41 @@ body{background:#fff7eb;color:#2b1409}.wrap{width:min(1180px,calc(100% - 34px));
 @media(max-width:760px){.links{display:none}.hero-grid,.story-grid{grid-template-columns:1fr}.visual{min-height:350px}.menu-grid{grid-template-columns:1fr}}
 
 </style>
+
+<style id="sitezi-model-back-v1">
+  .sitezi-model-back{
+    position:fixed;
+    left:14px;
+    top:14px;
+    z-index:9999;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 14px;
+    border-radius:999px;
+    background:rgba(5,10,18,.88);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.20);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    font:800 13px/1 Inter,Arial,sans-serif;
+    box-shadow:0 10px 30px rgba(0,0,0,.28);
+  }
+  .sitezi-model-back:hover{background:rgba(10,20,34,.96)}
+  @media(max-width:620px){
+    .sitezi-model-back{
+      left:10px;
+      top:10px;
+      padding:9px 12px;
+      font-size:12px;
+    }
+  }
+</style>
+
 </head>
 <body class="restaurant">
+<a class="sitezi-model-back" href="modelos.html" aria-label="Voltar aos modelos">← Voltar aos modelos</a>
+
 
 <header class="nav wrap"><div class="brand">CASA SABOR</div><nav class="links"><a href="#menu">Menu</a><a href="#historia">Nossa casa</a><a href="#contato">Contato</a></nav><a class="order" href="#menu">Pedir agora</a></header>
 <main><section class="hero"><div class="wrap hero-grid"><div class="copy"><span class="ey">COZINHA AFETIVA</span><h1>Comida que reúne.</h1><p>Pratos preparados na hora, ingredientes selecionados e sabores que lembram casa.</p><a class="order" style="display:inline-block;margin-top:18px" href="#menu">Ver cardápio →</a></div><div class="visual"><div class="leaf l1"></div><div class="leaf l2"></div><div class="ticket"><small>PRATO DO DIA</small><b>R$ 32,90</b></div></div></div></section>

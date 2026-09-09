@@ -1,0 +1,20 @@
+SITEZI 6.6.1 FINAL — 3 CORREÇÕES
+
+Substitua/adicone na raiz:
+- index.html
+- modelos.html
+- modelos.css
+- sitezi-dynamic-examples.js
+- modelo-barbearia.html
+- modelo-restaurante.html
+- modelo-loja.html
+- modelo-estetica.html
+- modelo-oficina.html
+- modelo-profissional.html
+
+Correções incluídas:
+1. Edu inteiro no avatar, sem corte.
+2. Exemplos de nome/slogan acompanham o ramo escolhido.
+3. Todos os 6 modelos completos têm botão visível "← Voltar aos modelos".
+
+Nenhuma outra parte do site foi alterada.

@@ -1,5 +1,5 @@
 /* =========================================================
-   SITEZI — MODELOS REAIS + EXEMPLOS DINÂMICOS v2.1
+   SITEZI — MODELOS REAIS + EXEMPLOS DINÂMICOS v2.2
    - transforma os exemplos em famílias reais de design
    - mantém "Criar do meu jeito"
    - salva a família escolhida em state.template
@@ -22,6 +22,19 @@
     "Outro": {name:"Ex.: Seu principal produto ou serviço",price:"Ex.: R$ 100,00",description:"Ex.: Explique de forma simples o que está incluído e como este produto ou serviço ajuda o cliente."}
   };
 
+
+  const BRAND_EXAMPLES = {
+    "Oficina Mecânica": {name:"Ex.: Auto Prime", slogan:"Ex.: Manutenção automotiva com confiança"},
+    "Restaurante": {name:"Ex.: Casa Sabor", slogan:"Ex.: Comida feita para reunir pessoas"},
+    "Barbearia": {name:"Ex.: Noir Barber", slogan:"Ex.: Seu estilo começa aqui"},
+    "Salão de Beleza": {name:"Ex.: Essenza Studio", slogan:"Ex.: Realce sua melhor versão"},
+    "Moda e Vestuário": {name:"Ex.: Urban Store", slogan:"Ex.: Moda que combina com você"},
+    "Loja / Comércio": {name:"Ex.: Nova Loja", slogan:"Ex.: Produtos escolhidos para você"},
+    "Clínica / Saúde": {name:"Ex.: Clínica Vida", slogan:"Ex.: Cuidado profissional perto de você"},
+    "Prestador de Serviços": {name:"Ex.: Solução Pro", slogan:"Ex.: Serviço profissional sem complicação"},
+    "Outro": {name:"Ex.: Nome do seu negócio", slogan:"Ex.: Uma frase curta que represente sua marca"}
+  };
+
   const PRESETS = [
     {id:"barber-signature", business:"Barbearia", tag:"SIGNATURE", title:"Barbearia", headline:"Seu estilo. Nossa atitude.", desc:"Escuro, elegante e com foco em agendamento.", emoji:"✂", cls:"barber"},
     {id:"restaurant-flavor", business:"Restaurante", tag:"SABOR", title:"Restaurante", headline:"Feito com ingredientes de verdade.", desc:"Visual gastronômico, cardápio e pedido em destaque.", emoji:"◉", cls:"restaurant"},
@@ -39,7 +52,13 @@
   function currentType(){ return state()?.businessType || "Outro"; }
 
   function applyExamples(){
-    const ex=EXAMPLES[currentType()]||EXAMPLES.Outro;
+    const type=currentType();
+    const ex=EXAMPLES[type]||EXAMPLES.Outro;
+    const brand=BRAND_EXAMPLES[type]||BRAND_EXAMPLES.Outro;
+
+    if($("businessName")) $("businessName").placeholder=brand.name;
+    if($("businessSlogan")) $("businessSlogan").placeholder=brand.slogan;
+
     if($("productName")) $("productName").placeholder=ex.name;
     if($("productPrice")) $("productPrice").placeholder=ex.price;
     if($("productDescription")) $("productDescription").placeholder=ex.description;
@@ -210,7 +229,7 @@
     if($("wizard")) obs.observe($("wizard"),{attributes:true,subtree:true,attributeFilter:["class"]});
     applyExamples(); updateWizardPresetNote(); applyExternalSelection();
     window.SITEZI_TEMPLATE_SYSTEM={PRESETS,openGallery,presetById};
-    document.documentElement.dataset.siteziTemplates="2.1";
+    document.documentElement.dataset.siteziTemplates="2.2";
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",install,{once:true}); else install();
