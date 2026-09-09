@@ -1,15 +1,18 @@
-SITEZI — LOGO FINAL v2.4
+SITEZI — LOGO FINAL + SUPORTE WHATSAPP v2.5
 
-O backend sitezi-images já foi atualizado para a versão 18 no Supabase.
+Substitua SOMENTE o arquivo:
+sitezi-logo-display.js
 
-No GitHub:
-1. Substitua SOMENTE o arquivo sitezi-logo-display.js por este.
-2. Não mexa em script.js, style.css, sitezi-premium-engine.js ou sitezi-image-ai.js.
-3. Depois do upload, abra o SITEZI em aba anônima/privada para evitar cache antigo.
+O que esta versão mantém:
+- correção definitiva da logo (símbolo IA + nome real em HTML);
+- composição persistida na prévia.
 
-A nova regra é:
-- IA = símbolo apenas.
-- Nome do negócio = texto HTML real.
-- Profissional e Premium recebem tentativa de remoção automática do fundo.
-- Básico não usa o serviço extra de remoção de fundo.
-- A composição é gravada no srcdoc, então prévia e tela cheia usam a mesma estrutura.
+O que foi adicionado:
+- barra pequena “Precisa de ajuda? / Fale no WhatsApp”;
+- aparece durante o criador, prévia, planos e tela cheia;
+- não aparece na home inicial;
+- abre direto o WhatsApp do desenvolvedor;
+- mensagem pronta: “Olá! Estou usando o SITEZI e preciso de ajuda com meu site.”
+
+Número configurado:
++55 48 99694-2186

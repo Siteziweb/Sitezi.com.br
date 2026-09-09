@@ -290,3 +290,197 @@
 
   setInterval(install, 700);
 })();
+
+
+/* =========================================================
+   SITEZI — SUPORTE WHATSAPP v1.0
+   - aparece durante criação/resultado/planos;
+   - fica oculto somente na home;
+   - abre conversa direta com o desenvolvedor;
+   - mensagem pronta para contextualizar o atendimento.
+   ========================================================= */
+(() => {
+  "use strict";
+
+  const SUPPORT_ID = "siteziWhatsappSupport";
+  const STYLE_ID = "sitezi-whatsapp-support-style-v1";
+  const PHONE = "5548996942186";
+  const MESSAGE = "Olá! Estou usando o SITEZI e preciso de ajuda com meu site.";
+
+  function ensureStyle() {
+    if (document.getElementById(STYLE_ID)) return;
+
+    const style = document.createElement("style");
+    style.id = STYLE_ID;
+    style.textContent = `
+      #${SUPPORT_ID}{
+        position:fixed;
+        left:16px;
+        bottom:18px;
+        z-index:9997;
+        display:none;
+        align-items:center;
+        gap:9px;
+        min-height:44px;
+        padding:9px 13px 9px 10px;
+        border:1px solid rgba(255,255,255,.14);
+        border-radius:999px;
+        background:#16a34a;
+        color:#fff;
+        box-shadow:0 12px 34px rgba(0,0,0,.28);
+        text-decoration:none;
+        font:800 12px/1.1 Inter,Arial,sans-serif;
+        transition:.18s ease;
+      }
+
+      #${SUPPORT_ID}.visible{display:flex}
+
+      #${SUPPORT_ID}:hover{
+        transform:translateY(-2px);
+        filter:brightness(1.04);
+      }
+
+      #${SUPPORT_ID} .sitezi-wa-icon{
+        width:27px;
+        height:27px;
+        border-radius:50%;
+        display:grid;
+        place-items:center;
+        flex:0 0 27px;
+        background:#fff;
+        color:#16a34a;
+        font-size:16px;
+        font-weight:950;
+      }
+
+      #${SUPPORT_ID} .sitezi-wa-copy{
+        display:grid;
+        gap:1px;
+        white-space:nowrap;
+      }
+
+      #${SUPPORT_ID} .sitezi-wa-copy b{
+        font-size:12px;
+        line-height:1.1;
+      }
+
+      #${SUPPORT_ID} .sitezi-wa-copy small{
+        color:rgba(255,255,255,.82);
+        font-size:9.5px;
+        font-weight:700;
+      }
+
+      body.result-open #${SUPPORT_ID}{
+        bottom:88px;
+      }
+
+      body.plans-open #${SUPPORT_ID}{
+        bottom:18px;
+      }
+
+      body:has(.full-preview-screen:not(.hidden)) #${SUPPORT_ID}{
+        bottom:16px;
+      }
+
+      @media(max-width:600px){
+        #${SUPPORT_ID}{
+          left:10px;
+          bottom:12px;
+          min-height:40px;
+          padding:7px 10px 7px 8px;
+          gap:7px;
+        }
+
+        #${SUPPORT_ID} .sitezi-wa-icon{
+          width:25px;
+          height:25px;
+          flex-basis:25px;
+          font-size:14px;
+        }
+
+        #${SUPPORT_ID} .sitezi-wa-copy b{font-size:11px}
+        #${SUPPORT_ID} .sitezi-wa-copy small{display:none}
+
+        body.result-open #${SUPPORT_ID}{
+          bottom:94px;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function ensureButton() {
+    let button = document.getElementById(SUPPORT_ID);
+    if (button) return button;
+
+    button = document.createElement("a");
+    button.id = SUPPORT_ID;
+    button.target = "_blank";
+    button.rel = "noopener";
+    button.href =
+      `https://wa.me/${PHONE}?text=${encodeURIComponent(MESSAGE)}`;
+    button.setAttribute("aria-label", "Precisa de ajuda? Fale no WhatsApp");
+    button.innerHTML = `
+      <span class="sitezi-wa-icon">✓</span>
+      <span class="sitezi-wa-copy">
+        <b>Precisa de ajuda?</b>
+        <small>Fale no WhatsApp</small>
+      </span>
+    `;
+
+    document.body.appendChild(button);
+    return button;
+  }
+
+  function shouldShow() {
+    const home = document.getElementById("home");
+    const wizard = document.getElementById("wizard");
+    const result = document.getElementById("result");
+    const plans = document.getElementById("plans");
+    const full = document.getElementById("fullPreviewScreen");
+
+    const homeActive = home?.classList.contains("active");
+    const wizardActive = wizard?.classList.contains("active");
+    const resultActive = result?.classList.contains("active");
+    const plansActive = plans?.classList.contains("active");
+    const fullOpen = full && !full.classList.contains("hidden");
+
+    if (fullOpen) return true;
+    if (wizardActive || resultActive || plansActive) return true;
+    if (homeActive) return false;
+
+    return document.body.classList.contains("wizard-open") ||
+           document.body.classList.contains("result-open") ||
+           document.body.classList.contains("plans-open");
+  }
+
+  function refresh() {
+    ensureStyle();
+    const button = ensureButton();
+    button.classList.toggle("visible", shouldShow());
+  }
+
+  function install() {
+    refresh();
+
+    const observer = new MutationObserver(refresh);
+    observer.observe(document.body, {
+      attributes:true,
+      attributeFilter:["class"],
+      subtree:true
+    });
+
+    document.addEventListener("click", () => setTimeout(refresh, 0), true);
+    window.addEventListener("popstate", refresh);
+    window.addEventListener("sitezi:builder-state", refresh);
+
+    setInterval(refresh, 1200);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", install);
+  } else {
+    install();
+  }
+})();
