@@ -3,393 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050b14">
-  <meta name="description" content="SITEZI — crie seu site profissional em minutos.">
-  <title>SITEZI — Seu negócio online em minutos</title>
-  <link rel="stylesheet" href="style.css?v=5.5.3">
-
-  <style id="sitezi-580-runtime-css">
-    /* Miniaturas dos modelos */
-    .template-thumb{position:relative;height:88px;border-radius:12px;padding:0;display:block;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.10)}
-    .template-thumb i,.template-thumb strong,.template-thumb span{position:absolute;margin:0;z-index:3}
-    .template-thumb.modern{background:radial-gradient(circle at 76% 34%,rgba(21,120,255,.30),transparent 24%),linear-gradient(145deg,#07101b,#0c1725 58%,#0d2a49)}
-    .template-thumb.modern:before{content:"";position:absolute;right:8px;top:21px;width:38px;height:37px;border-radius:7px;background:linear-gradient(145deg,rgba(30,136,255,.42),rgba(10,39,67,.35));border:1px solid rgba(76,171,255,.22)}
-    .template-thumb.modern:after{content:"";position:absolute;left:9px;right:9px;bottom:8px;height:15px;border-radius:5px;background:linear-gradient(90deg,#12243a 0 31%,transparent 31% 34%,#12243a 34% 65%,transparent 65% 68%,#12243a 68%)}
-    .template-thumb.modern i{left:9px;top:9px;width:24px;height:5px;border-radius:99px;background:#3daaff}
-    .template-thumb.modern strong{left:9px;top:27px;width:58px;color:#fff;font-size:0}
-    .template-thumb.modern strong:after{content:"NEGÓCIO\A MODERNO";white-space:pre;font-size:9px;line-height:1.02;font-weight:950}
-    .template-thumb.modern span:nth-of-type(1){left:9px;top:50px;width:42px;height:4px;border-radius:99px;background:#71869b}
-    .template-thumb.modern span:nth-of-type(2){left:9px;top:59px;width:28px;height:8px;border-radius:3px;background:#1578ff}
-
-    .template-thumb.premium{background:radial-gradient(circle at 77% 37%,rgba(255,255,255,.72),transparent 22%),linear-gradient(145deg,#f3eadf,#d6c0a3);border-color:#cbb89f}
-    .template-thumb.premium:before{content:"";position:absolute;right:8px;top:17px;width:39px;height:51px;border-radius:20px 20px 6px 6px;background:linear-gradient(160deg,#b89473,#e8d7c3);border:1px solid rgba(99,75,51,.18)}
-    .template-thumb.premium i{left:9px;top:9px;width:21px;height:4px;background:#2d251f}
-    .template-thumb.premium strong{left:9px;top:27px;width:60px;color:#211b16;font-size:0;font-family:Georgia,"Times New Roman",serif}
-    .template-thumb.premium strong:after{content:"Elegância\A em cada detalhe";white-space:pre;font-size:8.5px;line-height:1.05;font-weight:700}
-    .template-thumb.premium span:nth-of-type(1){left:9px;top:51px;width:47px;height:3px;background:#8d7a68}
-    .template-thumb.premium span:nth-of-type(2){left:9px;top:59px;width:30px;height:7px;background:#211b16}
-
-    .template-thumb.dynamic{background:linear-gradient(135deg,#ec5a18 0 52%,#17171d 52.5%);border-color:rgba(255,133,58,.35)}
-    .template-thumb.dynamic:before{content:"OFERTA";position:absolute;right:7px;top:12px;width:43px;height:43px;border-radius:9px;background:#151519;display:grid;place-items:center;color:#ffb24c;font-size:7px;font-weight:950;border:2px solid rgba(255,255,255,.78)}
-    .template-thumb.dynamic i{left:9px;top:9px;width:22px;height:5px;border-radius:99px;background:#fff}
-    .template-thumb.dynamic strong{left:9px;top:27px;width:58px;color:#fff;font-size:0}
-    .template-thumb.dynamic strong:after{content:"MAIS\A DESTAQUE";white-space:pre;font-size:9px;line-height:1.02;font-weight:950}
-    .template-thumb.dynamic span:nth-of-type(1){left:9px;top:50px;width:43px;height:4px;border-radius:99px;background:rgba(255,255,255,.72)}
-    .template-thumb.dynamic span:nth-of-type(2){left:9px;top:59px;width:31px;height:8px;border-radius:4px;background:#fff}
-
-    /* Correções e novos campos */
-    .sitezi-login-btn{white-space:nowrap}
-    .sitezi-inline-help{display:block;margin-top:8px;color:#8294ab;font-size:12px;line-height:1.4}
-    .sitezi-suggestion-action{
-      width:100%;display:flex;align-items:center;gap:12px;text-align:left;
-      border:1px solid #1f68bc;background:#081d33;color:#fff;border-radius:16px;
-      padding:14px 16px;cursor:pointer
-    }
-    .sitezi-suggestion-action .spark{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#0b3156;color:#48b9ff;font-size:20px;flex:0 0 auto}
-    .sitezi-suggestion-action b{display:block;font-size:15px}
-    .sitezi-suggestion-action small{display:block;color:#8fa3bb;margin-top:3px}
-    .sitezi-builder-grid{display:grid;gap:14px}
-    .sitezi-builder-fields{display:grid;grid-template-columns:1fr 170px;gap:10px}
-    .sitezi-builder-fields .full{grid-column:1/-1}
-    .sitezi-builder-fields input,.sitezi-builder-fields textarea,
-    .contact-merge input{
-      width:100%;box-sizing:border-box;border:1px solid #263b58;background:#07111f;
-      color:#f6f9ff;border-radius:13px;padding:14px 15px;outline:none;
-      font:600 15px/1.35 Inter,Arial,sans-serif;appearance:none;-webkit-appearance:none
-    }
-    .sitezi-builder-fields textarea{min-height:100px;resize:vertical}
-    .sitezi-builder-fields input::placeholder,.sitezi-builder-fields textarea::placeholder,.contact-merge input::placeholder{color:#788aa1;opacity:1}
-    .sitezi-builder-fields input:focus,.sitezi-builder-fields textarea:focus,.contact-merge input:focus{border-color:#1687ff;box-shadow:0 0 0 3px rgba(22,135,255,.13)}
-    .sitezi-builder-list{display:grid;gap:10px}
-    .sitezi-builder-empty{padding:16px;border:1px dashed #263c58;border-radius:14px;color:#7f91a8;text-align:center}
-    .sitezi-builder-item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:14px;border:1px solid #1f3148;border-radius:14px;background:#08111e}
-    .sitezi-builder-item b,.sitezi-builder-item span,.sitezi-builder-item small{display:block}
-    .sitezi-builder-item span{color:#58b9ff;margin-top:4px;font-weight:800}
-    .sitezi-builder-item small{color:#94a3b8;margin-top:5px;line-height:1.4}
-    .sitezi-builder-item button{border:0;background:transparent;color:#ff8d8d;font-weight:800;cursor:pointer}
-    .contact-merge{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
-    .contact-merge label{display:grid;gap:6px;color:#b7c3d3;font-size:13px;font-weight:800}
-    .contact-merge .full{grid-column:1/-1}
-    .merge-divider{height:1px;background:#1d2c40;margin:4px 0}
-    .sitezi-ai-plan-note{margin-top:8px;color:#8fa3bb;font-size:12px;line-height:1.45}
-
-    /* Upgrade na prévia */
-    .sitezi-upgrade-card{
-      margin:14px 0 0;padding:18px;border:1px solid #245fc0;border-radius:18px;
-      background:linear-gradient(135deg,#091a31,#0b1322);display:grid;gap:10px
-    }
-    .sitezi-upgrade-card span{color:#56bdff;font-size:12px;font-weight:900;letter-spacing:.6px}
-    .sitezi-upgrade-card h3{margin:0;color:#fff;font-size:20px}
-    .sitezi-upgrade-card p{margin:0;color:#9badc3;line-height:1.5}
-    .sitezi-upgrade-card .btn{justify-self:start}
-
-
-    .sitezi-field-guide{display:grid;gap:7px;color:#eaf2ff}
-    .sitezi-field-guide>b{font-size:14px}
-    .sitezi-field-guide>b em,.sitezi-product-photo em{font-style:normal;color:#8194aa;font-weight:700}
-    .sitezi-field-guide>small{color:#8fa1b8;line-height:1.45}
-    .sitezi-product-photo{display:flex;align-items:center;gap:12px;border:1px dashed #31557e;background:#081523;border-radius:15px;padding:14px;cursor:pointer}
-    .sitezi-product-photo .spark{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#0c3154;color:#57bcff;font-size:20px;flex:0 0 auto}
-    .sitezi-product-photo span:nth-child(2){display:grid;gap:3px}
-    .sitezi-product-photo b{font-size:14px}.sitezi-product-photo small{color:#8fa1b8;line-height:1.4}
-    .sitezi-product-photo input{display:none}
-    .sitezi-product-photo-preview{border:1px solid #263d5b;border-radius:15px;padding:10px;background:#07111e}
-    .sitezi-product-photo-preview img{width:100%;max-height:230px;object-fit:cover;border-radius:11px}
-    .sitezi-added-feedback{padding:12px;border:1px solid #176846;background:#071b14;color:#a9efcd;border-radius:12px;font-weight:800}
-    .sitezi-builder-item.has-photo{grid-template-columns:76px 1fr auto}
-    .sitezi-builder-item .item-thumb{width:76px;height:76px;object-fit:cover;border-radius:11px}
-
+  <meta name="theme-color" content="#0b1220">
+  <meta name="robots" content="index,follow">
+  <title>Carregando site...</title>
+  <style>
+    :root{--accent:#1578ff;--bg:#f7f9fc;--text:#111827;--muted:#667085;--card:#fff;--line:#e7eaf0}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+    a{color:inherit}.loading,.not-found{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px;background:#07101d;color:#fff}
+    .loading-card,.not-found-card{max-width:560px;padding:28px;border:1px solid #1e3553;border-radius:22px;background:#0a1627}
+    .site{min-height:100vh}.wrap{width:min(1160px,calc(100% - 34px));margin:auto}
+    .nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .nav-inner{min-height:92px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:950;text-decoration:none;font-size:19px}.brand img{width:auto;height:68px;max-width:190px;object-fit:contain;border-radius:0;flex:0 0 auto}
+    .nav-links{display:flex;gap:18px;align-items:center}.nav-links a{text-decoration:none;color:var(--muted);font-weight:750;font-size:14px}
+    .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:0;border-radius:13px;padding:13px 18px;font-weight:900;background:var(--accent);color:#fff}
+    .hero{padding:80px 0 60px}.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:50px;align-items:center}
+    .eyebrow{display:inline-flex;padding:7px 11px;border-radius:999px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.6px}
+    h1{font-size:clamp(40px,6vw,76px);line-height:.96;letter-spacing:-3px;margin:17px 0 18px;max-width:900px}h2{font-size:clamp(30px,4vw,48px);letter-spacing:-1.6px;margin:0 0 12px}
+    .hero p,.section-copy{font-size:18px;line-height:1.65;color:var(--muted);max-width:680px}
+    .hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:28px}.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+    .hero-media{min-height:430px;border-radius:28px;overflow:hidden;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 22%,#111827),#101827);display:grid;place-items:center;position:relative}
+    .hero-media img{width:100%;height:100%;min-height:430px;object-fit:cover}.hero-mark{font-size:94px;font-weight:1000;color:#fff;opacity:.94}
+    .trust{padding:18px 0;border-block:1px solid var(--line);background:var(--card)}.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.trust-item{text-align:center;padding:10px;font-size:13px;color:var(--muted);font-weight:800}
+    section.content{padding:76px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:28px}
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+    .card-photo{aspect-ratio:16/10;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 18%,#eef2f7),#eef2f7);display:grid;place-items:center}
+    .card-photo img{width:100%;height:100%;object-fit:cover}.fallback-icon{font-size:42px}
+    .card-body{padding:20px}.card h3{margin:0;font-size:21px;line-height:1.2}.price{display:block;color:var(--accent);font-size:19px;font-weight:950;margin-top:8px}.card p{color:var(--muted);line-height:1.55;margin:10px 0 16px}
+    .about{background:var(--card);border-block:1px solid var(--line)}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}.about-box{border:1px solid var(--line);border-radius:24px;padding:28px;background:var(--bg)}
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:18px}
+    .contact{padding:76px 0}.contact-card{border-radius:28px;padding:34px;background:#101827;color:#fff;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}.contact-card p{color:#c8d2e0;line-height:1.6}.contact-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    footer{padding:28px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    body.tpl-premium{--bg:#f4efe8;--text:#241f1b;--muted:#74685e;--card:#fffaf3;--line:#ded2c5}.tpl-premium h1,.tpl-premium h2{font-family:Georgia,"Times New Roman",serif;font-weight:700;letter-spacing:-2px}.tpl-premium .hero-media{border-radius:999px 999px 28px 28px}.tpl-premium .cta{border-radius:3px}
+    body.tpl-dynamic{--bg:#0c0c10;--text:#fff;--muted:#b9bbc4;--card:#15151b;--line:#292930}.tpl-dynamic .hero{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 78%,#f25a1b) 0 48%,#0c0c10 48%)}.tpl-dynamic .eyebrow{background:#fff;color:#111}.tpl-dynamic .hero p{color:#f2f2f2}.tpl-dynamic .hero-media{border:2px solid rgba(255,255,255,.15)}.tpl-dynamic .card{border-radius:14px}
+    @media(max-width:850px){.nav-links{display:none}.hero{padding-top:48px}.hero-grid,.about-grid,.contact-card{grid-template-columns:1fr}.hero-media{min-height:300px}.hero-media img{min-height:300px}.cards{grid-template-columns:1fr 1fr}.trust-grid{grid-template-columns:1fr 1fr}.contact-actions{justify-content:flex-start}}
+    @media(max-width:560px){.wrap{width:min(100% - 24px,1160px)}.nav-inner{min-height:64px}.hero{padding:38px 0 44px}h1{letter-spacing:-2px}.cards,.gallery{grid-template-columns:1fr}.section-head{display:block}.trust-grid{grid-template-columns:1fr 1fr}.contact-card{padding:24px}.hero-media{min-height:250px}.hero-media img{min-height:250px}}
+  
     @media(max-width:700px){
-      .sitezi-builder-fields,.contact-merge{grid-template-columns:1fr}
-      .contact-merge .full{grid-column:auto}
+      .nav-inner{min-height:80px}
+      .brand img{height:56px;max-width:150px}
     }
-    @media(max-width:560px){
-      .template-card{grid-template-columns:132px 1fr 24px;gap:12px}
-      .template-thumb{height:92px}
-    }
-    @media(max-width:390px){
-      .template-card{grid-template-columns:116px 1fr 22px;gap:10px}
-      .template-thumb{height:86px}
-    }
+
   </style>
 </head>
-
 <body>
-<div id="app" class="app">
-  <header class="topbar">
-    <a class="brand" href="#" id="brandHome" aria-label="SITEZI">
-      <svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64"><path fill="#1578ff" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg>
-      <span class="brand-word">SITE<span>ZI</span></span>
-    </a>
-    <nav class="topnav" aria-label="Navegação principal">
-      <a href="#recursos">Recursos</a><a href="#modelos">Modelos</a><a href="#ajuda">Ajuda</a>
-    </nav>
-    <button id="topLogin" class="btn outline compact sitezi-login-btn" type="button">Fazer login</button>
-    <button id="topCreate" class="btn ghost compact" type="button">Criar meu site</button>
-  </header>
+  <div id="loading" class="loading"><div class="loading-card"><strong>Carregando site...</strong><p>Estamos preparando esta página.</p></div></div>
+  <div id="app"></div>
 
-  <main>
-    <section id="home" class="home-screen screen active">
-      <div class="home-copy">
-        <div class="pill">⚡ Sites profissionais em minutos</div>
-        <h1>Seu negócio online de forma <span>simples e rápida.</span></h1>
-        <p>A SITEZI ajuda você a criar um site moderno, responsivo e pronto para receber clientes — sem precisar saber programar.</p>
-        <div class="home-points">
-          <span><i>✓</i> Design profissional</span>
-          <span><i>✓</i> Modelos personalizados</span>
-          <span><i>✓</i> Logo e imagens com IA*</span>
-          <span><i>✓</i> WhatsApp integrado</span>
-        </div>
-        <div class="home-actions">
-          <button id="startBtn" class="btn primary big">Criar meu site agora <b>→</b></button>
-          <button id="seeExample" class="btn outline big">Ver exemplo</button>
-        </div>
-        <small class="ai-note">* O modo simples cria um site completo. Recursos avançados com IA exigem plano ativo.</small>
-      </div>
+  <script type="module">
+    const SUPABASE_URL="https://tmhosrhnwjertbsempeu.supabase.co";
+    const SUPABASE_KEY="sb_publishable_Gx-4spNVicrUfn3Pd8GxCg_7ii-70Lw";
+    const {createClient}=await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm");
+    const client=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+    const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+    const safeUrl=v=>/^https?:\/\//i.test(String(v||""))?String(v):"";
+    const pathParts=location.pathname.split("/").filter(Boolean);
+    const slug=(new URLSearchParams(location.search).get("slug")||pathParts[pathParts.indexOf("site")+1]||"").toLowerCase().trim();
 
-      <div class="hero-device edu-hero" aria-label="Edu, mascote da SITEZI">
-        <div class="edu-glow" aria-hidden="true"></div>
-        <img class="edu-character" src="edu.png" alt="Edu, mascote da SITEZI">
-        <div class="edu-speech"><strong>Olá! Eu sou o Edu!</strong><span>Vou te ajudar a criar o site do seu negócio de um jeito simples e rápido.</span></div>
-      </div>
+    if(location.search.includes("slug=")&&slug){
+      history.replaceState(null,"",`/site/${encodeURIComponent(slug)}`);
+    }
 
-      <div class="benefit-strip" id="recursos">
-        <article><b>Rápido</b><span>Fluxo guiado</span></article>
-        <article><b>Personalizado</b><span>Modelos e cores</span></article>
-        <article><b>Mais presença</b><span>Feito para converter</span></article>
-        <article><b>Sem complicação</b><span>Você só escolhe</span></article>
-      </div>
-    </section>
+    function notFound(){
+      document.title="Site não encontrado — SITEZI";
+      document.getElementById("loading").remove();
+      document.getElementById("app").innerHTML=`<div class="not-found"><div class="not-found-card"><h1 style="font-size:36px;letter-spacing:-1px">Site não encontrado</h1><p>Este endereço não existe ou o site ainda não foi publicado.</p><a class="cta" href="/">Ir para a SITEZI</a></div></div>`;
+    }
 
-    <section id="wizard" class="wizard-screen screen">
-      <div class="wizard-shell">
-        <header class="wizard-head">
-          <div class="wizard-brand">
-            <svg class="brand-logo" aria-hidden="true" viewBox="0 0 64 64"><path fill="#1578ff" d="M18 8h34L41 22H26c-3 0-5 2-5 5 0 2 2 4 5 4h12c9 0 15 5 15 13 0 7-5 12-13 12H10l11-14h17c3 0 5-2 5-5s-2-4-5-4H25c-9 0-15-5-15-12 0-7 4-13 8-13Z"/></svg>
-            <strong>SITEZI</strong>
+    if(!slug){notFound();}
+    else{
+      const {data,error}=await client.rpc("get_published_site",{p_slug:slug});
+      const site=data||null;
+      if(error||!site){console.error(error);notFound();}
+      else render(site);
+    }
+
+    function render(site){
+      const cfg=site.configuration||{};
+      const products=Array.isArray(cfg.products)?cfg.products:[];
+      const photos=Array.isArray(cfg.photos)?cfg.photos.filter(safeUrl):[];
+      const logo=safeUrl(cfg.logo_data);
+      const hero=photos[0]||"";
+      const accent=/^#[0-9a-f]{6}$/i.test(cfg.color||"")?cfg.color:"#1578ff";
+      document.documentElement.style.setProperty("--accent",accent);
+      document.body.className=`tpl-${site.template||"modern"}`;
+      document.title=`${site.business_name||"Meu negócio"} — Site oficial`;
+      const wa=String(cfg.whatsapp||"").replace(/\D/g,"");
+      const waUrl=wa?`https://wa.me/${wa}`:"";
+      const insta=String(cfg.instagram||"").replace(/^@/,"").trim();
+      const instaUrl=insta?`https://instagram.com/${encodeURIComponent(insta)}`:"";
+      const mail=String(cfg.email||"").trim();
+      const heroMedia=hero?`<img src="${esc(hero)}" alt="${esc(site.business_name||"")}">`:`<div class="hero-mark">${esc((site.business_name||"S").charAt(0).toUpperCase())}</div>`;
+      const cards=products.length?products.map((p,i)=>`
+        <article class="card">
+          <div class="card-photo">${safeUrl(p.photo)?`<img src="${esc(p.photo)}" alt="${esc(p.name||"")}">`:`<span class="fallback-icon">${["✦","◆","●","▲"][i%4]}</span>`}</div>
+          <div class="card-body">
+            <h3>${esc(p.name||"Produto ou serviço")}</h3>
+            ${p.price?`<span class="price">${esc(p.price)}</span>`:""}
+            ${p.description?`<p>${esc(p.description)}</p>`:""}
+            ${waUrl?`<a class="cta" href="${waUrl}" target="_blank" rel="noopener">Tenho interesse →</a>`:""}
           </div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <button id="wizardLogin" class="text-btn" type="button">Fazer login</button>
-            <button id="cancelWizard" class="text-btn" type="button">Cancelar</button>
-          </div>
-        </header>
+        </article>`).join(""):`<article class="card"><div class="card-body"><h3>Em breve</h3><p>Novidades deste negócio serão adicionadas aqui.</p></div></article>`;
+      const gallery=photos.slice(1,7).map((p,i)=>`<img src="${esc(p)}" alt="${esc(site.business_name||"")} ${i+1}">`).join("");
 
-        <div class="progress-wrap"><span id="progressText">1 de 8</span><div class="progress"><i id="progressBar"></i></div></div>
+      document.getElementById("loading").remove();
+      document.getElementById("app").innerHTML=`
+        <div class="site">
+          <header class="nav"><div class="wrap nav-inner">
+            <a class="brand" href="#inicio">${logo?`<img src="${esc(logo)}" alt="Logo">`:""}<span>${esc(site.business_name||"Meu negócio")}</span></a>
+            <nav class="nav-links"><a href="#servicos">Produtos e serviços</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav>
+            ${waUrl?`<a class="cta" href="${waUrl}" target="_blank" rel="noopener">WhatsApp</a>`:""}
+          </div></header>
 
-        <div class="wizard-body">
-          <section class="step active" data-step="1">
-            <div class="step-copy"><h2>Qual é o tipo do seu negócio?</h2><p>Isso nos ajuda a montar um site pensado para você.</p></div>
-            <div class="business-grid">
-              <button class="select-card business" data-business="Oficina Mecânica"><span class="svg-icon">⚙</span><b>Oficina Mecânica</b></button>
-              <button class="select-card business" data-business="Restaurante"><span class="svg-icon">◉</span><b>Restaurante</b></button>
-              <button class="select-card business" data-business="Barbearia"><span class="svg-icon">✂</span><b>Barbearia</b></button>
-              <button class="select-card business" data-business="Salão de Beleza"><span class="svg-icon">✦</span><b>Salão de Beleza</b></button>
-              <button class="select-card business" data-business="Moda e Vestuário"><span class="svg-icon">◇</span><b>Moda e Vestuário</b></button>
-              <button class="select-card business" data-business="Loja / Comércio"><span class="svg-icon">▦</span><b>Loja / Comércio</b></button>
-              <button class="select-card business" data-business="Clínica / Saúde"><span class="svg-icon">✚</span><b>Clínica / Saúde</b></button>
-              <button class="select-card business" data-business="Prestador de Serviços"><span class="svg-icon">✓</span><b>Serviços</b></button>
-              <button class="select-card business" data-business="Outro"><span class="svg-icon">•••</span><b>Outro</b></button>
-            </div>
-          </section>
-
-          <section class="step" data-step="2">
-            <div class="step-copy"><h2>Qual o nome do seu negócio?</h2><p>Esse será o nome principal do seu site.</p></div>
-            <div class="form-stack">
-              <label><span>Nome do negócio</span><input id="businessName" maxlength="60" placeholder="Ex.: Auto Prime"></label>
-              <label><span>Slogan <small>(opcional)</small></span><input id="businessSlogan" maxlength="100" placeholder="Ex.: Manutenção automotiva com confiança"></label>
-
-              <button id="suggestBrand" class="sitezi-suggestion-action" type="button">
-                <span class="spark">✦</span>
-                <span><b>Gerar sugestões de slogan</b><small>Funciona no modo simples e não usa créditos de imagem.</small></span>
-              </button>
-
-              <div id="suggestionBox" class="suggestion-box hidden"></div>
-              <button id="saveNameContinue" class="btn primary step-local-continue" type="button">Salvar e continuar →</button>
-            </div>
-          </section>
-
-          <section class="step" data-step="3" id="modelos">
-            <div class="step-copy"><h2>Escolha um modelo de site</h2><p>Cada modelo muda a estrutura e a apresentação do seu negócio.</p></div>
-            <div class="template-list">
-              <button class="template-card active" data-template="modern"><div class="template-thumb modern"><i></i><strong>Seu negócio</strong><span></span><span></span></div><div><b>Moderno</b><small>Visual forte, atual e direto.</small></div><em>✓</em></button>
-              <button class="template-card" data-template="premium"><div class="template-thumb premium"><i></i><strong>Seu negócio</strong><span></span><span></span></div><div><b>Premium</b><small>Elegante, sofisticado e editorial.</small></div><em>✓</em></button>
-              <button class="template-card" data-template="dynamic"><div class="template-thumb dynamic"><i></i><strong>Seu negócio</strong><span></span><span></span></div><div><b>Dinâmico</b><small>Comercial, energético e cheio de destaques.</small></div><em>✓</em></button>
-            </div>
-          </section>
-
-          <section class="step" data-step="4">
-            <div class="step-copy"><h2>Escolha as cores do seu site</h2><p>Defina a cor principal. Você poderá trocar depois.</p></div>
-            <div class="color-row">
-              <button class="color active" data-color="#1578ff" style="--c:#1578ff" aria-label="Azul"></button>
-              <button class="color" data-color="#12b76a" style="--c:#12b76a" aria-label="Verde"></button>
-              <button class="color" data-color="#ef4444" style="--c:#ef4444" aria-label="Vermelho"></button>
-              <button class="color" data-color="#f59e0b" style="--c:#f59e0b" aria-label="Laranja"></button>
-              <button class="color" data-color="#7c3aed" style="--c:#7c3aed" aria-label="Roxo"></button>
-              <button class="color" data-color="#ec4899" style="--c:#ec4899" aria-label="Rosa"></button>
-            </div>
-            <div id="colorPreview" class="color-preview">
-              <div class="cp-nav"><span></span><b>Seu negócio</b><i></i></div>
-              <div class="cp-main"><small>SUA MARCA</small><h3>Uma presença profissional.</h3><p>Seu site com a identidade que você escolheu.</p><button>Botão de ação</button></div>
-            </div>
-          </section>
-
-          <section class="step" data-step="5">
-            <div class="step-copy"><h2>O que seu negócio oferece?</h2><p>Adicione seus principais produtos ou serviços e como o cliente pode falar com você.</p></div>
-
-            <div class="sitezi-builder-grid">
-              <div class="sitezi-builder-fields">
-                <label class="sitezi-field-guide full">
-                  <b>1. Nome do produto ou serviço</b>
-                  <small>Digite apenas o nome do que você vende ou oferece. Ex.: Troca de óleo.</small>
-                  <input id="productName" type="text" placeholder="Ex.: Troca de óleo" maxlength="120">
-                </label>
-
-                <label class="sitezi-field-guide full">
-                  <b>2. Preço <em>(opcional)</em></b>
-                  <small>Informe o valor somente se quiser mostrá-lo no site. Ex.: R$ 129,90.</small>
-                  <input id="productPrice" type="text" placeholder="Ex.: R$ 129,90" maxlength="40">
-                </label>
-
-                <label class="sitezi-field-guide full">
-                  <b>3. Descrição</b>
-                  <small>Explique o que está incluído neste produto ou serviço. Não precisa repetir o nome.</small>
-                  <textarea id="productDescription" placeholder="Ex.: Troca do óleo do motor com verificação do filtro e dos principais níveis." maxlength="500"></textarea>
-                </label>
-
-                <button id="suggestProductDescription" class="sitezi-suggestion-action full" type="button">
-                  <span class="spark">✦</span>
-                  <span><b>Me ajude a criar a descrição</b><small>A SITEZI cria uma sugestão usando o nome acima. Você pode editar antes de adicionar.</small></span>
-                </button>
-
-                <label class="sitezi-product-photo full">
-                  <span class="spark">↑</span>
-                  <span><b>4. Foto deste produto ou serviço <em>(opcional)</em></b><small>Envie uma foto real deste trabalho ou produto. Ela aparecerá junto deste item no site.</small></span>
-                  <input id="productPhoto" type="file" accept="image/*">
-                </label>
-                <div id="productPhotoPreview" class="sitezi-product-photo-preview full hidden"></div>
-
-                <button id="addProduct" type="button" class="btn outline full">+ Adicionar este produto ou serviço</button>
-                <small id="productAddedFeedback" class="sitezi-added-feedback full hidden">✓ Item adicionado! Cadastre outro ou continue para a próxima etapa.</small>
+          <main id="inicio">
+            <section class="hero"><div class="wrap hero-grid">
+              <div>
+                <span class="eyebrow">${esc(site.business_type||"Negócio local")}</span>
+                <h1>${esc(site.business_name||"Meu negócio")}</h1>
+                <p>${esc(cfg.slogan||"Qualidade, confiança e atendimento para você.")}</p>
+                <div class="hero-actions">
+                  <a class="cta" href="#servicos">Conheça nossos serviços</a>
+                  ${waUrl?`<a class="cta ghost" href="${waUrl}" target="_blank" rel="noopener">Falar no WhatsApp</a>`:""}
+                </div>
               </div>
+              <div class="hero-media">${heroMedia}</div>
+            </div></section>
 
-              <div id="productDemoList" class="sitezi-builder-list"></div>
+            <div class="trust"><div class="wrap trust-grid">
+              <div class="trust-item">✓ Atendimento profissional</div><div class="trust-item">✓ Contato fácil</div><div class="trust-item">✓ Informações atualizadas</div><div class="trust-item">✓ Feito para você</div>
+            </div></div>
 
-              <div class="merge-divider"></div>
+            <section id="servicos" class="content"><div class="wrap">
+              <div class="section-head"><div><h2>Destaques do nosso negócio</h2><p class="section-copy">Conheça os principais produtos e serviços disponíveis.</p></div></div>
+              <div class="cards">${cards}</div>
+            </div></section>
 
-              <div class="contact-merge">
-                <label><span>WhatsApp</span><input id="whatsapp" inputmode="tel" placeholder="(48) 99999-9999"></label>
-                <label><span>Instagram</span><input id="instagram" placeholder="@seunegocio"></label>
-                <label><span>E-mail</span><input id="email" type="email" placeholder="contato@seunegocio.com.br"></label>
-                <label><span>Cidade / atendimento</span><input id="location" placeholder="Ex.: Criciúma - SC"></label>
+            <section id="sobre" class="content about"><div class="wrap about-grid">
+              <div><span class="eyebrow">Sobre nós</span><h2>${esc(site.business_name||"Nosso negócio")}</h2><p class="section-copy">${esc(cfg.slogan||"Estamos prontos para atender você com qualidade e atenção.")}</p></div>
+              <div class="about-box">
+                ${cfg.location?`<p><strong>Atendimento:</strong><br>${esc(cfg.location)}</p>`:""}
+                ${mail?`<p><strong>E-mail:</strong><br><a href="mailto:${esc(mail)}">${esc(mail)}</a></p>`:""}
+                ${insta?`<p><strong>Instagram:</strong><br><a href="${instaUrl}" target="_blank" rel="noopener">@${esc(insta)}</a></p>`:""}
               </div>
+            </div></section>
 
-              <small class="sitezi-inline-help">Você pode continuar sem plano. Fotos ficam na etapa de imagens para não repetir o cadastro.</small>
-            </div>
-          </section>
+            ${gallery?`<section class="content"><div class="wrap"><div class="section-head"><div><h2>Nosso trabalho</h2><p class="section-copy">Alguns registros do nosso negócio.</p></div></div><div class="gallery">${gallery}</div></div></section>`:""}
 
-          <section class="step" data-step="6">
-            <div class="step-copy"><h2>Como será sua identidade?</h2><p>Você pode criar uma logo, enviar a sua ou começar só com o nome.</p></div>
-            <div class="option-list">
-              <button class="option-card" data-logo-mode="ai"><span class="option-icon">✦</span><div><b>Criar logo com IA</b><small>Plano ativo. A logo será solicitada em PNG com fundo transparente.</small></div><em>→</em></button>
-              <label class="option-card upload-label"><span class="option-icon">↑</span><div><b>Enviar minha logo</b><small>PNG, JPG ou SVG.</small></div><em>→</em><input id="logoUpload" type="file" accept="image/*,.svg"></label>
-              <button class="option-card active" data-logo-mode="text"><span class="option-icon">Aa</span><div><b>Usar nome como marca</b><small>O site continua completo no modo simples.</small></div><em>✓</em></button>
-            </div>
-            <div id="logoPreview" class="asset-preview hidden"></div>
-            <div class="sitezi-ai-plan-note">A IA avançada personaliza a identidade usando as informações que você já cadastrou.</div>
-          </section>
-
-          <section class="step" data-step="7">
-            <div class="step-copy"><h2>Como você quer as imagens do site?</h2><p>Escolha uma opção. O modo simples também gera um visual profissional sem fotos.</p></div>
-            <div class="option-list">
-              <button class="option-card" data-image-mode="ai"><span class="option-icon">✦</span><div><b>Gerar com IA</b><small>Plano ativo. Imagens personalizadas para o seu negócio.</small></div><em>→</em></button>
-              <label class="option-card upload-label"><span class="option-icon">↑</span><div><b>Enviar minhas fotos</b><small>Use imagens reais do seu negócio.</small></div><em>→</em><input id="photoUpload" type="file" accept="image/*" multiple></label>
-              <button class="option-card active" data-image-mode="none"><span class="option-icon">—</span><div><b>Continuar sem imagens</b><small>Usaremos uma composição visual do próprio modelo.</small></div><em>✓</em></button>
-            </div>
-            <div id="photoPreview" class="photo-preview hidden"></div>
-          </section>
-
-          <section class="step" data-step="8">
-            <div class="step-copy"><h2>Seu site está pronto para gerar.</h2><p>Confira suas escolhas. Você poderá editar depois.</p></div>
-            <div id="reviewCard" class="review-card"></div>
-            <button id="generateSite" class="btn primary huge">Gerar meu site <b>✦</b></button>
-          </section>
-        </div>
-
-        <footer class="wizard-actions">
-          <button id="backBtn" class="btn outline">← Voltar</button>
-          <button id="nextBtn" class="btn primary">Continuar →</button>
-        </footer>
-      </div>
-    </section>
-
-    <section id="result" class="result-screen screen">
-      <div class="result-shell">
-        <header class="result-top"><div class="wizard-brand"><strong>SITEZI</strong></div><button id="newSite" class="text-btn">Criar outro</button></header>
-        <div class="result-summary"><span class="success">✓ Site gerado</span><h2>Veja como seu negócio ficou.</h2><p>Esta é a prévia criada pela SITEZI com suas escolhas.</p></div>
-        <div class="preview-toolbar"><div><button class="device active" data-device="mobile">Celular</button><button class="device" data-device="desktop">Desktop</button></div><span id="previewDomain">meunegocio.sitezi.com.br</span></div>
-        <div id="previewStage" class="preview-stage mobile"><iframe id="sitePreview" title="Prévia do site"></iframe></div>
-
-        <div class="sitezi-upgrade-card">
-          <span>✦ UPGRADE COM IA</span>
-          <h3>Quer deixar seu site ainda mais profissional?</h3>
-          <p>Com um plano ativo, a SITEZI pode gerar logo e imagens personalizadas para o seu negócio usando as informações que você já cadastrou.</p>
-          <button id="upgradeWithAI" class="btn outline" type="button">Ver recursos com IA →</button>
-        </div>
-
-        <div class="result-actions">
-          <button id="editSite" class="btn outline">Editar informações</button>
-          <button id="fullPreview" class="btn outline">↗ Ver site em tela cheia</button>
-          <button id="publishSite" class="btn primary">Publicar meu site</button>
-        </div>
-        <div id="publishMessage" class="publish-message hidden"></div>
-      </div>
-    </section>
-
-    <section id="fullPreviewScreen" class="full-preview-screen hidden" aria-label="Prévia do site em tela cheia">
-      <div class="preview-toolbar">
-        <button id="exitFullPreview" type="button" class="preview-back">← Voltar para edição</button>
-        <span><b>Prévia SITEZI</b> · Ainda não publicado</span>
-        <button id="publishFromPreview" type="button" class="preview-publish">Publicar meu site</button>
-      </div>
-      <iframe id="fullPreviewFrame" title="Prévia completa do seu site"></iframe>
-    </section>
-
-    <section id="plans" class="plans-screen screen">
-      <div class="plans-shell">
-        <header class="plans-top"><div class="wizard-brand"><strong>SITEZI</strong></div><button id="closePlans" class="text-btn">Voltar</button></header>
-        <div class="plans-copy"><span class="eyebrow">PUBLIQUE E EVOLUA SEU SITE</span><h2>Escolha o plano ideal para o seu negócio.</h2><p>Sua prévia simples continua disponível. A IA avançada é liberada após a ativação do plano.</p></div>
-        <div class="pricing-grid">
-          <article class="price-card">
-            <span class="plan-name">Básico</span><div class="price"><b>R$ 14,90</b><small>/mês</small></div>
-            <p>Para começar com presença profissional.</p>
-            <ul><li>Site responsivo</li><li>WhatsApp integrado</li><li>Subdomínio SITEZI</li><li>Edição das informações</li><li>Até 5 itens no catálogo</li></ul>
-            <button class="btn outline choose-plan" data-plan="Básico" data-price="14,90">Escolher Básico</button>
-          </article>
-          <article class="price-card featured">
-            <span class="popular">MAIS ESCOLHIDO</span><span class="plan-name">Profissional</span><div class="price"><b>R$ 29,90</b><small>/mês</small></div>
-            <p>Identidade visual mais forte para sua marca.</p>
-            <ul><li>Tudo do Básico</li><li>Até 30 itens</li><li>Logo e imagens com IA</li><li>Domínio próprio</li></ul>
-            <button class="btn primary choose-plan" data-plan="Profissional" data-price="29,90">Escolher Profissional</button>
-          </article>
-          <article class="price-card">
-            <span class="plan-name">Premium</span><div class="price"><b>R$ 49,90</b><small>/mês</small></div>
-            <p>Mais gerações e presença mais completa.</p>
-            <ul><li>Tudo do Profissional</li><li>Catálogo ampliado</li><li>Mais gerações com IA</li><li>Domínio próprio + conexão guiada</li></ul>
-            <button class="btn outline choose-plan" data-plan="Premium" data-price="49,90">Escolher Premium</button>
-          </article>
-        </div>
-        <p class="plans-note">* Recursos de IA exigem plano ativo e saldo de créditos disponível.</p>
-      </div>
-    </section>
-  </main>
-</div>
-
-<script src="script.js?v=5.9.0"></script>
-<script src="sitezi-ai-client.js?v=2.0"></script>
-<script src="sitezi-auth.js?v=2.0"></script>
-<script src="sitezi-checkout-client.js?v=1.0"></script>
-<script src="sitezi-image-ai.js?v=1.4"></script>
-<script src="sitezi-logo-display.js?v=1.0"></script>
-<script src="sitezi-account-state.js?v=2.0"></script>
+            <section id="contato" class="contact"><div class="wrap"><div class="contact-card">
+              <div><h2 style="margin:0;color:#fff">Vamos conversar?</h2><p>Entre em contato e saiba mais sobre nossos produtos e serviços.</p></div>
+              <div class="contact-actions">
+                ${waUrl?`<a class="cta" href="${waUrl}" target="_blank" rel="noopener">WhatsApp</a>`:""}
+                ${mail?`<a class="cta ghost" style="color:#fff;border-color:#405068" href="mailto:${esc(mail)}">E-mail</a>`:""}
+              </div>
+            </div></div></section>
+          </main>
+          <footer><div class="wrap foot"><span>© ${new Date().getFullYear()} ${esc(site.business_name||"Meu negócio")}</span><span>Site criado com SITEZI</span></div></footer>
+        </div>`;
+    }
+  </script>
 </body>
 </html>
