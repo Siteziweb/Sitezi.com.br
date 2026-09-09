@@ -1,0 +1,25 @@
+SITEZI 6.1 — PACOTE CORRIGIDO
+
+ESTRUTURA CORRETA DO REPOSITÓRIO
+
+RAIZ:
+- index.html                -> página principal / criador SITEZI
+- 404.html
+- sitezi-auth.js
+- sitezi-account-state.js
+- sitezi-logo-display.js
+- sitezi-site-design.js
+
+PASTA:
+- site/index.html           -> renderizador dos sites publicados
+
+IMPORTANTE:
+1. Substitua o index.html da raiz pelo index.html deste pacote.
+2. Crie ou abra a pasta "site".
+3. Dentro dela, envie o arquivo site/index.html deste pacote.
+4. Não mova o site/index.html para a raiz.
+5. Os demais arquivos podem ser substituídos normalmente.
+
+Depois do upload:
+- sitezi.com.br deve abrir o criador SITEZI.
+- sitezi.com.br/site/<slug> deve abrir o site publicado do cliente.
