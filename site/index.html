@@ -7,10 +7,12 @@
 <meta name="robots" content="index,follow">
 <title>Carregando site...</title>
 <style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#050a11;color:#f8fbff}a{color:inherit;text-decoration:none}.loading,.not-found{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}.box{max-width:560px;padding:28px;border:1px solid #203246;border-radius:22px;background:#0b1420}.cta{display:inline-flex;padding:13px 18px;border-radius:13px;background:#1578ff;color:white;font-weight:900}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#050a11;color:#f8fbff}a{color:inherit;text-decoration:none}.loading,.not-found{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}.box{max-width:560px;padding:28px;border:1px solid #203246;border-radius:22px;background:#0b1420}.cta{display:inline-flex;padding:13px 18px;border-radius:13px;background:#1578ff;color:white;font-weight:900;border:0;cursor:pointer}
 </style>
 </head>
-<body><div id="loading" class="loading"><div class="box"><strong>Carregando site...</strong><p>Estamos preparando esta página.</p></div></div><div id="app"></div>
+<body>
+<div id="loading" class="loading"><div class="box"><strong>Carregando site...</strong><p>Estamos preparando esta página.</p></div></div>
+<div id="app"></div>
 <script type="module">
 const SUPABASE_URL="https://tmhosrhnwjertbsempeu.supabase.co";
 const SUPABASE_KEY="sb_publishable_Gx-4spNVicrUfn3Pd8GxCg_7ii-70Lw";
@@ -21,62 +23,151 @@ async function getPublishedSite(slug){
   try{
     const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_published_site`,{
       method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "apikey":SUPABASE_KEY,
-        "Authorization":`Bearer ${SUPABASE_KEY}`
-      },
-      body:JSON.stringify({p_slug:slug}),
-      signal:controller.signal
+      headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":`Bearer ${SUPABASE_KEY}`},
+      body:JSON.stringify({p_slug:slug}),signal:controller.signal
     });
-    if(!response.ok) throw new Error(`Erro ${response.status}`);
+    if(!response.ok)throw new Error(`Erro ${response.status}`);
     return await response.json();
   }finally{clearTimeout(timer)}
 }
+
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 const safeUrl=v=>/^https?:\/\//i.test(String(v||""))?String(v):"";
 const parts=location.pathname.split("/").filter(Boolean);
 const slug=(new URLSearchParams(location.search).get("slug")||parts[parts.indexOf("site")+1]||"").toLowerCase().trim();
-if(location.search.includes("slug=")&&slug) history.replaceState(null,"",`/site/${encodeURIComponent(slug)}`);
-function fail(){document.title="Site não encontrado — SITEZI";document.getElementById("loading")?.remove();document.getElementById("app").innerHTML=`<div class="not-found"><div class="box"><h1>Site não encontrado</h1><p>Este endereço não existe ou o site ainda não foi publicado.</p><a class="cta" href="/">Ir para a SITEZI</a></div></div>`}
-if(!slug){fail()}else{try{const data=await getPublishedSite(slug);if(!data)fail();else render(data)}catch(error){console.error("[SITEZI PUBLIC] Falha ao carregar site:",error);document.getElementById("loading")?.remove();document.getElementById("app").innerHTML=`<div class="not-found"><div class="box"><h1>Não foi possível carregar o site</h1><p>Verifique sua conexão e tente novamente.</p><button class="cta" onclick="location.reload()" style="border:0;cursor:pointer">Tentar novamente</button></div></div>`}}
-function tier(plan=""){const p=String(plan).toLowerCase();if(p.includes("premium"))return"premium";if(p.includes("profissional"))return"professional";return"basic"}
-function key(site,cfg){const products=Array.isArray(cfg.products)?cfg.products:[];const all=[site.business_type,site.business_name,...products.flatMap(p=>[p.name,p.description])].join(" ").toLowerCase();if(/(elétr|eletr|quadro elétrico|quadro eletrico|fiação|fiacao|disjuntor)/.test(all))return"electrical";if(/(hidrául|hidraul|encan|vazamento)/.test(all))return"plumbing";if(String(site.business_type).includes("Oficina"))return"auto";if(String(site.business_type).includes("Restaurante"))return"restaurant";if(String(site.business_type).includes("Barbearia"))return"barber";if(/Salão|Beleza/.test(String(site.business_type)))return"beauty";if(/Moda|Vestuário/.test(String(site.business_type)))return"fashion";if(/Clínica|Saúde/.test(String(site.business_type)))return"health";if(/Loja|Comércio/.test(String(site.business_type)))return"retail";return"service"}
-const P={
-electrical:{ey:"SERVIÇOS ELÉTRICOS",h:"Instalações elétricas com segurança, precisão e atendimento direto.",intro:"Soluções elétricas residenciais e comerciais para quem precisa de um serviço bem executado, organizado e fácil de contratar.",i:"⚡",trust:["Atendimento direto","Serviço organizado","Residencial e comercial","Contato rápido"],why:["Avaliação clara do serviço","Execução com atenção aos detalhes","Comunicação simples do início ao fim"],proc:["Conte o que precisa","Receba a avaliação","Agende o serviço"]},
-plumbing:{ey:"SERVIÇOS HIDRÁULICOS",h:"Soluções hidráulicas sem complicação.",intro:"Atendimento profissional para instalações, reparos e manutenção em residências e comércios.",i:"◈",trust:["Atendimento direto","Diagnóstico claro","Serviço organizado","Contato rápido"],why:["Avaliação do problema","Solução adequada ao serviço","Atendimento próximo"],proc:["Explique o problema","Receba a avaliação","Agende o atendimento"]},
-auto:{ey:"OFICINA MECÂNICA",h:"Seu carro em boas mãos.",intro:"Manutenção automotiva com transparência, cuidado técnico e atendimento simples.",i:"⚙",trust:["Atendimento profissional","Orçamento claro","Cuidado técnico","Contato rápido"],why:["Serviços apresentados com clareza","Atendimento próximo","Foco no que seu veículo precisa"],proc:["Conte o problema","Faça a avaliação","Autorize o serviço"]},
-restaurant:{ey:"RESTAURANTE",h:"Sabor que dá vontade de voltar.",intro:"Conheça os destaques da casa e peça informações de um jeito rápido e simples.",i:"◉",trust:["Pratos em destaque","Contato fácil","Atendimento próximo","Experiência convidativa"],why:["Cardápio em destaque","Informações fáceis de encontrar","Contato direto"],proc:["Escolha seu favorito","Fale com a equipe","Faça seu pedido"]},
-barber:{ey:"BARBEARIA",h:"Seu estilo começa aqui.",intro:"Corte, barba e cuidado pessoal com uma apresentação moderna e atendimento próximo.",i:"✂",trust:["Atendimento personalizado","Serviços em destaque","Agendamento fácil","Contato direto"],why:["Serviços claros","Visual profissional","Facilidade para agendar"],proc:["Escolha o serviço","Entre em contato","Agende seu horário"]},
-beauty:{ey:"BELEZA & CUIDADO",h:"Realce o melhor de você.",intro:"Serviços de beleza apresentados com cuidado, elegância e uma experiência fácil para suas clientes.",i:"✦",trust:["Atendimento personalizado","Serviços em destaque","Contato rápido","Experiência acolhedora"],why:["Apresentação elegante","Informações claras","Facilidade para agendar"],proc:["Escolha o serviço","Fale com o espaço","Agende seu horário"]},
-fashion:{ey:"MODA & ESTILO",h:"Peças que combinam com o seu estilo.",intro:"Uma vitrine digital moderna para apresentar produtos, novidades e facilitar o contato.",i:"◇",trust:["Produtos em destaque","Contato fácil","Visual profissional","Novidades organizadas"],why:["Vitrine clara","Produtos valorizados","Contato direto"],proc:["Veja os destaques","Escolha o produto","Fale com a loja"]},
-health:{ey:"SAÚDE & BEM-ESTAR",h:"Cuidado profissional perto de você.",intro:"Uma presença digital clara e acolhedora para apresentar serviços e facilitar o primeiro contato.",i:"✚",trust:["Atendimento humanizado","Informações claras","Contato fácil","Presença profissional"],why:["Comunicação acolhedora","Serviços organizados","Contato simplificado"],proc:["Conheça os serviços","Entre em contato","Agende seu atendimento"]},
-retail:{ey:"LOJA & COMÉRCIO",h:"Tudo o que você procura, mais perto.",intro:"Produtos e novidades apresentados de um jeito simples, profissional e pronto para gerar contato.",i:"▦",trust:["Produtos em destaque","Contato rápido","Vitrine organizada","Atendimento próximo"],why:["Produtos valorizados","Informações objetivas","Contato direto"],proc:["Veja os produtos","Escolha seu interesse","Fale com a loja"]},
-service:{ey:"SERVIÇOS PROFISSIONAIS",h:"Um serviço profissional começa por uma apresentação que transmite confiança.",intro:"Mostre o que você faz, como atende e facilite o contato de novos clientes.",i:"✓",trust:["Atendimento direto","Informações claras","Serviços organizados","Contato rápido"],why:["Apresentação profissional","Serviços fáceis de entender","Contato simples"],proc:["Conte o que precisa","Receba a orientação","Agende o serviço"]}
-};
-function render(site){
-const cfg=site.configuration||{},products=Array.isArray(cfg.products)?cfg.products:[],photos=Array.isArray(cfg.photos)?cfg.photos.filter(safeUrl):[];
-const p=P[key(site,cfg)]||P.service,plan=site.plan||"Básico",t=tier(plan),accent=/^#[0-9a-f]{6}$/i.test(cfg.color||"")?cfg.color:"#1578ff";
-const logo=safeUrl(cfg.logo_data),name=esc(site.business_name||"Seu negócio"),wa=String(cfg.whatsapp||"").replace(/\D/g,""),waHref=wa?`https://wa.me/${wa}?text=${encodeURIComponent("Olá! Vim pelo site e gostaria de mais informações.")}`:"#";
-const hero=photos[0]||"",location=esc(cfg.location||"Atendimento na sua região"),instagram=String(cfg.instagram||"").replace(/^@/,"").trim(),mail=String(cfg.email||"").trim();
-document.title=`${site.business_name||"Meu negócio"} — Site oficial`;
-const logoClass=cfg.ai_logo_generated?"brand-logo ai-logo":"brand-logo";
-const brand=logo?`<div class="brand"><span class="${logoClass}"><img src="${logo}" alt="${name}"></span><span>${name}</span></div>`:`<div class="brand"><span class="brand-symbol">${p.i}</span><span>${name}</span></div>`;
-const cards=(products.length?products:[{name:"Atendimento personalizado",description:p.intro}]).map((x,i)=>`<article class="service-card">${safeUrl(x.photo)?`<img class="service-photo" src="${esc(x.photo)}" alt="${esc(x.name||"")}">`:`<div class="service-fallback"><span>${p.i}</span><small>${String(i+1).padStart(2,"0")}</small></div>`}<div class="service-body"><div class="service-top"><small>SERVIÇO ${String(i+1).padStart(2,"0")}</small>${x.price?`<strong>${esc(x.price)}</strong>`:""}</div><h3>${esc(x.name||"Serviço")}</h3><p>${esc(x.description||"Entre em contato para saber mais.")}</p>${wa?`<a href="${waHref}" target="_blank" rel="noopener">Quero saber mais →</a>`:""}</div></article>`).join("");
-const faq=[["Como solicitar um orçamento?","Use o botão de WhatsApp e explique rapidamente o que você precisa."],["Onde é realizado o atendimento?",cfg.location?`O atendimento informado é em ${cfg.location}.`:"Entre em contato para confirmar a região de atendimento."],["Posso tirar dúvidas antes de contratar?","Sim. O primeiro contato serve para entender sua necessidade e orientar os próximos passos."]].map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("");
-document.getElementById("loading")?.remove();
-document.getElementById("app").innerHTML=`<style>
-:root{--a:${accent};--bg:#050a11;--card:#0b1420;--soft:#101c29;--text:#f8fbff;--muted:#9eb0c4;--line:#203246}body{background:var(--bg);color:var(--text)}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}.nav{position:sticky;top:0;z-index:50;background:rgba(5,10,17,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.navin{min-height:92px;display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{display:flex;align-items:center;gap:12px;font-weight:950;font-size:20px}.brand-logo{width:74px;height:74px;flex:0 0 74px;overflow:hidden;display:grid;place-items:center;border-radius:14px}.brand-logo img{width:100%;height:100%;object-fit:contain;display:block}.brand-logo.ai-logo img{transform:scale(1.65);transform-origin:center}.brand-symbol{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:var(--a)}.links{display:flex;gap:22px;color:var(--muted);font-weight:800;font-size:13px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 18px;border-radius:13px;font-weight:900;background:var(--a);color:white}.ghost{background:transparent;border:1px solid #30455d}.hero{padding:72px 0 44px;overflow:hidden;position:relative}.hero:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;right:-160px;top:-200px;background:color-mix(in srgb,var(--a) 26%,transparent);filter:blur(80px)}.hero-grid{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:48px;align-items:center}.eyebrow{color:#5bb8ff;font-size:12px;font-weight:950;letter-spacing:2px}.hero h1{font-size:clamp(48px,6.7vw,82px);line-height:.94;letter-spacing:-4px;margin:16px 0 18px}.hero p,.section-head p{font-size:17px;line-height:1.7;color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.hero-media{height:500px;border-radius:30px;overflow:hidden;border:1px solid #2b4057;background:#0d1927;box-shadow:0 32px 90px rgba(0,0,0,.38)}.hero-media img{width:100%;height:100%;object-fit:cover}.hero-fallback{height:100%;display:grid;place-items:center;position:relative}.hero-fallback .big{font-size:140px;opacity:.16}.panel{position:absolute;left:28px;right:28px;bottom:28px;padding:20px;border:1px solid #334b64;border-radius:18px;background:rgba(5,12,20,.78)}.panel b{font-size:22px}.panel small{display:block;color:var(--muted);margin-top:5px}.trust{padding:18px 0;border-block:1px solid var(--line);background:#07101a}.trustgrid{display:grid;grid-template-columns:repeat(4,1fr)}.trustitem{padding:18px 20px;border-right:1px solid var(--line)}.trustitem:last-child{border-right:0}.trustitem small{display:block;color:#5bb8ff;font-weight:900}.trustitem b{font-size:14px}.section{padding:88px 0}.alt{background:#08111b}.section-head{max-width:760px;margin-bottom:34px}.section-head h2{font-size:clamp(36px,5vw,58px);line-height:.98;letter-spacing:-2.5px;margin:10px 0 14px}.services{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.service-card{border:1px solid var(--line);border-radius:22px;background:var(--card);overflow:hidden}.service-photo,.service-fallback{width:100%;height:220px;object-fit:cover}.service-fallback{display:flex;align-items:flex-end;justify-content:space-between;padding:24px;background:radial-gradient(circle at 76% 22%,color-mix(in srgb,var(--a) 45%,transparent),transparent 28%),linear-gradient(145deg,#0f1d2c,#09131f)}.service-fallback span{font-size:58px}.service-body{padding:22px}.service-top{display:flex;justify-content:space-between;color:#6f859c;font-size:11px;font-weight:900}.service-top strong,.service-card a{color:#69c0ff}.service-card h3{font-size:22px;margin:22px 0 10px}.service-card p{color:var(--muted);line-height:1.6;font-size:14px}.service-card a{font-weight:900;font-size:13px}.why,.aboutgrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:42px}.why-list{display:grid;gap:12px}.why-item{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:18px;background:#09131e}.why-item span{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--a) 18%,transparent);color:#63bdff;font-weight:950}.why-item small{display:block;color:var(--muted);margin-top:4px}.process{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.stepbox{padding:26px;border-top:2px solid var(--a);background:#09131e}.stepbox small{color:#62bdff;font-weight:950}.stepbox p,.aboutcard p,.faq p{color:var(--muted);line-height:1.6}.aboutcard{padding:30px;border:1px solid var(--line);border-radius:26px;background:#0a1420}.meta{display:flex;gap:8px;flex-wrap:wrap}.meta span{padding:9px 11px;border-radius:999px;background:#101d2b;color:#b7c7d8;font-size:12px}.faq{display:grid;gap:10px}.faq details{border:1px solid var(--line);border-radius:16px;background:#0a1420;padding:0 18px}.faq summary{padding:18px 0;font-weight:850}.gallery{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:12px}.gallery img{width:100%;height:300px;object-fit:cover;border-radius:20px}.contact{padding:88px 0}.contact-card{padding:38px;border:1px solid #2a4058;border-radius:28px;background:linear-gradient(135deg,#0f1e2d,#08111a);display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}.contact-card h2{font-size:clamp(34px,4vw,52px);margin:8px 0}.contact-card p{color:var(--muted)}footer{border-top:1px solid var(--line);padding:30px 0;color:#73879d;font-size:13px}.foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}@media(max-width:850px){.links{display:none}.hero-grid,.why,.aboutgrid,.contact-card{grid-template-columns:1fr}.hero-media{height:360px}.services{grid-template-columns:1fr 1fr}.trustgrid{grid-template-columns:1fr 1fr}.process{grid-template-columns:1fr}.gallery{grid-template-columns:1fr 1fr}.gallery img:first-child{grid-column:1/3}}@media(max-width:560px){.wrap{width:min(100% - 24px,1180px)}.navin{min-height:82px}.brand-logo{width:64px;height:64px;flex-basis:64px}.brand{font-size:17px}.nav .btn{display:none}.hero{padding:44px 0 34px}.hero h1{font-size:50px;letter-spacing:-3px}.hero-media{height:300px}.services{grid-template-columns:1fr}.section{padding:68px 0}.gallery{grid-template-columns:1fr}.gallery img,.gallery img:first-child{grid-column:auto;height:240px}.contact-card{padding:26px}}</style>
-<header class="nav"><div class="wrap navin">${brand}<nav class="links"><a href="#servicos">Serviços</a><a href="#diferenciais">Diferenciais</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav>${wa?`<a class="btn" href="${waHref}" target="_blank" rel="noopener">WhatsApp</a>`:""}</div></header>
-<main><section class="hero"><div class="wrap hero-grid"><div><span class="eyebrow">${p.ey}</span><h1>${esc(cfg.slogan||p.h)}</h1><p>${p.intro}</p><div class="actions">${wa?`<a class="btn" href="${waHref}" target="_blank" rel="noopener">Solicitar atendimento →</a>`:""}<a class="btn ghost" href="#servicos">Conhecer serviços</a></div></div><div class="hero-media">${hero?`<img src="${esc(hero)}" alt="${name}">`:`<div class="hero-fallback"><span class="big">${p.i}</span><div class="panel"><b>${name}</b><small>${location}</small></div></div>`}</div></div></section>
-<div class="trust"><div class="wrap trustgrid">${p.trust.map((x,i)=>`<div class="trustitem"><small>0${i+1}</small><b>${x}</b></div>`).join("")}</div></div>
-<section id="servicos" class="section alt"><div class="wrap"><div class="section-head"><span class="eyebrow">O QUE FAZEMOS</span><h2>Serviços apresentados com clareza.</h2><p>Veja os principais serviços da ${name} e encontre rapidamente o que você precisa.</p></div><div class="services">${cards}</div></div></section>
-${t!=="basic"?`<section id="diferenciais" class="section"><div class="wrap why"><div class="section-head"><span class="eyebrow">POR QUE ESCOLHER</span><h2>Uma experiência profissional do primeiro contato ao serviço.</h2><p>A apresentação do negócio precisa transmitir confiança antes mesmo da primeira conversa.</p></div><div class="why-list">${p.why.map((x,i)=>`<div class="why-item"><span>${i+1}</span><div><b>${x}</b><small>Informações objetivas para facilitar a decisão do cliente.</small></div></div>`).join("")}</div></div></section>`:""}
-<section class="section alt"><div class="wrap"><div class="section-head"><span class="eyebrow">COMO FUNCIONA</span><h2>Do contato ao atendimento em poucos passos.</h2></div><div class="process">${p.proc.map((x,i)=>`<div class="stepbox"><small>PASSO 0${i+1}</small><h3>${x}</h3><p>Um caminho simples para facilitar a contratação e evitar complicação.</p></div>`).join("")}</div></div></section>
-<section id="sobre" class="section"><div class="wrap aboutgrid"><div class="section-head"><span class="eyebrow">SOBRE</span><h2>${name}</h2><p>${esc(cfg.slogan||p.intro)}</p></div><div class="aboutcard"><h3>Atendimento próximo e profissional.</h3><p>Informações organizadas, serviços claros e contato direto para facilitar a vida de quem procura pelo seu trabalho.</p><div class="meta"><span>${location}</span>${instagram?`<span>@${esc(instagram)}</span>`:""}${mail?`<span>${esc(mail)}</span>`:""}<span>${esc(plan)}</span></div></div></div></section>
-${t==="premium"&&photos.length>1?`<section class="section alt"><div class="wrap"><div class="section-head"><span class="eyebrow">GALERIA</span><h2>Seu trabalho em destaque.</h2></div><div class="gallery">${photos.slice(1,4).map(x=>`<img src="${esc(x)}" alt="${name}">`).join("")}</div></div></section>`:""}
-${t!=="basic"?`<section class="section alt"><div class="wrap aboutgrid"><div class="section-head"><span class="eyebrow">DÚVIDAS FREQUENTES</span><h2>Antes de entrar em contato.</h2><p>Respostas rápidas para facilitar a decisão do cliente.</p></div><div class="faq">${faq}</div></div></section>`:""}
-<section id="contato" class="contact"><div class="wrap contact-card"><div><span class="eyebrow">FALE CONOSCO</span><h2>Precisa deste serviço?</h2><p>Entre em contato com a ${name} e explique o que você precisa.</p></div>${wa?`<a class="btn" href="${waHref}" target="_blank" rel="noopener">Chamar no WhatsApp →</a>`:""}</div></section></main>
-<footer><div class="wrap foot"><span>${name}</span><span>Site criado com SITEZI.</span></div></footer>`;
+if(location.search.includes("slug=")&&slug)history.replaceState(null,"",`/site/${encodeURIComponent(slug)}`);
+
+function fail(title="Site não encontrado",text="Este endereço não existe ou o site ainda não foi publicado."){
+  document.title=`${title} — SITEZI`;
+  document.getElementById("loading")?.remove();
+  document.getElementById("app").innerHTML=`<div class="not-found"><div class="box"><h1>${esc(title)}</h1><p>${esc(text)}</p><a class="cta" href="/">Ir para a SITEZI</a></div></div>`;
 }
-</script></body></html>
+
+if(!slug)fail();
+else{
+  try{
+    const data=await getPublishedSite(slug);
+    if(!data)fail();else render(data);
+  }catch(error){
+    console.error("[SITEZI PUBLIC]",error);
+    document.getElementById("loading")?.remove();
+    document.getElementById("app").innerHTML=`<div class="not-found"><div class="box"><h1>Não foi possível carregar o site</h1><p>Verifique sua conexão e tente novamente.</p><button class="cta" onclick="location.reload()">Tentar novamente</button></div></div>`;
+  }
+}
+
+const FONTS={
+  "luxury-serif":['"Cormorant Garamond",Georgia,serif','https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap'],
+  "editorial-serif":['"Playfair Display",Georgia,serif','https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap'],
+  "classic-serif":['"Libre Baskerville",Georgia,serif','https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap'],
+  "modern-sans":['Montserrat,Inter,Arial,sans-serif','https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap'],
+  "clean-geometric":['Manrope,Inter,Arial,sans-serif','https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap'],
+  "strong-condensed":['Oswald,Impact,sans-serif','https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap'],
+  "soft-rounded":['Nunito,Inter,Arial,sans-serif','https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap']
+};
+
+function decodeIdentity(mode){
+  const raw=String(mode||"");if(!raw.startsWith("name-ai:"))return null;
+  try{const bin=atob(raw.slice(8));const bytes=Uint8Array.from(bin,ch=>ch.charCodeAt(0));return JSON.parse(new TextDecoder().decode(bytes));}catch(_){return null}
+}
+function safeIdentity(raw,name){
+  if(!raw||typeof raw!=="object")return null;
+  const fontKey=FONTS[raw.fontKey]?raw.fontKey:"modern-sans";
+  const layout=["stacked","inline","split"].includes(raw.layout)?raw.layout:"stacked";
+  const textCase=["original","upper","title","lower"].includes(raw.case)?raw.case:"original";
+  const align=["left","center"].includes(raw.align)?raw.align:"left";
+  const words=String(name||"").trim().split(/\s+/).filter(Boolean);
+  let primary=String(raw.primaryText||"").trim(),secondary=String(raw.secondaryText||"").trim();
+  if(!primary){primary=words.slice(0,Math.max(1,Math.ceil(words.length/2))).join(" ");secondary=words.slice(Math.ceil(words.length/2)).join(" ")}
+  return{primaryText:primary,secondaryText:secondary,fontKey,layout,case:textCase,align,weight:Math.min(950,Math.max(500,Number(raw.weight)||800)),letterSpacing:Math.min(.18,Math.max(-.04,Number(raw.letterSpacing)||0)),primaryScale:Math.min(1.7,Math.max(.9,Number(raw.primaryScale)||1.2)),secondaryScale:Math.min(1,Math.max(.4,Number(raw.secondaryScale)||.62)),accentWord:String(raw.accentWord||"").trim(),showInHero:raw.showInHero!==false};
+}
+function tx(v,m){v=String(v||"");if(m==="upper")return v.toLocaleUpperCase("pt-BR");if(m==="lower")return v.toLocaleLowerCase("pt-BR");if(m==="title")return v.toLocaleLowerCase("pt-BR").replace(/(^|\s|[-'’])\p{L}/gu,x=>x.toLocaleUpperCase("pt-BR"));return v}
+function wordsHtml(text,accent,mode){
+  const a=tx(accent,mode).toLocaleLowerCase("pt-BR");
+  return tx(text,mode).split(/(\s+)/).map(x=>x.trim()&&a&&x.toLocaleLowerCase("pt-BR")===a?`<span class="name-accent">${esc(x)}</span>`:esc(x)).join("");
+}
+function wordmark(spec,hero=false){
+  if(!spec)return"";
+  return `<${hero?"div":"span"} class="${hero?"name-hero":"name-brand"} ${spec.layout}"><span class="name-primary">${wordsHtml(spec.primaryText,spec.accentWord,spec.case)}</span>${spec.secondaryText?`<span class="name-secondary">${wordsHtml(spec.secondaryText,spec.accentWord,spec.case)}</span>`:""}</${hero?"div":"span"}>`;
+}
+
+function category(site,cfg){
+  const products=Array.isArray(cfg.products)?cfg.products:[];
+  const all=[site.business_type,site.business_name,...products.flatMap(p=>[p.name,p.description])].join(" ").toLowerCase();
+  if(/elétr|eletr|fiação|fiacao|disjunt/.test(all))return"electrical";
+  if(/hidrául|hidraul|encan|vazamento/.test(all))return"plumbing";
+  if(/oficina|mecân|mecan|automot|moto|carro/.test(all))return"auto";
+  if(/restaurante|pizza|hamb|cafeteria|comida/.test(all))return"restaurant";
+  if(/barbear|barber/.test(all))return"barber";
+  if(/salão|salao|beleza|estética|estetica/.test(all))return"beauty";
+  if(/moda|roupa|vestuário|vestuario|calçado|calcado/.test(all))return"fashion";
+  if(/clínica|clinica|saúde|saude|dent|fisi|psic/.test(all))return"health";
+  if(/loja|varejo|comércio|comercio/.test(all))return"retail";
+  return"service";
+}
+
+const P={
+  electrical:{ey:"SERVIÇOS ELÉTRICOS",h:"Soluções elétricas apresentadas com clareza.",intro:"Atendimento profissional para instalações, manutenção e necessidades elétricas.",i:"⚡"},
+  plumbing:{ey:"SERVIÇOS HIDRÁULICOS",h:"Soluções hidráulicas sem complicação.",intro:"Atendimento profissional para instalações, reparos e manutenção.",i:"◈"},
+  auto:{ey:"OFICINA MECÂNICA",h:"Seu carro em boas mãos.",intro:"Manutenção automotiva com cuidado técnico e atendimento simples.",i:"⚙"},
+  restaurant:{ey:"RESTAURANTE",h:"Sabor que dá vontade de voltar.",intro:"Conheça os destaques da casa e encontre a melhor forma de pedir ou reservar.",i:"◉"},
+  barber:{ey:"BARBEARIA",h:"Seu estilo começa aqui.",intro:"Corte, barba e cuidado pessoal com atendimento próximo.",i:"✂"},
+  beauty:{ey:"BELEZA & CUIDADO",h:"Realce o melhor de você.",intro:"Serviços de beleza apresentados com cuidado e elegância.",i:"✦"},
+  fashion:{ey:"MODA & ESTILO",h:"Moda que combina com você.",intro:"Uma vitrine digital moderna para apresentar produtos e novidades.",i:"◇"},
+  health:{ey:"SAÚDE & BEM-ESTAR",h:"Cuidado profissional perto de você.",intro:"Uma presença digital clara e acolhedora para facilitar o contato.",i:"✚"},
+  retail:{ey:"LOJA & COMÉRCIO",h:"Produtos que merecem destaque.",intro:"Uma vitrine organizada para apresentar produtos e facilitar o contato.",i:"▦"},
+  service:{ey:"SERVIÇOS PROFISSIONAIS",h:"Uma presença profissional para o seu negócio.",intro:"Mostre o que você faz e facilite o contato de novos clientes.",i:"✓"}
+};
+
+function render(site){
+  const cfg=site.configuration||{};
+  const products=Array.isArray(cfg.products)?cfg.products:[];
+  const photos=Array.isArray(cfg.photos)?cfg.photos.filter(safeUrl):[];
+  const k=category(site,cfg),p=P[k]||P.service;
+  const accent=/^#[0-9a-f]{6}$/i.test(cfg.color||"")?cfg.color:"#1578ff";
+  const name=String(site.business_name||"Seu negócio");
+  const identity=safeIdentity(cfg.ai_name_identity||decodeIdentity(cfg.logo_mode),name);
+  const uploadedLogo=safeUrl(cfg.logo_data)&&!cfg.ai_logo_generated?safeUrl(cfg.logo_data):"";
+  const font=identity?FONTS[identity.fontKey]:null;
+  if(font){const link=document.createElement("link");link.rel="stylesheet";link.href=font[1];document.head.appendChild(link)}
+
+  const wa=String(cfg.whatsapp||"").replace(/\D/g,"");
+  const waHref=wa?`https://wa.me/${wa}?text=${encodeURIComponent("Olá! Vim pelo site e gostaria de mais informações.")}`:"#";
+  const instagram=String(cfg.instagram||"").replace(/^@/,"").trim();
+  const mail=String(cfg.email||"").trim();
+  const location=String(cfg.location||"Atendimento na sua região");
+  const hero=photos[0]||"";
+  const slogan=String(cfg.slogan||"").trim();
+  document.title=`${name} — Site oficial`;
+
+  const brand=uploadedLogo
+    ?`<a class="brand uploaded" href="#inicio"><img src="${uploadedLogo}" alt="${esc(name)}"><span>${esc(name)}</span></a>`
+    :identity
+      ?`<a class="brand" href="#inicio">${wordmark(identity,false)}</a>`
+      :`<a class="brand" href="#inicio"><span class="brand-symbol">${p.i}</span><span class="plain-name">${esc(name)}</span></a>`;
+
+  const cards=(products.length?products:[{name:"Atendimento personalizado",description:p.intro}]).map((x,i)=>`<article class="service-card">${safeUrl(x.photo)?`<img class="service-photo" src="${esc(x.photo)}" alt="${esc(x.name||"")}">`:`<div class="service-fallback"><span>${p.i}</span><small>${String(i+1).padStart(2,"0")}</small></div>`}<div class="service-body"><small>SERVIÇO ${String(i+1).padStart(2,"0")}</small><h3>${esc(x.name||"Serviço")}</h3>${x.price?`<strong>${esc(x.price)}</strong>`:""}<p>${esc(x.description||"Entre em contato para saber mais.")}</p>${wa?`<a href="${waHref}" target="_blank" rel="noopener">Quero saber mais →</a>`:""}</div></article>`).join("");
+
+  document.getElementById("loading")?.remove();
+  document.getElementById("app").innerHTML=`
+  <style>
+  :root{--a:${accent};--bg:#050a11;--card:#0b1420;--soft:#101c29;--text:#f8fbff;--muted:#9eb0c4;--line:#203246;--name-font:${identity?font[0]:'Inter,Arial,sans-serif'};--name-weight:${identity?.weight||900};--name-space:${identity?.letterSpacing||0}em}
+  body{background:var(--bg);color:var(--text)}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}.nav{position:sticky;top:0;z-index:50;background:rgba(5,10,17,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.navin{min-height:92px;display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{display:flex;align-items:center;min-width:0;max-width:min(58vw,460px);font-weight:950}.brand.uploaded{gap:11px}.brand.uploaded img{width:64px;height:64px;object-fit:contain;border-radius:12px}.plain-name{font-size:21px}.brand-symbol{display:grid;place-items:center;width:48px;height:48px;margin-right:10px;border-radius:14px;background:var(--a)}
+  .name-brand{display:flex;align-items:baseline;gap:.3em;min-width:0;font-family:var(--name-font);font-weight:var(--name-weight);letter-spacing:var(--name-space);line-height:.88}.name-brand.stacked{flex-direction:column;align-items:flex-start;gap:.04em}.name-brand .name-primary{font-size:clamp(20px,2.3vw,32px)}.name-brand .name-secondary{font-size:clamp(11px,1.35vw,18px);opacity:.7;letter-spacing:max(var(--name-space),.05em)}.name-accent{color:var(--a)}
+  .links{display:flex;align-items:center;gap:22px;color:var(--muted);font-weight:800;font-size:13px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 18px;border-radius:13px;font-weight:900;background:var(--a);color:white}.ghost{background:transparent;border:1px solid #30455d}.hero{padding:68px 0 50px;overflow:hidden;position:relative}.hero:before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;right:-160px;top:-200px;background:color-mix(in srgb,var(--a) 24%,transparent);filter:blur(80px)}.hero-grid{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:48px;align-items:center}.eyebrow{color:#5bb8ff;font-size:12px;font-weight:950;letter-spacing:2px}.name-hero{margin:10px 0 22px;font-family:var(--name-font);font-weight:var(--name-weight);letter-spacing:var(--name-space);line-height:.82;color:var(--a);text-align:${identity?.align||"left"}}.name-hero .name-primary{display:block;font-size:clamp(${Math.round(44*(identity?.primaryScale||1))}px,${(7.8*(identity?.primaryScale||1)).toFixed(2)}vw,${Math.round(104*(identity?.primaryScale||1))}px);overflow-wrap:anywhere}.name-hero .name-secondary{display:block;margin-top:.12em;font-size:clamp(${Math.round(22*(identity?.secondaryScale||.6))}px,${(4.6*(identity?.secondaryScale||.6)).toFixed(2)}vw,${Math.round(60*(identity?.secondaryScale||.6))}px);opacity:.72}.hero h1{font-size:clamp(42px,5.2vw,70px);line-height:.98;letter-spacing:-3px;margin:14px 0 18px}.hero p,.section-head p{font-size:17px;line-height:1.7;color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.hero-media{height:500px;border-radius:30px;overflow:hidden;border:1px solid #2b4057;background:#0d1927;box-shadow:0 32px 90px rgba(0,0,0,.38)}.hero-media img{width:100%;height:100%;object-fit:cover}.hero-fallback{height:100%;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 65% 30%,color-mix(in srgb,var(--a) 28%,transparent),transparent 35%),linear-gradient(145deg,#0b1623,#121f2e)}.hero-fallback .big{font-size:140px;opacity:.18}.hero-fallback .panel{position:absolute;left:28px;right:28px;bottom:28px;padding:20px;border:1px solid #334b64;border-radius:18px;background:rgba(5,12,20,.8)}
+  .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:18px 0 8px}.trust article{padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--card)}.trust b{display:block;font-size:16px}.trust span{color:var(--muted);font-size:13px}.section{padding:72px 0}.section-head{max-width:760px;margin-bottom:28px}.section-head small{color:#5bb8ff;font-weight:950;letter-spacing:1.8px}.section-head h2{font-size:clamp(34px,5vw,58px);margin:10px 0;letter-spacing:-2px}.services{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.service-card{overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--card)}.service-photo,.service-fallback{width:100%;height:210px;object-fit:cover}.service-fallback{display:flex;align-items:center;justify-content:space-between;padding:22px;background:linear-gradient(145deg,color-mix(in srgb,var(--a) 18%,#0d1724),#101d2b)}.service-fallback span{font-size:60px;opacity:.5}.service-fallback small{font-size:12px;color:var(--muted)}.service-body{padding:20px}.service-body>small{color:#5bb8ff;font-weight:900}.service-body h3{font-size:22px;margin:9px 0 6px}.service-body strong{display:block;color:#7cc6ff;margin-bottom:8px}.service-body p{color:var(--muted);line-height:1.55}.service-body a{display:inline-flex;margin-top:8px;color:#76c5ff;font-weight:900}.about-grid,.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.about-card,.contact-card{padding:28px;border:1px solid var(--line);border-radius:24px;background:var(--card)}.about-card p,.contact-card p{color:var(--muted);line-height:1.65}.contact-list{display:grid;gap:10px;margin-top:18px}.contact-list a,.contact-list span{padding:13px;border:1px solid #29405a;border-radius:12px;background:#08111b;overflow-wrap:anywhere}.footer{padding:26px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}.footerin{display:flex;justify-content:space-between;gap:20px;align-items:center}.sitezi-badge{font-weight:900;color:#dce9f6}
+  @media(max-width:850px){.links a:not(.btn){display:none}.hero{padding-top:42px}.hero-grid,.about-grid,.contact-grid{grid-template-columns:1fr}.hero-media{height:380px}.services{grid-template-columns:1fr 1fr}.trust{grid-template-columns:1fr}.name-brand{max-width:55vw}.brand.uploaded span{display:none}}
+  @media(max-width:600px){.wrap{width:min(100% - 24px,1180px)}.navin{min-height:76px}.brand{max-width:56vw}.brand.uploaded img{width:52px;height:52px}.name-brand .name-primary{font-size:clamp(17px,5vw,23px)}.name-brand .name-secondary{font-size:clamp(9px,3vw,13px)}.hero-grid{gap:28px}.name-hero .name-primary{font-size:clamp(${Math.round(36*(identity?.primaryScale||1))}px,${(12.5*(identity?.primaryScale||1)).toFixed(2)}vw,${Math.round(72*(identity?.primaryScale||1))}px)}.name-hero .name-secondary{font-size:clamp(${Math.round(18*(identity?.secondaryScale||.6))}px,${(8*(identity?.secondaryScale||.6)).toFixed(2)}vw,${Math.round(38*(identity?.secondaryScale||.6))}px)}.hero h1{font-size:clamp(36px,11vw,54px);letter-spacing:-2px}.hero-media{height:320px;border-radius:22px}.services{grid-template-columns:1fr}.section{padding:54px 0}.footerin{display:grid}.btn{padding:12px 14px;font-size:13px}}
+  </style>
+  <nav class="nav"><div class="wrap navin">${brand}<div class="links"><a href="#servicos">Serviços</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a>${wa?`<a class="btn" href="${waHref}" target="_blank" rel="noopener">WhatsApp</a>`:""}</div></div></nav>
+  <main id="inicio">
+    <section class="hero"><div class="wrap hero-grid"><div class="hero-copy"><span class="eyebrow">${esc(p.ey)}</span>${identity&&identity.showInHero?wordmark(identity,true):""}<h1>${esc(slogan||p.h)}</h1><p>${esc(p.intro)}</p><div class="actions">${wa?`<a class="btn" href="${waHref}" target="_blank" rel="noopener">Falar pelo WhatsApp →</a>`:""}<a class="btn ghost" href="#servicos">Ver serviços</a></div></div><div class="hero-media">${hero?`<img src="${hero}" alt="${esc(name)}">`:`<div class="hero-fallback"><span class="big">${p.i}</span><div class="panel"><b>${esc(name)}</b><p>${esc(location)}</p></div></div>`}</div></div></section>
+    <section class="wrap trust"><article><b>Informações claras</b><span>Veja os serviços cadastrados.</span></article><article><b>Contato direto</b><span>Fale com a empresa sem complicação.</span></article><article><b>Atendimento</b><span>${esc(location)}</span></article></section>
+    <section id="servicos" class="section"><div class="wrap"><div class="section-head"><small>SERVIÇOS / PRODUTOS</small><h2>O que você encontra aqui.</h2><p>Conheça os principais serviços ou produtos cadastrados.</p></div><div class="services">${cards}</div></div></section>
+    <section id="sobre" class="section"><div class="wrap about-grid"><div class="section-head"><small>SOBRE</small><h2>${esc(name)}</h2><p>${esc(slogan||p.intro)}</p></div><div class="about-card"><h3>Atendimento próximo e direto</h3><p>Use os canais abaixo para confirmar detalhes, horários, disponibilidade e valores diretamente com a empresa.</p></div></div></section>
+    <section id="contato" class="section"><div class="wrap contact-grid"><div class="section-head"><small>CONTATO</small><h2>Vamos conversar?</h2><p>Escolha o canal que for melhor para você.</p></div><div class="contact-card"><h3>${esc(name)}</h3><div class="contact-list">${wa?`<a href="${waHref}" target="_blank" rel="noopener">WhatsApp</a>`:""}${instagram?`<a href="https://instagram.com/${encodeURIComponent(instagram)}" target="_blank" rel="noopener">Instagram @${esc(instagram)}</a>`:""}${mail?`<a href="mailto:${esc(mail)}">${esc(mail)}</a>`:""}<span>${esc(location)}</span></div></div></div></section>
+  </main>
+  <footer class="footer"><div class="wrap footerin"><span>© ${new Date().getFullYear()} ${esc(name)}</span><span class="sitezi-badge">Criado com SITEZI</span></div></footer>`;
+}
+</script>
+</body>
+</html>
