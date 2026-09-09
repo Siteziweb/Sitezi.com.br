@@ -1,13 +1,10 @@
 /* =========================================================
-   SITEZI — DIRETOR IA v3.0
-   Substitui sitezi-ai-client.js
-
-   Objetivo:
-   - preservar o gerador e o motor visual existentes;
-   - dar à IA liberdade para dirigir identidade, layout e conteúdo;
-   - nunca inventar fatos comerciais;
-   - integrar logo/imagem IA já existentes;
-   - respeitar plano e créditos do backend.
+   SITEZI — DIRETOR IA v4.0
+   - uma única ação: gerar o site inteiro com IA
+   - logo/imagem IA não aparecem mais como etapas separadas
+   - usa uma carteira real de créditos SITEZI
+   - usa assets devolvidos pelo Diretor IA sem cobrança extra
+   - falha da IA NÃO gera automaticamente um site genérico
    ========================================================= */
 (() => {
   "use strict";
@@ -15,134 +12,93 @@
   const SUPABASE_URL = "https://tmhosrhnwjertbsempeu.supabase.co";
   const SUPABASE_KEY = "sb_publishable_Gx-4spNVicrUfn3Pd8GxCg_7ii-70Lw";
   const ENDPOINT = `${SUPABASE_URL}/functions/v1/sitezi-ai`;
-
   const $ = id => document.getElementById(id);
+
   let clientPromise = null;
-  let installed = false;
   let baseGenerate = null;
+  let installed = false;
+  let accountInfo = null;
 
-  const clean = (value, max = 500) =>
-    String(value ?? "").trim().replace(/\s{3,}/g, " ").slice(0, max);
+  const clean = (v, max = 500) => String(v ?? "").trim().replace(/\s{3,}/g, " ").slice(0, max);
+  const state = () => window.SITEZI_BUILDER_STATE || (window.SITEZI_BUILDER_STATE = {});
 
-  function getClient() {
-    if (clientPromise) return clientPromise;
-    clientPromise = import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm")
-      .then(mod => mod.createClient(SUPABASE_URL, SUPABASE_KEY, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      }));
+  async function getClient() {
+    if (!clientPromise) {
+      clientPromise = import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm")
+        .then(mod => mod.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }));
+    }
     return clientPromise;
   }
 
-  async function getSession({ required = true } = {}) {
+  async function getSession() {
     const sb = await getClient();
     const { data, error } = await sb.auth.getSession();
     if (error) throw new Error("Não foi possível verificar sua sessão.");
-    if (!data.session?.access_token && required) {
-      const err = new Error("Entre na sua conta SITEZI para usar o Diretor IA.");
+    if (!data.session?.access_token) {
+      const err = new Error("Entre na sua conta SITEZI para gerar o site com IA.");
       err.code = "AUTH_REQUIRED";
       throw err;
     }
-    return data.session || null;
-  }
-
-  function state() {
-    if (!window.SITEZI_BUILDER_STATE) window.SITEZI_BUILDER_STATE = {};
-    return window.SITEZI_BUILDER_STATE;
-  }
-
-  function selectedBusinessType() {
-    return clean(
-      state().businessType ||
-      document.querySelector(".business.active")?.dataset.business ||
-      "Outro",
-      80
-    );
-  }
-
-  function selectedTemplate() {
-    return clean(
-      state().template ||
-      document.querySelector(".template-card.active")?.dataset.template ||
-      "modern",
-      60
-    );
+    return data.session;
   }
 
   function collectProducts() {
     const s = state();
-    if (Array.isArray(s.products) && s.products.length) {
+    if (Array.isArray(s.products)) {
       return s.products.slice(0, 30).map(p => ({
-        name: clean(p?.name, 90),
-        price: clean(p?.price, 40),
-        description: clean(p?.description, 240),
-        photo: p?.photo || ""
+        name: clean(p?.name, 90), price: clean(p?.price, 40), description: clean(p?.description, 260)
       }));
     }
-
-    const services = clean($("servicesInput")?.value, 1200);
-    if (!services) return [];
-    return services.split(/\n|;/)
-      .map(x => clean(x, 140))
-      .filter(Boolean)
-      .slice(0, 12)
-      .map(name => ({ name, price: "", description: "", photo: "" }));
+    return [];
   }
 
-  function buildBrief(mode = "director") {
+  function buildBrief() {
     const s = state();
     return {
-      mode,
-      businessType: selectedBusinessType(),
+      mode: "director",
+      businessType: clean(s.businessType || document.querySelector(".business.active")?.dataset.business || "Outro", 80),
       businessName: clean(s.businessName || $("businessName")?.value, 80),
       slogan: clean(s.slogan || $("businessSlogan")?.value, 180),
       services: clean($("servicesInput")?.value, 1200),
-      products: collectProducts().map(({name, price, description}) => ({
-        name, price, description
-      })),
-      template: selectedTemplate(),
+      products: collectProducts(),
+      template: clean(s.template || document.querySelector(".template-card.active")?.dataset.template || "modern", 60),
       color: clean(s.color, 24),
       location: clean(s.location, 120),
       instagram: clean(s.instagram, 120),
       whatsapp: clean(s.whatsapp || $("whatsapp")?.value, 40),
-      customerDescription: clean(
-        s.description ||
-        $("businessDescription")?.value ||
-        $("descriptionInput")?.value ||
-        "",
-        1800
-      ),
+      customerDescription: clean(s.description || $("businessDescription")?.value || $("descriptionInput")?.value || "", 1800),
+      hasLogo: !!s.logoData,
+      hasPhotos: Array.isArray(s.photos) && s.photos.length > 0,
       siteId: sessionStorage.getItem("sitezi_current_site_id") || null
     };
   }
 
-  async function callAI(mode = "director") {
-    const session = await getSession({ required: mode === "director" });
-    const token = session?.access_token || SUPABASE_KEY;
+  function planCost() {
+    const p = String(accountInfo?.plan || window.SITEZI_ACCOUNT_STATE?.getInfo?.()?.plan || "").toLowerCase();
+    if (p.includes("profissional")) return 30;
+    if (p.includes("premium") || p.includes("master")) return 20;
+    return null;
+  }
 
+  async function callDirector() {
+    const session = await getSession();
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), mode === "director" ? 70000 : 45000);
-
+    const timeout = setTimeout(() => controller.abort(), 90000);
     try {
       const response = await fetch(ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${token}`
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${session.access_token}`
         },
-        body: JSON.stringify(buildBrief(mode)),
+        body: JSON.stringify(buildBrief()),
         signal: controller.signal
       });
-
       const raw = await response.text();
       let data = {};
       try { data = raw ? JSON.parse(raw) : {}; }
       catch { throw new Error("A IA respondeu em formato inválido."); }
-
       if (!response.ok || data?.ok === false) {
         const err = new Error(data?.error || `Erro ${response.status} ao consultar a IA.`);
         err.code = data?.reason || data?.code || "AI_ERROR";
@@ -150,412 +106,223 @@
         throw err;
       }
       return data;
-    } finally {
-      clearTimeout(timeout);
-    }
+    } finally { clearTimeout(timeout); }
   }
 
-  function setButtonLoading(button, on, text = "Edu está criando seu site...") {
-    if (!button) return;
-    if (on) {
-      if (!button.dataset.siteziDirectorOriginal) {
-        button.dataset.siteziDirectorOriginal = button.innerHTML;
+  function prepareSingleAIFlow() {
+    const logoAI = document.querySelector('[data-logo-mode="ai"]');
+    const imageAI = document.querySelector('[data-image-mode="ai"]');
+    if (logoAI) logoAI.style.display = "none";
+    if (imageAI) imageAI.style.display = "none";
+
+    const step6 = document.querySelector('.step[data-step="6"]');
+    const step7 = document.querySelector('.step[data-step="7"]');
+    const step8 = document.querySelector('.step[data-step="8"]');
+
+    if (step6) {
+      const h = step6.querySelector(".step-copy h2");
+      const p = step6.querySelector(".step-copy p");
+      if (h) h.textContent = "Você já tem uma logo?";
+      if (p) p.textContent = "Envie sua logo se tiver. Se não tiver, o Diretor IA cria a identidade do site para você.";
+      const textCard = step6.querySelector('[data-logo-mode="text"] b');
+      const textSmall = step6.querySelector('[data-logo-mode="text"] small');
+      if (textCard) textCard.textContent = "Não tenho logo";
+      if (textSmall) textSmall.textContent = "A IA vai criar a direção visual e usar o nome da marca quando for melhor.";
+    }
+
+    if (step7) {
+      const h = step7.querySelector(".step-copy h2");
+      const p = step7.querySelector(".step-copy p");
+      if (h) h.textContent = "Você já tem fotos do seu negócio?";
+      if (p) p.textContent = "Envie suas fotos se quiser. Se não tiver, a IA decide a melhor solução visual para o site.";
+      const none = step7.querySelector('[data-image-mode="none"] b');
+      const noneSmall = step7.querySelector('[data-image-mode="none"] small');
+      if (none) none.textContent = "Não tenho fotos";
+      if (noneSmall) noneSmall.textContent = "O Diretor IA poderá criar uma imagem adequada ao seu ramo quando necessário.";
+    }
+
+    if (step8) {
+      const h = step8.querySelector(".step-copy h2");
+      const p = step8.querySelector(".step-copy p");
+      if (h) h.textContent = "Tudo pronto para a IA criar seu site.";
+      if (p) p.textContent = "O Diretor IA vai definir design, textos, identidade e imagens em uma única criação.";
+      const btn = $("generateSite");
+      if (btn) btn.innerHTML = "Gerar meu site inteiro com IA <b>✦</b>";
+
+      if (!step8.querySelector(".sitezi-director-cost-note")) {
+        const note = document.createElement("div");
+        note.className = "sitezi-director-cost-note sitezi-ai-plan-note";
+        note.textContent = "A criação usa um único saldo de créditos SITEZI. O custo será confirmado antes de gerar.";
+        btn?.insertAdjacentElement("afterend", note);
       }
-      button.disabled = true;
-      button.innerHTML = `${text} <b>✦</b>`;
-    } else {
-      button.disabled = false;
-      if (button.dataset.siteziDirectorOriginal) {
-        button.innerHTML = button.dataset.siteziDirectorOriginal;
-      }
     }
   }
 
-  function openLogin() {
-    if (typeof window.SITEZI_AUTH?.openLogin === "function") {
-      window.SITEZI_AUTH.openLogin("login");
-      return;
-    }
-    window.dispatchEvent(new CustomEvent("sitezi:open-login", {
-      detail: { mode: "login" }
-    }));
-  }
-
-  function openPlans(message) {
-    if (message) alert(message);
-    if (typeof window.SITEZI_SHOW_SCREEN === "function" && $("plans")) {
-      window.SITEZI_SHOW_SCREEN($("plans"));
-    }
-  }
-
-  function mergeDirectorPlan(plan) {
-    if (!plan || typeof plan !== "object") return;
-
+  function mergePlan(plan, assets) {
     const s = state();
-    const design = plan.design || {};
-    const content = plan.content || {};
+    const design = plan?.design || {};
+    const content = plan?.content || {};
+    const allowed = new Set(["modern","premium","dynamic","barber-signature","restaurant-flavor","fashion-urban","beauty-essence","auto-drive","professional-neo"]);
 
-    const allowedTemplates = new Set([
-      "modern", "premium", "dynamic",
-      "barber-signature", "restaurant-flavor", "fashion-urban",
-      "beauty-essence", "auto-drive", "professional-neo"
-    ]);
-
-    if (allowedTemplates.has(design.template)) s.template = design.template;
+    if (allowed.has(design.template)) s.template = design.template;
     if (/^#[0-9a-f]{6}$/i.test(design.primaryColor || "")) s.color = design.primaryColor;
-
     if (content.businessName && !s.businessName) s.businessName = clean(content.businessName, 80);
     if (content.slogan) s.slogan = clean(content.slogan, 180);
 
+    const existing = Array.isArray(s.products) ? s.products : [];
     if (Array.isArray(content.services) && content.services.length) {
-      const existing = Array.isArray(s.products) ? s.products : [];
-      const hasRealProducts = existing.some(p => clean(p?.name));
-
-      if (!hasRealProducts) {
+      if (!existing.some(p => clean(p?.name))) {
         s.products = content.services.slice(0, 12).map(item => ({
-          name: clean(item?.title, 90),
-          price: "",
-          description: clean(item?.description, 240),
-          photo: ""
+          name: clean(item?.title, 90), price: "", description: clean(item?.description, 260), photo: ""
         })).filter(x => x.name);
       } else {
-        s.products = existing.map((p, index) => {
-          const ai = content.services[index];
-          if (!ai) return p;
-          return {
-            ...p,
-            name: p.name || clean(ai.title, 90),
-            description: p.description || clean(ai.description, 240)
-          };
-        });
+        s.products = existing.map((p, i) => ({
+          ...p,
+          name: p.name || clean(content.services[i]?.title, 90),
+          description: p.description || clean(content.services[i]?.description, 260)
+        }));
       }
+    }
+
+    if (assets?.logo && !s.logoData) {
+      s.logoData = assets.logo;
+      s.logoMode = "upload";
+      s.aiLogoGenerated = true;
+    }
+    if (assets?.heroImage && !(Array.isArray(s.photos) && s.photos.length)) {
+      s.photos = [assets.heroImage];
+      s.imageMode = "upload";
+      s.aiImageGenerated = true;
     }
 
     s.aiDirector = {
-      version: "3.0",
+      version: "4.0",
       generatedAt: new Date().toISOString(),
       design,
       content,
-      sections: Array.isArray(plan.sections) ? plan.sections : [],
-      assetPlan: plan.assetPlan || {},
-      safety: plan.safety || {}
+      sections: Array.isArray(plan?.sections) ? plan.sections : [],
+      safety: plan?.safety || {},
+      assetWarnings: assets?.warnings || []
     };
-
-    const templateCard = document.querySelector(
-      `.template-card[data-template="${CSS.escape(s.template || "")}"]`
-    );
-    if (templateCard) {
-      document.querySelectorAll(".template-card").forEach(el => el.classList.remove("active"));
-      templateCard.classList.add("active");
-    }
-
-    const sloganInput = $("businessSlogan");
-    if (sloganInput && s.slogan) sloganInput.value = s.slogan;
-
-    window.dispatchEvent(new CustomEvent("sitezi:director-plan-applied", {
-      detail: { plan: s.aiDirector }
-    }));
   }
 
-  function waitForAsset(eventName, timeoutMs = 65000) {
-    return new Promise((resolve, reject) => {
-      let done = false;
-      const timer = setTimeout(() => {
-        if (done) return;
-        done = true;
-        window.removeEventListener(eventName, handler);
-        reject(new Error("A geração do recurso demorou mais que o esperado."));
-      }, timeoutMs);
-
-      const handler = event => {
-        if (done) return;
-        done = true;
-        clearTimeout(timer);
-        window.removeEventListener(eventName, handler);
-        resolve(event.detail || {});
-      };
-
-      window.addEventListener(eventName, handler, { once: true });
-    });
-  }
-
-  async function generateSelectedAssets(plan) {
-    const s = state();
-    const assetPlan = plan?.assetPlan || {};
-
-    const logoMode = document.querySelector('[data-logo-mode="ai"]');
-    const imageMode = document.querySelector('[data-image-mode="ai"]');
-
-    const wantsLogo =
-      assetPlan.logo === true ||
-      logoMode?.classList.contains("active");
-
-    const wantsHero =
-      assetPlan.heroImage === true ||
-      imageMode?.classList.contains("active");
-
-    if (wantsLogo && !s.logoData && logoMode) {
-      try {
-        const pending = waitForAsset("sitezi:ai-logo-generated");
-        logoMode.click();
-        await pending;
-      } catch (e) {
-        console.warn("[SITEZI DIRETOR] Logo não foi gerada; seguindo com marca em texto.", e);
-      }
-    }
-
-    if (wantsHero && !(Array.isArray(s.photos) && s.photos.length) && imageMode) {
-      try {
-        const pending = waitForAsset("sitezi:ai-image-generated");
-        imageMode.click();
-        await pending;
-      } catch (e) {
-        console.warn("[SITEZI DIRETOR] Imagem não foi gerada; seguindo com composição do modelo.", e);
-      }
-    }
-  }
-
-  function waitForFrame(frame, timeoutMs = 5000) {
-    return new Promise(resolve => {
-      if (!frame) return resolve(null);
-      let done = false;
-      const finish = () => {
-        if (done) return;
-        done = true;
-        frame.removeEventListener("load", finish);
-        resolve(frame.contentDocument || null);
-      };
-      frame.addEventListener("load", finish, { once: true });
-      setTimeout(finish, timeoutMs);
-      setTimeout(() => {
-        if (!done && frame.contentDocument?.body?.innerHTML) finish();
-      }, 120);
-    });
-  }
-
-  const replaceText = (el, value) => {
-    const text = clean(value, 1200);
-    if (el && text) el.textContent = text;
-  };
+  const replaceText = (el, value) => { const text = clean(value, 1200); if (el && text) el.textContent = text; };
 
   function applyDirectorContent(doc, plan) {
     if (!doc || !plan) return;
-    const content = plan.content || {};
+    const c = plan.content || {};
+    replaceText(doc.querySelector(".hero h1"), c.heroTitle || c.slogan);
+    replaceText(doc.querySelector(".hero p"), c.heroText);
+    replaceText(doc.querySelector("#sobre p"), c.about);
 
-    replaceText(doc.querySelector(".hero h1"), content.heroTitle || content.slogan);
-    replaceText(doc.querySelector(".hero p"), content.heroText);
+    const cards = [...doc.querySelectorAll("#servicos .service-card, #servicos .services article")];
+    if (Array.isArray(c.services)) cards.forEach((card, i) => {
+      const item = c.services[i]; if (!item) return;
+      replaceText(card.querySelector("h3"), item.title);
+      replaceText(card.querySelector("p"), item.description);
+    });
 
-    const about = doc.querySelector("#sobre");
-    if (about) {
-      const paragraphs = [...about.querySelectorAll("p")];
-      if (paragraphs[0]) replaceText(paragraphs[0], content.about);
-    }
-
-    if (Array.isArray(content.services)) {
-      const cards = [...doc.querySelectorAll("#servicos .service-card, #servicos .services article")];
-      cards.forEach((card, i) => {
-        const item = content.services[i];
-        if (!item) return;
-        replaceText(card.querySelector("h3"), item.title);
-        replaceText(card.querySelector("p"), item.description);
-      });
-    }
-
-    if (Array.isArray(content.trustPoints)) {
+    if (Array.isArray(c.trustPoints)) {
       const trust = [...doc.querySelectorAll(".trustitem b, .trust-item b")];
-      trust.forEach((el, i) => {
-        if (content.trustPoints[i]) replaceText(el, content.trustPoints[i]);
-      });
+      trust.forEach((el, i) => c.trustPoints[i] && replaceText(el, c.trustPoints[i]));
     }
 
-    if (content.cta) {
-      [...doc.querySelectorAll(".hero .btn, #contato .btn, .contact .btn")].forEach((el, i) => {
-        if (i === 0 || el.textContent?.includes("→")) {
-          el.textContent = `${clean(content.cta, 80)} →`;
-        }
-      });
-    }
+    if (c.cta) [...doc.querySelectorAll(".hero .btn, #contato .btn, .contact .btn")].forEach((el, i) => {
+      if (i === 0 || el.textContent?.includes("→")) el.textContent = `${clean(c.cta, 80)} →`;
+    });
 
-    doc.documentElement.dataset.siteziDirector = "3.0";
+    doc.documentElement.dataset.siteziDirector = "4.0";
   }
 
   async function enrichPreview(plan) {
     const frame = $("sitePreview");
-    const doc = await waitForFrame(frame);
+    if (!frame) return;
+    await new Promise(resolve => {
+      let done = false;
+      const finish = () => { if (done) return; done = true; frame.removeEventListener("load", finish); resolve(); };
+      frame.addEventListener("load", finish, { once: true });
+      setTimeout(finish, 5000);
+    });
+    const doc = frame.contentDocument;
     if (!doc) return;
     applyDirectorContent(doc, plan);
     frame.srcdoc = "<!doctype html>\n" + doc.documentElement.outerHTML;
   }
 
-  function showCreditsResult(data) {
-    const remaining = data?.remainingDirectorCredits;
-    const cost = data?.cost;
-    if (typeof remaining !== "number") return;
-
-    window.dispatchEvent(new CustomEvent("sitezi:credits-changed", {
-      detail: { kind: "director", remaining, cost }
-    }));
-
-    try {
-      const p = window.SITEZI_ACCOUNT_STATE?.refresh?.();
-      if (p?.catch) p.catch(() => {});
-    } catch (_) {}
+  function setLoading(btn, on) {
+    if (!btn) return;
+    if (on) {
+      if (!btn.dataset.siteziDirectorOriginal) btn.dataset.siteziDirectorOriginal = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = "Edu está criando seu site inteiro... <b>✦</b>";
+    } else {
+      btn.disabled = false;
+      if (btn.dataset.siteziDirectorOriginal) btn.innerHTML = btn.dataset.siteziDirectorOriginal;
+    }
   }
 
-  async function handleDirectorGenerate(event, button) {
+  function openLogin() {
+    if (typeof window.SITEZI_AUTH?.openLogin === "function") return window.SITEZI_AUTH.openLogin("login");
+    window.dispatchEvent(new CustomEvent("sitezi:open-login", { detail: { mode: "login" } }));
+  }
+
+  function openPlans(message) {
+    if (message) alert(message);
+    if (typeof window.SITEZI_SHOW_SCREEN === "function" && $("plans")) window.SITEZI_SHOW_SCREEN($("plans"));
+  }
+
+  async function handleGenerate(event, btn) {
     event?.preventDefault();
+    const cost = planCost();
+    if (cost != null) {
+      const ok = confirm(`A criação completa com IA usará ${cost} créditos SITEZI. Isso inclui direção de design, textos e os recursos visuais necessários. Deseja continuar?`);
+      if (!ok) return;
+    }
 
-    setButtonLoading(button, true);
-
+    setLoading(btn, true);
     try {
-      const data = await callAI("director");
-      const plan = data.generated;
+      const data = await callDirector();
+      mergePlan(data.generated, data.assets || {});
 
-      mergeDirectorPlan(plan);
-      showCreditsResult(data);
+      if (typeof baseGenerate !== "function") throw new Error("O gerador principal do SITEZI não foi encontrado.");
+      await baseGenerate.call(btn, event);
+      await enrichPreview(data.generated);
 
-      await generateSelectedAssets(plan);
+      window.dispatchEvent(new CustomEvent("sitezi:credits-changed", { detail: { kind: "site", remaining: data.remainingCredits, cost: data.cost } }));
+      try { await window.SITEZI_ACCOUNT_STATE?.refresh?.(); } catch (_) {}
 
-      if (typeof baseGenerate !== "function") {
-        throw new Error("O gerador principal do SITEZI não foi encontrado.");
+      if (Array.isArray(data.assets?.warnings) && data.assets.warnings.length) {
+        console.warn("[SITEZI DIRETOR] Site concluído com aviso de asset:", data.assets.warnings);
       }
-
-      await baseGenerate.call(button, event);
-      await enrichPreview(plan);
-
-      console.info("[SITEZI] Diretor IA v3 concluiu a criação.", {
-        cost: data.cost,
-        remaining: data.remainingDirectorCredits
-      });
     } catch (error) {
       console.error("[SITEZI DIRETOR]", error);
-
-      if (error?.code === "AUTH_REQUIRED" || error?.code === "invalid_session") {
+      if (error?.name === "AbortError") {
+        alert("A criação demorou mais que o esperado e foi interrompida. Nenhum site genérico foi gerado. Tente novamente em alguns instantes.");
+      } else if (error?.code === "AUTH_REQUIRED" || error?.code === "invalid_session") {
         openLogin();
-        return;
-      }
-
-      if (
-        error?.code === "plan_not_allowed" ||
-        error?.code === "subscription_required"
-      ) {
+      } else if (error?.code === "plan_not_allowed" || error?.code === "subscription_required") {
         openPlans(error.message);
-        return;
+      } else if (error?.code === "no_credits") {
+        alert(error.message || "Você não possui créditos suficientes para esta criação.");
+      } else {
+        const detail = error?.details?.providerCode ? `\nCódigo: ${error.details.providerCode}` : "";
+        alert(`${error?.message || "O Diretor IA não conseguiu concluir esta criação."}${detail}\n\nNenhum site genérico foi gerado e, se houve cobrança, os créditos foram devolvidos.`);
       }
-
-      if (error?.code === "no_director_credits") {
-        alert(error.message || "Seus créditos do Diretor IA acabaram para este ciclo.");
-        return;
-      }
-
-      // Falha de IA nunca derruba o gerador já aprovado.
-      const useSafeFallback = confirm(
-        "O Diretor IA não conseguiu concluir esta criação agora. " +
-        "Deseja gerar o site pelo modo seguro do SITEZI sem gastar novos créditos?"
-      );
-
-      if (useSafeFallback && typeof baseGenerate === "function") {
-        await baseGenerate.call(button, event);
-      }
-    } finally {
-      setButtonLoading(button, false);
-    }
-  }
-
-  function installSuggestionAI() {
-    const button = $("suggestBrand");
-    if (!button || button.dataset.siteziDirectorSuggestion === "1") return;
-    button.dataset.siteziDirectorSuggestion = "1";
-
-    const oldHandler = button.onclick;
-
-    button.onclick = async event => {
-      event?.preventDefault();
-
-      const name = clean($("businessName")?.value, 80);
-      if (!name) {
-        alert("Digite primeiro o nome do seu negócio.");
-        return;
-      }
-
-      setButtonLoading(button, true, "Edu está pensando...");
-
-      try {
-        const data = await callAI("suggestion");
-        const suggestion = clean(
-          data?.generated?.slogan || data?.generated?.heroTitle,
-          180
-        );
-
-        if (!suggestion) throw new Error("A IA não retornou uma sugestão.");
-
-        const box = $("suggestionBox");
-        if (box) {
-          box.innerHTML = "";
-          const title = document.createElement("b");
-          title.textContent = "Sugestão do Edu: ";
-          const text = document.createElement("span");
-          text.textContent = suggestion;
-          const br = document.createElement("br");
-          const use = document.createElement("button");
-          use.type = "button";
-          use.textContent = "Usar esta sugestão";
-          use.onclick = () => {
-            if ($("businessSlogan")) $("businessSlogan").value = suggestion;
-            box.classList.add("hidden");
-          };
-          box.append(title, text, br, use);
-          box.classList.remove("hidden");
-        }
-      } catch (error) {
-        console.warn("[SITEZI DIRETOR] Sugestão IA indisponível.", error);
-        if (typeof oldHandler === "function") oldHandler.call(button, event);
-      } finally {
-        setButtonLoading(button, false);
-      }
-    };
-  }
-
-  function installDirectorGenerate() {
-    const button = $("generateSite");
-    if (!button || button.dataset.siteziDirectorInstalled === "1") return false;
-
-    // Este arquivo carrega antes do motor premium. A instalação é feita no window.load,
-    // quando o último onclick já é o gerador aprovado.
-    baseGenerate = button.onclick;
-
-    if (typeof baseGenerate !== "function") {
-      console.warn("[SITEZI DIRETOR] Gerador base ainda não disponível.");
-      return false;
-    }
-
-    button.dataset.siteziDirectorInstalled = "1";
-    button.onclick = event => handleDirectorGenerate(event, button);
-
-    document.documentElement.dataset.siteziDirectorAi = "3.0";
-    console.info("[SITEZI] Diretor IA v3.0 conectado ao gerador aprovado.");
-    return true;
+    } finally { setLoading(btn, false); }
   }
 
   function install() {
     if (installed) return;
-    installSuggestionAI();
-
-    let tries = 0;
-    const timer = setInterval(() => {
-      tries++;
-      if (installDirectorGenerate() || tries >= 30) {
-        clearInterval(timer);
-        installed = true;
-      }
-    }, 100);
+    const btn = $("generateSite");
+    if (!btn) return;
+    prepareSingleAIFlow();
+    baseGenerate = btn.onclick;
+    btn.onclick = event => handleGenerate(event, btn);
+    installed = true;
+    document.documentElement.dataset.siteziDirectorClient = "4.0";
   }
 
-  // Importante: window.load ocorre depois de todos os scripts do index,
-  // inclusive sitezi-premium-engine.js, evitando perder o onclick final.
-  if (document.readyState === "complete") {
-    setTimeout(install, 0);
-  } else {
-    window.addEventListener("load", () => setTimeout(install, 0), { once: true });
-  }
+  window.addEventListener("sitezi:account-info", e => { accountInfo = e.detail || null; });
+  window.addEventListener("load", () => setTimeout(install, 0), { once: true });
+  if (document.readyState === "complete") setTimeout(install, 0);
 })();
