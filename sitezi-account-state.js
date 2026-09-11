@@ -1,10 +1,11 @@
 /* =========================================================
-   SITEZI — ESTADO DA CONTA v3.5
+   SITEZI — ESTADO DA CONTA v3.6
    - mantém créditos/assinatura funcionando
    - transforma a barrinha do plano em acesso da conta
    - adiciona menu: Minha conta, Meus Sites, Plano e Sair
    - adiciona suporte no topo, ao lado esquerdo de Minha conta
-   - oculta apenas o antigo botão flutuante de suporte no criador
+   - oculta o antigo botão flutuante antes da pintura da tela
+   - restaura o detalhe colorido do nome SITEZI no cabeçalho do criador
    - mantém o módulo Meus Sites + Autosave isolado
    ========================================================= */
 (async () => {
@@ -30,6 +31,9 @@
   let currentUser = null;
   let lastInfo = null;
   let legacySupportElement = null;
+  const protectedLegacySupport = new WeakSet();
+  let legacySupportGuard = null;
+  let legacyScanQueued = false;
 
   const style = document.createElement("style");
   style.id = "sitezi-account-state-style";
@@ -58,20 +62,22 @@
     .result-top #siteziResultCredits{margin-left:auto;margin-right:10px}
 
     .sitezi-top-support{
-      display:inline-grid;place-items:center;justify-items:center;gap:3px;
-      min-width:54px;padding:2px 6px;background:transparent;border:0;color:#f5fbff;
+      display:inline-grid;place-items:center;justify-items:center;gap:2px;
+      min-width:40px;padding:0 3px;background:transparent;border:0;color:#f5fbff;
       text-decoration:none;-webkit-tap-highlight-color:transparent
     }
     .sitezi-top-support:hover .sitezi-top-support-icon{transform:translateY(-1px)}
     .sitezi-top-support:focus-visible{outline:2px solid #258fff;outline-offset:3px;border-radius:12px}
     .sitezi-top-support-icon{
-      width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+      width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
       background:linear-gradient(135deg,#1dc85d,#14aa4a);color:#fff;
-      border:1px solid rgba(255,255,255,.16);box-shadow:0 10px 22px rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.16);box-shadow:0 7px 16px rgba(0,0,0,.20);
       transition:transform .16s ease
     }
-    .sitezi-top-support-icon svg{width:18px;height:18px;display:block}
-    .sitezi-top-support-label{font-size:10px;font-weight:850;line-height:1;color:#ffffffd6}
+    .sitezi-top-support-icon svg{width:14px;height:14px;display:block}
+    .sitezi-top-support-label{font-size:8px;font-weight:850;line-height:1;color:#ffffffd6}
+    .sitezi-brand-accent-z{color:#4dbbff}
+    .sitezi-brand-accent-i{color:#ff4a66}
 
     .sitezi-account-menu-overlay{
       position:fixed;inset:0;z-index:100600;display:grid;align-items:start;justify-items:end;
@@ -161,9 +167,10 @@
       .topbar #siteziTopCredits .sitezi-credit-item{font-size:9px}
       .result-top #siteziResultCredits.visible{max-width:170px;font-size:9px;padding:5px 7px}
       .result-top #siteziResultCredits .sitezi-credit-item{font-size:9px}
-      .sitezi-top-support{min-width:48px;padding:1px 4px}
-      .sitezi-top-support-icon{width:32px;height:32px}
-      .sitezi-top-support-label{font-size:9px}
+      .sitezi-top-support{min-width:38px;padding:0 2px}
+      .sitezi-top-support-icon{width:26px;height:26px}
+      .sitezi-top-support-icon svg{width:13px;height:13px}
+      .sitezi-top-support-label{font-size:8px}
     }
   `;
   document.head.appendChild(style);
@@ -223,6 +230,42 @@
     }
   }
 
+  function fixWizardBrand() {
+    const brand = document.querySelector(".wizard-head .wizard-brand strong");
+    if (!brand || brand.dataset.siteziBrandFixed === "1") return;
+    if (brand.textContent.trim().toUpperCase() !== "SITEZI") return;
+
+    brand.innerHTML = `SITE<span class="sitezi-brand-accent-z">Z</span><span class="sitezi-brand-accent-i">I</span>`;
+    brand.dataset.siteziBrandFixed = "1";
+  }
+
+  function forceHideLegacySupport(el) {
+    if (!(el instanceof HTMLElement)) return;
+
+    if (el.style.getPropertyValue("opacity") !== "0" || el.style.getPropertyPriority("opacity") !== "important")
+      el.style.setProperty("opacity", "0", "important");
+    if (el.style.getPropertyValue("pointer-events") !== "none" || el.style.getPropertyPriority("pointer-events") !== "important")
+      el.style.setProperty("pointer-events", "none", "important");
+    if (el.style.getPropertyValue("transform") !== "scale(.01)" || el.style.getPropertyPriority("transform") !== "important")
+      el.style.setProperty("transform", "scale(.01)", "important");
+    if (el.style.getPropertyValue("position") !== "fixed" || el.style.getPropertyPriority("position") !== "important")
+      el.style.setProperty("position", "fixed", "important");
+    if (el.style.getPropertyValue("right") !== "-200px" || el.style.getPropertyPriority("right") !== "important")
+      el.style.setProperty("right", "-200px", "important");
+
+    if (el.getAttribute("aria-hidden") !== "true") el.setAttribute("aria-hidden", "true");
+    if (el.getAttribute("data-sitezi-hidden-legacy-support") !== "1") el.setAttribute("data-sitezi-hidden-legacy-support", "1");
+  }
+
+  function protectLegacySupport(el) {
+    if (!(el instanceof HTMLElement) || protectedLegacySupport.has(el)) return;
+    protectedLegacySupport.add(el);
+    forceHideLegacySupport(el);
+
+    const observer = new MutationObserver(() => forceHideLegacySupport(el));
+    observer.observe(el, { attributes:true, attributeFilter:["style","class","hidden"] });
+  }
+
   function hideLegacyFloatingSupport() {
     const all = [...document.body.querySelectorAll("*")];
     for (const el of all) {
@@ -246,15 +289,35 @@
 
       if (nearRight && sizeOk && circular && topZone && (greenish || text.length <= 2)) {
         if (!legacySupportElement) legacySupportElement = el;
-        el.style.setProperty("opacity", "0", "important");
-        el.style.setProperty("pointer-events", "none", "important");
-        el.style.setProperty("transform", "scale(.01)", "important");
-        el.style.setProperty("position", "fixed", "important");
-        el.style.setProperty("right", "-200px", "important");
-        el.setAttribute("aria-hidden", "true");
-        el.setAttribute("data-sitezi-hidden-legacy-support", "1");
+        protectLegacySupport(el);
       }
     }
+  }
+
+  function queueLegacySupportScan() {
+    if (legacyScanQueued) return;
+    legacyScanQueued = true;
+    requestAnimationFrame(() => {
+      legacyScanQueued = false;
+      hideLegacyFloatingSupport();
+    });
+  }
+
+  function installLegacySupportGuard() {
+    if (legacySupportGuard || !document.body) return;
+
+    legacySupportGuard = new MutationObserver(() => queueLegacySupportScan());
+    legacySupportGuard.observe(document.body, { childList:true, subtree:true });
+
+    const navigationSelector = "#seeExample,#brandHome,#cancelWizard,#backBtn,#exitFullPreview,#closePlans,#newSite";
+    document.addEventListener("click", event => {
+      if (!event.target.closest?.(navigationSelector)) return;
+      queueLegacySupportScan();
+    }, true);
+
+    window.addEventListener("pageshow", queueLegacySupportScan);
+    window.addEventListener("popstate", queueLegacySupportScan);
+    window.addEventListener("hashchange", queueLegacySupportScan);
   }
 
   function ensureAccountMenu() {
@@ -440,6 +503,8 @@
   function install() {
     ensureAccountMenu();
     installSupportLinks();
+    fixWizardBrand();
+    installLegacySupportGuard();
 
     const top = document.querySelector(".topbar");
     if (top && !$("siteziTopCredits")) {
@@ -479,6 +544,7 @@
 
   function render(info) {
     installSupportLinks();
+    fixWizardBrand();
 
     [$("siteziTopCredits"), $("siteziWizardCredits"), $("siteziResultCredits")]
       .filter(Boolean)
@@ -562,7 +628,7 @@
     closeMenu: closeAccountMenu
   };
 
-  document.documentElement.dataset.siteziAccountState = "3.5";
+  document.documentElement.dataset.siteziAccountState = "3.6";
 })();
 
 /* =========================================================
