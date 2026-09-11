@@ -1,8 +1,9 @@
 /* =========================================================
-   SITEZI — ESTADO DA CONTA v3.0
+   SITEZI — ESTADO DA CONTA v3.1
    - UM saldo real de créditos SITEZI
    - usa ai_balances.ai_credits como carteira única
    - não soma mais carteiras técnicas separadas
+   - carrega o módulo Meus Sites + Autosave de forma isolada
    ========================================================= */
 (async () => {
   "use strict";
@@ -117,5 +118,21 @@
   window.addEventListener("sitezi:ai-credit-change", refresh);
 
   window.SITEZI_ACCOUNT_STATE = { refresh, getInfo: () => lastInfo };
-  document.documentElement.dataset.siteziAccountState = "3.0";
+  document.documentElement.dataset.siteziAccountState = "3.1";
+})();
+
+/* =========================================================
+   Loader isolado do recurso "Meus Sites".
+   Se o arquivo novo ainda não existir, o restante da SITEZI
+   continua funcionando normalmente.
+   ========================================================= */
+(() => {
+  "use strict";
+  if (document.querySelector('script[data-sitezi-my-sites-loader="1"]')) return;
+  const script = document.createElement("script");
+  script.src = "sitezi-my-sites.js?v=1.0";
+  script.defer = true;
+  script.dataset.siteziMySitesLoader = "1";
+  script.onerror = () => console.warn("[SITEZI] Meus Sites ainda não está disponível.");
+  document.head.appendChild(script);
 })();
