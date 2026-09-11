@@ -1,33 +1,47 @@
-SITEZI — CORREÇÃO SEGURA v3.6
+SITEZI — SUPORTE / POSIÇÃO v3.7
+================================
 
-Esta versão foi feita diretamente em cima da v3.5 que estava funcionando.
+Esta correção NÃO mexe no funcionamento da SITEZI.
+Ela somente reposiciona o suporte que já existe na v3.6.
 
-CORRIGE SOMENTE:
-1. Suporte do cabeçalho menor e mais discreto.
-2. Impede o botão verde antigo de reaparecer rapidamente no Samsung Internet/ao voltar de telas.
-3. Restaura o detalhe colorido no final de SITEZI no cabeçalho do criador.
+COMO FICA
+---------
+• Tela inicial:
+  o suporte sai de perto da logo e fica à direita da faixa
+  “Sites profissionais em minutos”.
 
-INSTALAÇÃO:
-1. Na RAIZ do repositório, substitua apenas:
-   sitezi-account-state.js
+• Criador (segunda tela em diante):
+  o suporte fica encaixado no lado direito da barra de créditos.
 
-2. No index.html, altere SOMENTE:
-   <script src="sitezi-account-state.js?v=3.5"></script>
+• Tela de resultado:
+  o suporte também acompanha a barra de créditos.
 
-   para:
+• O suporte fica menor e mais discreto.
+• A proteção da v3.6 contra o botão verde antigo continua funcionando.
+
+INSTALAÇÃO
+----------
+1. Coloque este arquivo na RAIZ do repositório:
+   sitezi-support-layout.js
+
+2. No index.html, mantenha:
    <script src="sitezi-account-state.js?v=3.6"></script>
 
-3. Se você tiver colocado o arquivo antigo:
-   sitezi-support-fix.js
-   pode apagar. Esta v3.6 já traz a correção integrada.
+3. Logo ABAIXO dele, adicione:
+   <script src="sitezi-support-layout.js?v=3.7"></script>
 
-NÃO ALTERE:
-- script.js
-- style.css
-- sitezi-auth.js
-- sitezi-my-sites.js
-- pasta /site
-- demais scripts
+NÃO troque o account-state para 3.7.
+A v3.7 é apenas a posição visual do suporte.
 
-VALIDAÇÃO:
-- JavaScript verificado com node --check.
+NÃO MEXA EM:
+------------
+script.js
+style.css
+sitezi-auth.js
+sitezi-my-sites.js
+pasta /site
+ou qualquer outro arquivo.
+
+VALIDAÇÃO
+---------
+sitezi-support-layout.js validado com node --check.
