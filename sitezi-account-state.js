@@ -1,10 +1,11 @@
 /* =========================================================
-   SITEZI — ESTADO DA CONTA v3.4
+   SITEZI — ESTADO DA CONTA v3.5
    - mantém créditos/assinatura funcionando
    - transforma a barrinha do plano em acesso da conta
    - adiciona menu: Minha conta, Meus Sites, Plano e Sair
+   - adiciona suporte no topo, ao lado esquerdo de Minha conta
+   - oculta apenas o antigo botão flutuante de suporte no criador
    - mantém o módulo Meus Sites + Autosave isolado
-   - sem MutationObserver agressivo e sem monitoramento do WhatsApp
    ========================================================= */
 (async () => {
   "use strict";
@@ -28,6 +29,7 @@
 
   let currentUser = null;
   let lastInfo = null;
+  let legacySupportElement = null;
 
   const style = document.createElement("style");
   style.id = "sitezi-account-state-style";
@@ -54,6 +56,22 @@
     #siteziTopCredits{margin-left:auto;margin-right:8px}
     .wizard-head #siteziWizardCredits{margin-left:auto;margin-right:10px}
     .result-top #siteziResultCredits{margin-left:auto;margin-right:10px}
+
+    .sitezi-top-support{
+      display:inline-grid;place-items:center;justify-items:center;gap:3px;
+      min-width:54px;padding:2px 6px;background:transparent;border:0;color:#f5fbff;
+      text-decoration:none;-webkit-tap-highlight-color:transparent
+    }
+    .sitezi-top-support:hover .sitezi-top-support-icon{transform:translateY(-1px)}
+    .sitezi-top-support:focus-visible{outline:2px solid #258fff;outline-offset:3px;border-radius:12px}
+    .sitezi-top-support-icon{
+      width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+      background:linear-gradient(135deg,#1dc85d,#14aa4a);color:#fff;
+      border:1px solid rgba(255,255,255,.16);box-shadow:0 10px 22px rgba(0,0,0,.22);
+      transition:transform .16s ease
+    }
+    .sitezi-top-support-icon svg{width:18px;height:18px;display:block}
+    .sitezi-top-support-label{font-size:10px;font-weight:850;line-height:1;color:#ffffffd6}
 
     .sitezi-account-menu-overlay{
       position:fixed;inset:0;z-index:100600;display:grid;align-items:start;justify-items:end;
@@ -143,9 +161,101 @@
       .topbar #siteziTopCredits .sitezi-credit-item{font-size:9px}
       .result-top #siteziResultCredits.visible{max-width:170px;font-size:9px;padding:5px 7px}
       .result-top #siteziResultCredits .sitezi-credit-item{font-size:9px}
+      .sitezi-top-support{min-width:48px;padding:1px 4px}
+      .sitezi-top-support-icon{width:32px;height:32px}
+      .sitezi-top-support-label{font-size:9px}
     }
   `;
   document.head.appendChild(style);
+
+  function supportMarkup() {
+    return `
+      <span class="sitezi-top-support-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.63 2.62a2 2 0 0 1-.45 2.11L8 9.91a16 16 0 0 0 6.09 6.09l1.46-1.29a2 2 0 0 1 2.11-.45c.84.3 1.72.51 2.62.63A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </span>
+      <span class="sitezi-top-support-label">Suporte</span>`;
+  }
+
+  function openSupport() {
+    // Reaproveita a ação do botão de suporte que já existia na SITEZI.
+    // Assim não alteramos número, integração ou atendimento configurado.
+    if (legacySupportElement && document.body.contains(legacySupportElement)) {
+      legacySupportElement.click();
+      return;
+    }
+
+    const existingLink = [...document.querySelectorAll('a[href*="wa.me"],a[href*="api.whatsapp.com"]')]
+      .find(el => !el.classList.contains("sitezi-top-support"));
+
+    if (existingLink?.href) {
+      window.open(existingLink.href, "_blank", "noopener");
+      return;
+    }
+
+    // Fallback neutro: abre a área de ajuda da própria SITEZI.
+    location.href = "/#ajuda";
+  }
+
+  function makeSupportLink(id) {
+    const button = document.createElement("button");
+    button.id = id;
+    button.type = "button";
+    button.className = "sitezi-top-support";
+    button.setAttribute("aria-label", "Abrir suporte da SITEZI");
+    button.innerHTML = supportMarkup();
+    button.addEventListener("click", openSupport);
+    return button;
+  }
+
+  function installSupportLinks() {
+    const topLogin = $("topLogin");
+    if (topLogin && !$("siteziTopSupport")) {
+      const parent = topLogin.parentElement;
+      if (parent) parent.insertBefore(makeSupportLink("siteziTopSupport"), topLogin);
+    }
+
+    const wizardLogin = $("wizardLogin");
+    if (wizardLogin && !$("siteziWizardSupport")) {
+      const parent = wizardLogin.parentElement;
+      if (parent) parent.insertBefore(makeSupportLink("siteziWizardSupport"), wizardLogin);
+    }
+  }
+
+  function hideLegacyFloatingSupport() {
+    const all = [...document.body.querySelectorAll("*")];
+    for (const el of all) {
+      if (!(el instanceof HTMLElement)) continue;
+      if (el.id === "siteziOwnerButton" || el.id === "siteziAccountQuickMenu") continue;
+      if (el.closest("#siteziAccountQuickMenu, #siteziOwnerPanel, .sitezi-top-support")) continue;
+      if (el.tagName === "SCRIPT" || el.tagName === "STYLE" || el.tagName === "LINK") continue;
+
+      const cs = getComputedStyle(el);
+      if (cs.position !== "fixed") continue;
+      if (cs.display === "none" || cs.visibility === "hidden") continue;
+
+      const rect = el.getBoundingClientRect();
+      const nearRight = window.innerWidth - rect.right <= 40;
+      const sizeOk = rect.width >= 38 && rect.width <= 96 && rect.height >= 38 && rect.height <= 96;
+      const circular = Math.abs(rect.width - rect.height) <= 18;
+      const topZone = rect.top >= 70 && rect.top <= 380;
+      const text = (el.textContent || "").trim();
+      const bg = (cs.backgroundColor || "") + " " + (cs.backgroundImage || "");
+      const greenish = /rgb\(\s*(?:2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9])\s*,\s*(?:9[0-9]|1[0-9]{2}|2[0-4][0-9])\s*,\s*(?:4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9])/.test(bg) || /#25d366|#1dc85d|#14aa4a/i.test(bg);
+
+      if (nearRight && sizeOk && circular && topZone && (greenish || text.length <= 2)) {
+        if (!legacySupportElement) legacySupportElement = el;
+        el.style.setProperty("opacity", "0", "important");
+        el.style.setProperty("pointer-events", "none", "important");
+        el.style.setProperty("transform", "scale(.01)", "important");
+        el.style.setProperty("position", "fixed", "important");
+        el.style.setProperty("right", "-200px", "important");
+        el.setAttribute("aria-hidden", "true");
+        el.setAttribute("data-sitezi-hidden-legacy-support", "1");
+      }
+    }
+  }
 
   function ensureAccountMenu() {
     if ($("siteziAccountQuickMenu")) return;
@@ -294,7 +404,6 @@
         return;
       }
 
-      // Fallback seguro: abre a conta; dali o botão "Meus Sites" continua disponível.
       window.SITEZI_AUTH?.openLogin?.("login");
     };
 
@@ -330,6 +439,7 @@
 
   function install() {
     ensureAccountMenu();
+    installSupportLinks();
 
     const top = document.querySelector(".topbar");
     if (top && !$("siteziTopCredits")) {
@@ -360,9 +470,16 @@
     } else {
       bindBarInteraction($("siteziResultCredits"));
     }
+
+    hideLegacyFloatingSupport();
+    setTimeout(hideLegacyFloatingSupport, 350);
+    setTimeout(hideLegacyFloatingSupport, 1500);
+    setTimeout(hideLegacyFloatingSupport, 3500);
   }
 
   function render(info) {
+    installSupportLinks();
+
     [$("siteziTopCredits"), $("siteziWizardCredits"), $("siteziResultCredits")]
       .filter(Boolean)
       .forEach(bar => {
@@ -436,6 +553,7 @@
 
   window.addEventListener("sitezi:credits-changed", refresh);
   window.addEventListener("sitezi:ai-credit-change", refresh);
+  window.addEventListener("resize", hideLegacyFloatingSupport, { passive: true });
 
   window.SITEZI_ACCOUNT_STATE = {
     refresh,
@@ -444,7 +562,7 @@
     closeMenu: closeAccountMenu
   };
 
-  document.documentElement.dataset.siteziAccountState = "3.4";
+  document.documentElement.dataset.siteziAccountState = "3.5";
 })();
 
 /* =========================================================
