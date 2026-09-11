@@ -1,22 +1,36 @@
-SITEZI — SUPORTE NO TOPO v3.5
+SITEZI — SUPORTE v3.6
+======================
 
-ARQUIVOS:
-- sitezi-account-state.js
-- LEIA-ME.txt
+Este ajuste faz SOMENTE duas coisas:
 
-COMO INSTALAR:
-1. Substitua na RAIZ do repositório o arquivo sitezi-account-state.js.
-2. No index.html, altere somente a versão da chamada:
-   de: <script src="sitezi-account-state.js?v=3.4"></script>
-   para: <script src="sitezi-account-state.js?v=3.5"></script>
+1. Diminui o ícone "Suporte" do cabeçalho.
+2. Impede o suporte verde antigo de reaparecer por alguns instantes
+   quando o usuário abre exemplos, volta de uma tela ou troca de etapa.
 
-O QUE MUDA:
-- O antigo botão verde flutuante deixa de aparecer no criador.
-- Entra um botão pequeno com ícone de telefone e “Suporte” embaixo.
-- Ele fica imediatamente à esquerda de “Minha conta”.
-- O novo botão reaproveita a ação do suporte que já estava configurado, sem trocar número ou integração.
-- Nenhuma outra parte da SITEZI foi alterada.
+INSTALAÇÃO
+----------
 
-IMPORTANTE:
-- Não substitua nenhum outro arquivo.
-- O WhatsApp dos sites dos clientes continua exatamente como está.
+1. Coloque o arquivo:
+   sitezi-support-fix.js
+
+   na RAIZ do repositório, junto de:
+   index.html
+   sitezi-account-state.js
+
+2. No index.html, deixe o account-state atual como está:
+
+   <script src="sitezi-account-state.js?v=3.5"></script>
+
+3. Logo ABAIXO dele, adicione:
+
+   <script src="sitezi-support-fix.js?v=3.6"></script>
+
+Pronto.
+
+IMPORTANTE
+----------
+Não substitua script.js, style.css, sitezi-auth.js, sitezi-my-sites.js
+nem qualquer arquivo da pasta /site.
+
+A v3.6 é propositalmente isolada para não mexer em nenhuma outra parte
+da SITEZI que já está funcionando.
