@@ -23,12 +23,22 @@ async function getPublishedSite(slug){
   try{
     const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_published_site`,{
       method:"POST",
-      headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":`Bearer ${SUPABASE_KEY}`},
-      body:JSON.stringify({p_slug:slug}),signal:controller.signal
+      headers:{
+        "Content-Type":"application/json",
+        "apikey":SUPABASE_KEY,
+        "Authorization":`Bearer ${SUPABASE_KEY}`
+      },
+      body:JSON.stringify({p_slug:slug}),
+      signal:controller.signal
     });
-    if(!response.ok)throw new Error(`Erro ${response.status}`);
+    if(!response.ok){
+      const body=await response.text().catch(()=>"");
+      throw new Error(`Erro ${response.status}${body?`: ${body.slice(0,180)}`:""}`);
+    }
     return await response.json();
-  }finally{clearTimeout(timer)}
+  }finally{
+    clearTimeout(timer);
+  }
 }
 
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
@@ -43,18 +53,6 @@ function fail(title="Site não encontrado",text="Este endereço não existe ou o
   document.getElementById("app").innerHTML=`<div class="not-found"><div class="box"><h1>${esc(title)}</h1><p>${esc(text)}</p><a class="cta" href="/">Ir para a SITEZI</a></div></div>`;
 }
 
-if(!slug)fail();
-else{
-  try{
-    const data=await getPublishedSite(slug);
-    if(!data)fail();else render(data);
-  }catch(error){
-    console.error("[SITEZI PUBLIC]",error);
-    document.getElementById("loading")?.remove();
-    document.getElementById("app").innerHTML=`<div class="not-found"><div class="box"><h1>Não foi possível carregar o site</h1><p>Verifique sua conexão e tente novamente.</p><button class="cta" onclick="location.reload()">Tentar novamente</button></div></div>`;
-  }
-}
-
 const FONTS={
   "luxury-serif":['"Cormorant Garamond",Georgia,serif','https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap'],
   "editorial-serif":['"Playfair Display",Georgia,serif','https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap'],
@@ -66,9 +64,17 @@ const FONTS={
 };
 
 function decodeIdentity(mode){
-  const raw=String(mode||"");if(!raw.startsWith("name-ai:"))return null;
-  try{const bin=atob(raw.slice(8));const bytes=Uint8Array.from(bin,ch=>ch.charCodeAt(0));return JSON.parse(new TextDecoder().decode(bytes));}catch(_){return null}
+  const raw=String(mode||"");
+  if(!raw.startsWith("name-ai:"))return null;
+  try{
+    const bin=atob(raw.slice(8));
+    const bytes=Uint8Array.from(bin,ch=>ch.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }catch(_){
+    return null;
+  }
 }
+
 function safeIdentity(raw,name){
   if(!raw||typeof raw!=="object")return null;
   const fontKey=FONTS[raw.fontKey]?raw.fontKey:"modern-sans";
@@ -77,14 +83,39 @@ function safeIdentity(raw,name){
   const align=["left","center"].includes(raw.align)?raw.align:"left";
   const words=String(name||"").trim().split(/\s+/).filter(Boolean);
   let primary=String(raw.primaryText||"").trim(),secondary=String(raw.secondaryText||"").trim();
-  if(!primary){primary=words.slice(0,Math.max(1,Math.ceil(words.length/2))).join(" ");secondary=words.slice(Math.ceil(words.length/2)).join(" ")}
-  return{primaryText:primary,secondaryText:secondary,fontKey,layout,case:textCase,align,weight:Math.min(950,Math.max(500,Number(raw.weight)||800)),letterSpacing:Math.min(.18,Math.max(-.04,Number(raw.letterSpacing)||0)),primaryScale:Math.min(1.7,Math.max(.9,Number(raw.primaryScale)||1.2)),secondaryScale:Math.min(1,Math.max(.4,Number(raw.secondaryScale)||.62)),accentWord:String(raw.accentWord||"").trim(),showInHero:raw.showInHero!==false};
+  if(!primary){
+    primary=words.slice(0,Math.max(1,Math.ceil(words.length/2))).join(" ");
+    secondary=words.slice(Math.ceil(words.length/2)).join(" ");
+  }
+  return{
+    primaryText:primary,
+    secondaryText:secondary,
+    fontKey,
+    layout,
+    case:textCase,
+    align,
+    weight:Math.min(950,Math.max(500,Number(raw.weight)||800)),
+    letterSpacing:Math.min(.18,Math.max(-.04,Number(raw.letterSpacing)||0)),
+    primaryScale:Math.min(1.7,Math.max(.9,Number(raw.primaryScale)||1.2)),
+    secondaryScale:Math.min(1,Math.max(.4,Number(raw.secondaryScale)||.62)),
+    accentWord:String(raw.accentWord||"").trim(),
+    showInHero:raw.showInHero!==false
+  };
 }
-function tx(v,m){v=String(v||"");if(m==="upper")return v.toLocaleUpperCase("pt-BR");if(m==="lower")return v.toLocaleLowerCase("pt-BR");if(m==="title")return v.toLocaleLowerCase("pt-BR").replace(/(^|\s|[-'’])\p{L}/gu,x=>x.toLocaleUpperCase("pt-BR"));return v}
+
+function tx(v,m){
+  v=String(v||"");
+  if(m==="upper")return v.toLocaleUpperCase("pt-BR");
+  if(m==="lower")return v.toLocaleLowerCase("pt-BR");
+  if(m==="title")return v.toLocaleLowerCase("pt-BR").replace(/(^|\s|[-'’])\p{L}/gu,x=>x.toLocaleUpperCase("pt-BR"));
+  return v;
+}
+
 function wordsHtml(text,accent,mode){
   const a=tx(accent,mode).toLocaleLowerCase("pt-BR");
   return tx(text,mode).split(/(\s+)/).map(x=>x.trim()&&a&&x.toLocaleLowerCase("pt-BR")===a?`<span class="name-accent">${esc(x)}</span>`:esc(x)).join("");
 }
+
 function wordmark(spec,hero=false){
   if(!spec)return"";
   return `<${hero?"div":"span"} class="${hero?"name-hero":"name-brand"} ${spec.layout}"><span class="name-primary">${wordsHtml(spec.primaryText,spec.accentWord,spec.case)}</span>${spec.secondaryText?`<span class="name-secondary">${wordsHtml(spec.secondaryText,spec.accentWord,spec.case)}</span>`:""}</${hero?"div":"span"}>`;
@@ -128,7 +159,12 @@ function render(site){
   const identity=safeIdentity(cfg.ai_name_identity||decodeIdentity(cfg.logo_mode),name);
   const uploadedLogo=safeUrl(cfg.logo_data)&&!cfg.ai_logo_generated?safeUrl(cfg.logo_data):"";
   const font=identity?FONTS[identity.fontKey]:null;
-  if(font){const link=document.createElement("link");link.rel="stylesheet";link.href=font[1];document.head.appendChild(link)}
+  if(font){
+    const link=document.createElement("link");
+    link.rel="stylesheet";
+    link.href=font[1];
+    document.head.appendChild(link);
+  }
 
   const wa=String(cfg.whatsapp||"").replace(/\D/g,"");
   const waHref=wa?`https://wa.me/${wa}?text=${encodeURIComponent("Olá! Vim pelo site e gostaria de mais informações.")}`:"#";
@@ -168,6 +204,42 @@ function render(site){
   </main>
   <footer class="footer"><div class="wrap footerin"><span>© ${new Date().getFullYear()} ${esc(name)}</span><span class="sitezi-badge">Criado com SITEZI</span></div></footer>`;
 }
+
+/* =========================================================
+   CORREÇÃO SITEZI — carregamento do site publicado
+   O carregamento só começa depois que todas as constantes,
+   funções e estilos necessários ao render já foram definidos.
+   ========================================================= */
+async function loadPublishedSite(){
+  if(!slug){
+    fail();
+    return;
+  }
+
+  try{
+    const data=await getPublishedSite(slug);
+
+    if(!data){
+      fail();
+      return;
+    }
+
+    render(data);
+  }catch(error){
+    console.error("[SITEZI PUBLIC]",error);
+    document.getElementById("loading")?.remove();
+    document.getElementById("app").innerHTML=`
+      <div class="not-found">
+        <div class="box">
+          <h1>Não foi possível carregar o site</h1>
+          <p>Tente novamente em alguns instantes.</p>
+          <button class="cta" onclick="location.reload()">Tentar novamente</button>
+        </div>
+      </div>`;
+  }
+}
+
+queueMicrotask(loadPublishedSite);
 </script>
 </body>
 </html>
