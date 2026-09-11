@@ -1,21 +1,66 @@
-SITEZI — MENU DA CONTA v3.4
+SITEZI — PAINEL DO CLIENTE / PROPRIETÁRIO v1.0
+================================================
 
-1. Substitua no GitHub o arquivo:
-   sitezi-account-state.js
+OBJETIVO
+-------
+Finalizar a etapa em que o cliente consegue administrar o próprio site
+sem depender do desenvolvedor para trocar fotos, preços ou produtos/serviços.
 
-2. No index.html, deixe a chamada assim:
-   <script src="sitezi-account-state.js?v=3.4"></script>
+ARQUIVOS DO ZIP
+---------------
+1) site/index.html
+2) site/owner-panel.js
 
-3. Não precisa alterar sitezi-my-sites.js.
-   O botão "Meus Sites" do novo menu chama a integração que já existe.
+COMO INSTALAR NO GITHUB
+-----------------------
+No repositório Siteziweb/Sitezi.com.br:
 
-O que mudou:
-- A barrinha "Profissional ✦ créditos" agora é clicável.
-- Abre um menu com:
-  • Minha conta
-  • Meus Sites
-  • Plano e recursos
-  • Sair da conta
-- No celular o menu abre como painel na parte de baixo.
-- Mantém créditos, assinatura, login e Meus Sites.
-- Não reintroduz o monitoramento pesado do WhatsApp.
+1. Entre na pasta "site".
+2. Substitua "site/index.html" pelo arquivo deste ZIP.
+3. Adicione o arquivo novo "site/owner-panel.js" na mesma pasta.
+4. Aguarde o GitHub Pages atualizar.
+5. Entre na SITEZI com a conta dona do site.
+6. Abra o site publicado (ex.: /site/auto-prime).
+
+O QUE VAI ACONTECER
+-------------------
+Se a pessoa logada for a DONA daquele site:
+- aparece "Editar meu site";
+- visitantes comuns não veem o botão;
+- a propriedade é confirmada pelo user_id + RLS do Supabase.
+
+O CLIENTE PODERÁ
+----------------
+- Ver todos os produtos/serviços cadastrados;
+- alterar nome, descrição e preço;
+- adicionar e remover produtos/serviços;
+- adicionar/trocar foto de produto/serviço;
+- ver todas as fotos vinculadas ao site;
+- selecionar várias fotos da galeria de uma vez;
+- remover fotos;
+- salvar rascunho sem mudar o site público;
+- pré-visualizar mudanças;
+- publicar somente quando confirmar.
+
+SEGURANÇA
+---------
+O painel não confia apenas em "esconder botão".
+A tabela sites já possui RLS que limita SELECT/UPDATE ao user_id autenticado.
+O Storage site-assets também limita gravação à pasta do próprio usuário.
+
+ASSINATURA
+----------
+A edição contínua verifica get_my_sitezi_subscription.
+Sem plano ativo, o site continua publicado, mas o painel não permite alterações.
+
+FOTOS
+-----
+A primeira foto da galeria continua sendo a imagem principal.
+As demais agora também aparecem em uma seção "Galeria" no site publicado.
+O painel aceita até 12 fotos por site nesta versão.
+
+IMPORTANTE
+----------
+Esta versão não altera o criador principal da SITEZI.
+Ela adiciona o painel somente na área dos sites publicados.
+Assim reduzimos o risco de mexer no que já está funcionando.
